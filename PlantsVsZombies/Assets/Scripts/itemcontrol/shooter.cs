@@ -5,7 +5,7 @@ using UnityEngine;
 public class shooter : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Transform arrow;
+    public GameObject arrow;
     //GameObject arrowPrefab = Resources.Load(¡°Prefabs / arrowPrefab¡±);
     int tot = 0;
     void Start()
@@ -18,7 +18,7 @@ public class shooter : MonoBehaviour
         tot++;
         if (tot%100==0)
         {
-            //Instantiate(arrow, this.transform.position, this.transform.rotation);
+            Instantiate(arrow, this.transform.position, this.transform.rotation);
         }
     }
 }
