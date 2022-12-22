@@ -6,6 +6,7 @@ public class shooter : MonoBehaviour
 {
     // Start is called before the first frame update
     public Transform arrow;
+    //GameObject arrowPrefab = Resources.Load(¡°Prefabs / arrowPrefab¡±);
     int tot = 0;
     void Start()
     {
