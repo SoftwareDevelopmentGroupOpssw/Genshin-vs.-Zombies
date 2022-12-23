@@ -16,7 +16,7 @@ public class shooter : MonoBehaviour
     void Update()
     {
         tot++;
-        if (tot%100==0)
+        if (tot%500==0)
         {
             Instantiate(arrow, this.transform.position, this.transform.rotation);
         }

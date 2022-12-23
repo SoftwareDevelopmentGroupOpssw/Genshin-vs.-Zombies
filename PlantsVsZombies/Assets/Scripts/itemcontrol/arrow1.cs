@@ -14,5 +14,6 @@ public class arrow1 : MonoBehaviour
     void Update()
     {
         this.transform.position += this.transform.right * 5 * Time.deltaTime;
+        if (this.transform.position.x >= 2) Destroy(this.gameObject);
     }
 }
