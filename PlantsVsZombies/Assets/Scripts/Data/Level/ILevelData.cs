@@ -41,6 +41,7 @@ public interface ILevelData
     /// <summary>
     /// 将一个像素坐标转换为地图的格子坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴
+    /// 像素坐标以左下角为原点，向右为x轴，向上为y轴
     /// </summary>
     /// <param name="pixelPos">像素坐标</param>
     /// <returns>格子坐标，如果在格子之外则返回(-1,-1)</returns>
@@ -48,6 +49,7 @@ public interface ILevelData
     /// <summary>
     /// 将一个格子坐标转换为像素坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴
+    /// 像素坐标以左下角为原点，向右为x轴，向上为y轴
     /// </summary>
     /// <param name="gridPos">格子坐标</param>
     /// <param name="pos">转化为像素坐标时的偏移枚举</param>

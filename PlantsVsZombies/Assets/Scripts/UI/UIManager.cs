@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class UIManager:Singleton<UIManager>
 {
+    const string UI_PATH = "Prefabs/UI/";
+
     /// <summary>
     /// UI面板显示的层级
     /// </summary>
@@ -31,7 +33,7 @@ public class UIManager:Singleton<UIManager>
     public UIManager()
     {
         GameObject obj = null;
-        obj = ResourceManager.Instance.Load<GameObject>("UI/Canvas");
+        obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "Canvas");
         GameObject.DontDestroyOnLoad(obj);
 
         top = obj.transform.Find("Top");
@@ -39,7 +41,7 @@ public class UIManager:Singleton<UIManager>
         bot = obj.transform.Find("Bot");
         system = obj.transform.Find("System");
 
-        obj = ResourceManager.Instance.Load<GameObject>("UI/EventSystem");
+        obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "EventSystem");
         GameObject.DontDestroyOnLoad(obj);
     }
 
@@ -87,21 +89,14 @@ public class UIManager:Singleton<UIManager>
             return;
         }
 
-        ResourceManager.Instance.LoadAsync<GameObject>("UI/Panel/" + panelName, (obj) =>
+        ResourceManager.Instance.LoadAsync<GameObject>(UI_PATH + "Panels/" + panelName, (obj) =>
         {
-            obj.transform.SetParent(GetUILayer(layer));
-
-            obj.transform.localPosition = Vector3.zero;
-            obj.transform.localScale = Vector3.one;
-
-            (obj.transform as RectTransform).offsetMax = Vector2.zero;
-            (obj.transform as RectTransform).offsetMin = Vector2.zero;
+            GameObject instantiated = GameObject.Instantiate(obj, GetUILayer(layer));
 
             //得到预设体身上的面板脚本
-            T panel = obj.GetComponent<T>();
+            T panel = instantiated.GetComponent<T>();
             // 处理面板创建完成后的逻辑
-            if (callback != null)
-                callback(panel);
+            callback?.Invoke(panel);
 
             panel.Show();
 

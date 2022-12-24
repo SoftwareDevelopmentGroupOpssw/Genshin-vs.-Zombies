@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+/// <summary>
+/// Ãæ°å»ùÀà
+/// </summary>
 public class BasePanel : MonoBehaviour
 {
 

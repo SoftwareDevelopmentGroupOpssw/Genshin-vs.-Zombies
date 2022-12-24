@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 /// <summary>
 /// 游戏控制器
 /// 当程序运行时作为物体的脚本自动被添加到场景中，只有一个实例
@@ -12,7 +13,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// 单例
     /// </summary>
-    public GameController Instance => instance;
+    public static GameController Instance => instance;
     
     /// <summary>
     /// 关卡信息
@@ -41,6 +42,12 @@ public class GameController : MonoBehaviour
     /// 已选择的植物
     /// </summary>
     private List<PlantsSelected> selected = new List<PlantsSelected>();
+
+    /// <summary>
+    /// 能量管理模块
+    /// </summary>
+    public EnergyMonitor Energy { get; private set; } = new EnergyMonitor();
+
 
     /// <summary>
     /// （给UI系统使用）
@@ -108,5 +115,14 @@ public class GameController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void StartGame()
+    {
+        gameObject.SetActive(true);
+    }
+    public void EndGame()
+    {
+        gameObject.SetActive(false);
     }
 }

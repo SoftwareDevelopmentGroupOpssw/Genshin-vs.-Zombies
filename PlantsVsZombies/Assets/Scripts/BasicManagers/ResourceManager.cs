@@ -42,10 +42,7 @@ public class ResourceManager : Singleton<ResourceManager>
         ResourceRequest r = Resources.LoadAsync<T>(name);
         yield return r;
 
-        if (r.asset is GameObject)
-            callback(GameObject.Instantiate(r.asset) as T);
-        else
-            callback(r.asset as T);
+        callback(r.asset as T);
     }
 
 }

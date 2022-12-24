@@ -11,14 +11,13 @@ public abstract class Monster : MonoBehaviour
     /// </summary>
     public IMonsterData Data { get; set; }
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+        Data.OnAwake();
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    protected virtual void OnDestroy()
     {
-        
+        Data.OnDestroy();
     }
 }

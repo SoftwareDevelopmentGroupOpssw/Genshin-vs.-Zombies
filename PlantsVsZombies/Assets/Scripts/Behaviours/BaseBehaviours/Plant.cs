@@ -11,14 +11,20 @@ public abstract class Plant : MonoBehaviour
     /// </summary>
     public IPlantData Data { get; set; }
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+        Data.OnAwake();
     }
-
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        
+        if (Data.isReady)
+        {
+            Data.Action();
+        }
+    }
+    protected virtual void OnDestroy()
+    {
+        Data.OnDestroy();
     }
 }
