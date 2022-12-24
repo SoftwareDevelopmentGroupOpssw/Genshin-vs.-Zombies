@@ -53,6 +53,8 @@
      <Compile Include="Assets\Scripts\itemcontrol\shooter.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\MonoManager.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\MonoSingleton.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\Button2.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\Button1.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\MonoController.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\ResourceManager.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\Singleton.cs" />

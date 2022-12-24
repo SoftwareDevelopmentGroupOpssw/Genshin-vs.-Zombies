@@ -5,11 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-<<<<<<< Updated upstream
-      ticks: 638073067943022939
-=======
-      ticks: 638073912892435642
->>>>>>> Stashed changes
+      ticks: 638074450508017409
     m_Hash: 518703011
   m_LockFileStatus:
     m_FilePath: C:/Users/Administrator/Desktop/lab/ProjectZero/PlantsVsZombies/Packages/packages-lock.json
@@ -17,11 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-<<<<<<< Updated upstream
-      ticks: 638073067943022939
-=======
-      ticks: 638073912892435642
->>>>>>> Stashed changes
+      ticks: 638074450508017409
     m_Hash: 3063666937
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
