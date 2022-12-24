@@ -63,6 +63,31 @@
     <Compile Include="Assets\Scripts\BasicManagers\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\BasicManagers\Singleton.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\transvert.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Elements.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\ElementsReaction.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\IElementalDamage.cs" />
+    <Compile Include="Assets\Scripts\Data\Level\ILevelData.cs" />
+    <Compile Include="Assets\Scripts\Data\Level\IAreaBuilder.cs" />
+    <Compile Include="Assets\Scripts\Data\Level\Area.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\IGameobjectData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\IFlyerData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\ICharactorData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\IPlantData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\IMonsterData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\MonsterData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\PlantData.cs" />
+    <Compile Include="Assets\Scripts\Controller\GameController.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlantsController.cs" />
+    <Compile Include="Assets\Scripts\Controller\FlyersController.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Flyer.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Monster.cs" />
+    <Compile Include="Assets\Scripts\Controller\MonstersController.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Plant.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlantsSelected.cs" />
+    <Compile Include="Assets\Scripts\LogicUpdater\PlantsUpdater.cs" />
+    <Compile Include="Assets\Scripts\LogicUpdater\MonsterUpdater.cs" />
+    <Compile Include="Assets\Scripts\LogicUpdater\RefreshModule.cs" />
+    <Compile Include="Assets\Scripts\LogicUpdater\Updater.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
