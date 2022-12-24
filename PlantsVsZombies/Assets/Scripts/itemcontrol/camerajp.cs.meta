@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 77630a10242ca1443a2b102b2475114c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ganyu: {fileID: 5637460183522207694, guid: f581d80cb8c7c864d8430b252914b6f2, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

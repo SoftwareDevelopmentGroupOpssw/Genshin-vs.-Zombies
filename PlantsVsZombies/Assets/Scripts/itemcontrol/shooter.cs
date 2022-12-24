@@ -16,9 +16,9 @@ public class shooter : MonoBehaviour
     void Update()
     {
         tot++;
-        if (tot%500==0)
+        if (tot % 500 == 0)
         {
-            Instantiate(arrow, this.transform.position, this.transform.rotation);
+           Instantiate(arrow, this.transform.position, this.transform.rotation);
         }
     }
 }
