@@ -13,6 +13,7 @@ public class SelectPanel : BasePanel
 
     public GameObject plot;
     public GridLayoutGroup area;
+    public Transform energyLocation;
     private void OnEnergyChanged(int value) => GetControl<Text>("Energy").text = value.ToString();
     protected override void BeforeShow()
     {

@@ -117,6 +117,7 @@ public class GameController : MonoBehaviour
         
     }
 
+    public bool IsGameStarted => gameObject.activeSelf;
     public void StartGame()
     {
         gameObject.SetActive(true);

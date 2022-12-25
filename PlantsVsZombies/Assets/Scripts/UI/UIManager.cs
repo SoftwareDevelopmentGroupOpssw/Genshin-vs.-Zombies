@@ -61,7 +61,7 @@ public class UIManager:Singleton<UIManager>
                 return mid;
 
             case UILayer.Bot:
-                return mid;
+                return bot;
 
             case UILayer.System:
                 return system;

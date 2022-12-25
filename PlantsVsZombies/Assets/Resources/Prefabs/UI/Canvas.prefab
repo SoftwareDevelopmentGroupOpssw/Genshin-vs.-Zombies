@@ -183,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1210909113105259983}
   m_Layer: 0
-  m_Name: Btm
+  m_Name: Bot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
