@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelSerializer : MonoBehaviour
+public class LevelSerializer
 {
-    // Start is called before the first frame update
-    void Start()
+    public static ILevelData GetLevel(string levelName)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //TODO:实现从硬盘中读取所有的关卡信息，自行储存，随后支持用关卡名寻找关卡数据
+        throw new System.NotImplementedException();
     }
 }

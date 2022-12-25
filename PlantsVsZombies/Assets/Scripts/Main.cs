@@ -11,13 +11,10 @@ public class Main : MonoBehaviour
     }
     public void Run()
     {
-        GameController.Instance.StartGame();
-        UIManager.Instance.ShowPanel<SelectPanel>("SelectPanel",UIManager.UILayer.Mid, (panel) => panel.SetPlotCount(8));
-        for(int i = 200;i < 800; i+= 100)
-        {
-            EnergyMonitor.InstantiateEnergy(new Vector2Int(i, 540), EnergyType.Big);
-        }
-        
+        UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
+        //UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
+
+
     }
     // Update is called once per frame
     void Update()

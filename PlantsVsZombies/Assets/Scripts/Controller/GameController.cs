@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// 装载着地图Sprite的游戏对象
     /// </summary>
-    public GameObject Level { get; }
+    public GameObject Level { get; private set; }
     /// <summary>
     /// 所有植物的控制器
     /// </summary>
@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour
     public bool TryPlacePlant(int selectIndex,Vector2Int pixelPos)
     {
         //TODO:实现逻辑判断
-        throw new System.NotImplementedException();
+        return true;
     }
     
     /// <summary>
@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
     public bool TryRemovePlant(Vector2Int pixelPos)
     {
         //TODO:实现逻辑判断
-        throw new System.NotImplementedException();
+        return true;
     }
     
     /// <summary>
@@ -116,12 +116,36 @@ public class GameController : MonoBehaviour
     {
         
     }
-
+    /// <summary>
+    /// 游戏是否正在运行
+    /// </summary>
     public bool IsGameStarted => gameObject.activeSelf;
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
     public void StartGame()
     {
         gameObject.SetActive(true);
+        UIManager.Instance.ShowPanel<LevelBackground>
+            (
+                "LevelBackground",
+                UIManager.UILayer.Top,
+                (panel) =>
+                {
+                    panel.Sprite = LevelData.Sprite;
+                    Level = panel.gameObject;
+                }
+            );
+        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(8));
+
+        for (int i = 200; i < 800; i += 100)
+        {
+            EnergyMonitor.InstantiateEnergy(new Vector2Int(i, 540), EnergyType.Big);
+        }
     }
+    /// <summary>
+    /// 结束游戏
+    /// </summary>
     public void EndGame()
     {
         gameObject.SetActive(false);

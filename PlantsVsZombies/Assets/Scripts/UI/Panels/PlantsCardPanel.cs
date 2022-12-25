@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SelectPanel : BasePanel
+/// <summary>
+/// 植物卡槽界面
+/// </summary>
+public class PlantsCardPanel : BasePanel
 {
     private int selected = -1;// 等于-1说明没有选中植物，为其他值则说明选中档位的植物
 
@@ -30,7 +33,7 @@ public class SelectPanel : BasePanel
     protected override void BeforeHide()
     {
         controller.Energy.OnValueChanged -= OnEnergyChanged;
-        GetControl<Button>("ShovelBtn").onClick.RemoveListener(OnShovelClicked);
+        GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();
 
         SetPlotCount(0);
     }
