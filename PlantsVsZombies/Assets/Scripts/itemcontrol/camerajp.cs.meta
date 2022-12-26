@@ -4,7 +4,9 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - ganyu: {fileID: 5637460183522207694, guid: f581d80cb8c7c864d8430b252914b6f2, type: 3}
+  - ganyu: {fileID: 3128935575239946862, guid: 6063332d67f449d4a86d4542db081aee, type: 3}
+  - obj: {instanceID: 0}
+  - column: {fileID: 5963228137326153899, guid: e4fb6ce785c054146b56662cfb1f24ce, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
