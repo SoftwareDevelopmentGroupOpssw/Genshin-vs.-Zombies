@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class PlantData : IPlantData
 {
+    private List<IEffect> effects = new List<IEffect>();
     public abstract bool isReady { get; }
 
     public abstract int EnergyCost { get; }
@@ -13,6 +14,8 @@ public abstract class PlantData : IPlantData
     public GameObject GameObject { get; set; }
 
     public abstract string ResourcePath { get; }
+
+    public void AddEffect(IEffect effect) => effects.Add(effect);
 
     public abstract void Action();
 

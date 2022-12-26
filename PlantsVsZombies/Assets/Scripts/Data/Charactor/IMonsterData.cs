@@ -10,7 +10,12 @@ public interface IMonsterData:ICharactorData
     /// <summary>
     /// 韧性值
     /// </summary>
-    public int Strength { get; set; }
+    public int Strength { get; }
+
+    /// <summary>
+    /// 移动速度
+    /// </summary>
+    public int Speed { get;}
     /// <summary>
     /// 获取对某种元素的抗性
     /// </summary>

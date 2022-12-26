@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -9,16 +10,23 @@ public class Main : MonoBehaviour
     {
         Run();
     }
+    Monster monster;
     public void Run()
     {
-        UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
-        //UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
+        //UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
+        //UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel")
 
-
+        //GameController.Instance.StartGame();
+        GameObject test = new GameObject("Monster");
+        monster = test.AddComponent<TestMonster>();
+        monster.Data = new TestMonsterData();
+        monster.Data.ReceiveDamage(new SystemDamage(0, Elements.Ice, true));
+        monster.Data.ReceiveDamage(new SystemDamage(0, Elements.Water, true));
     }
     // Update is called once per frame
     void Update()
     {
-
+        monster.Data.Action();
+        Debug.Log(monster.Data.ToString());
     }
 }

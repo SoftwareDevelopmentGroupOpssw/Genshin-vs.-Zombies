@@ -15,8 +15,4 @@ public interface IPlantData:ICharactorData
     /// 植物的能量花费
     /// </summary>
     public int EnergyCost { get; }
-    /// <summary>
-    /// 植物的技能操作
-    /// </summary>
-    public void Action();
 }

@@ -5,8 +5,9 @@ using UnityEngine;
 /// <summary>
 /// 元素反应基类
 /// </summary>
-public abstract class ElementsReaction : MonoBehaviour
+public abstract class ElementsReaction
 {
+    protected static IGameobjectData system = SystemObject.Instance;
     /// <summary>
     /// 获取一个元素反应
     /// </summary>
@@ -17,7 +18,10 @@ public abstract class ElementsReaction : MonoBehaviour
     {
         //TODO:对于每种可行的元素反应，返回一个对应的元素反应出去
         //这个元素反应显然是需要继承ElementsReaction类并重写Action方法
-        throw new System.NotImplementedException();
+        if (before == Elements.Ice && after == Elements.Water || before == Elements.Water && after == Elements.Ice)
+            return new Frozen();
+        else
+            return null;
     }
     /// <summary>
     /// 元素反应释放
