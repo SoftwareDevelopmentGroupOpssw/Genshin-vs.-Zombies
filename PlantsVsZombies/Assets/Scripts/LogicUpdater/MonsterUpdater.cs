@@ -15,6 +15,10 @@ public class MonstersUpdater
     /// </summary>
     public void Update()
     {
-        controller.Foreach((monster) => monster.Data.Action());
+        controller.Foreach((monster) =>
+        {
+            if (monster.Data.CanAction)
+                monster.Data.Action();
+        });
     }
 }

@@ -15,9 +15,9 @@ public class SystemDamage : IElementalDamage
         CanAddElement = canAddElement;
     }
 
-    public int AtkDmg {get; private set;}
+    public int AtkDmg {get; set;}
 
-    public Elements ElementType { get; private set; }
+    public Elements ElementType { get; set; }
 
-    public bool CanAddElement { get; private set; }
+    public bool CanAddElement { get; set; }
 }

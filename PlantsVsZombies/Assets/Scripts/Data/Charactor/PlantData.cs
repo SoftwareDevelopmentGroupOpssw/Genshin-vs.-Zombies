@@ -15,6 +15,8 @@ public abstract class PlantData : IPlantData
 
     public abstract string ResourcePath { get; }
 
+    public bool CanAction { get ; private set;}
+
     public void AddEffect(IEffect effect) => effects.Add(effect);
 
     public abstract void Action();

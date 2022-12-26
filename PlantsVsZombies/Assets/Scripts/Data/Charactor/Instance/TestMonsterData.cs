@@ -11,6 +11,7 @@ public class TestMonsterData : MonsterData
         speed = 50;
         atkPower = 100;
         SetResistance(0.1f, Elements.Ice);
+        SetResistance(0, Elements.Fire);
     }
 
     public override string ResourcePath => throw new System.NotImplementedException();

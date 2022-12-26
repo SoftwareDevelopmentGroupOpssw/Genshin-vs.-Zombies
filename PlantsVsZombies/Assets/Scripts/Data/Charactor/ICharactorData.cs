@@ -18,4 +18,8 @@ public interface ICharactorData:IGameobjectData
     /// 帧更新时调用的操作
     /// </summary>
     public void Action();
+    /// <summary>
+    /// 是否调用更新
+    /// </summary>
+    public bool CanAction { get; }
 }

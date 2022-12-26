@@ -9,13 +9,13 @@ public interface IElementalDamage
     /// <summary>
     /// 伤害大小
     /// </summary>
-    public int AtkDmg { get; }
+    public int AtkDmg { get; set; }
     /// <summary>
     /// 伤害类型
     /// </summary>
-    public Elements ElementType { get; }
+    public Elements ElementType { get; set; }
     /// <summary>
     /// 此次伤害能否施加元素
     /// </summary>
-    public bool CanAddElement { get; }
+    public bool CanAddElement { get; set; }
 }

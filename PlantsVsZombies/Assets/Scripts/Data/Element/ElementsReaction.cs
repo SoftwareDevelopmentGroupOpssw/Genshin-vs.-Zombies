@@ -18,11 +18,25 @@ public abstract class ElementsReaction
     {
         //TODO:对于每种可行的元素反应，返回一个对应的元素反应出去
         //这个元素反应显然是需要继承ElementsReaction类并重写Action方法
-        if (before == Elements.Ice && after == Elements.Water || before == Elements.Water && after == Elements.Ice)
+        if
+            (before == Elements.Ice && after == Elements.Water ||
+            before == Elements.Water && after == Elements.Ice)
             return new Frozen();
+        else if
+            (before == Elements.Water && after == Elements.Fire ||
+            before == Elements.Fire && after == Elements.Water)
+            return new Vaporize();
+        else if
+            (before == Elements.Ice && after == Elements.Fire ||
+            before == Elements.Fire && after == Elements.Ice)
+            return new Melt();
         else
             return null;
     }
+    /// <summary>
+    /// 元素反应名字
+    /// </summary>
+    public abstract string Name { get; }
     /// <summary>
     /// 元素反应释放
     /// </summary>

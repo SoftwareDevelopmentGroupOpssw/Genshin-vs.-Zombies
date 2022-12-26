@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -22,6 +23,11 @@ public class Main : MonoBehaviour
         monster.Data = new TestMonsterData();
         monster.Data.ReceiveDamage(new SystemDamage(0, Elements.Ice, true));
         monster.Data.ReceiveDamage(new SystemDamage(0, Elements.Water, true));
+        Task.Run(() =>
+        {
+            Thread.Sleep(1000);
+            monster.Data.ReceiveDamage(new SystemDamage(10, Elements.None, false));
+        });
     }
     // Update is called once per frame
     void Update()
