@@ -6,10 +6,11 @@ public class camerajp : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject ganyu,obj,column,panel,lisha,ying,ningguang,sanbing,kelai,yanfei,naxida,mona,zhongli,stt;
-    public int fun=0;
+    public int fun = 0;
   //  public GameObject a[30];
     bool flag = true;
     public static bool gamestart = false;
+    public static float x = 4;
     int tot = 0,f=-20000;
     void Start()
     {
@@ -84,5 +85,6 @@ public class camerajp : MonoBehaviour
         {
             Instantiate(panel, new Vector3(x-2,y+4,z), this.transform.rotation);
         }
+        //生成物品栏
     }
 }
