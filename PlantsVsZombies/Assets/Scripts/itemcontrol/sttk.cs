@@ -22,6 +22,7 @@ public class sttk : MonoBehaviour
         fun = 1;
         Destroystt();
     }
+    //如果按钮被触发，那么销毁
 
     private void Destroystt()
     {

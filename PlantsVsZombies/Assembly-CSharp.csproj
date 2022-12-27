@@ -67,6 +67,7 @@
      <Compile Include="Assets\Scripts\Data\Charactor\PlantData.cs" />
      <Compile Include="Assets\Scripts\itemcontrol\sttk.cs" />
      <Compile Include="Assets\Scripts\Main.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\Button4.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\IFlyerData.cs" />
      <Compile Include="Assets\Scripts\Data\Level\IAreaBuilder.cs" />
      <Compile Include="Assets\Scripts\itemcontrol\shooter.cs" />
@@ -87,6 +88,7 @@
      <Compile Include="Assets\Scripts\BasicManagers\MonoController.cs" />
      <Compile Include="Assets\Scripts\Data\Level\Area.cs" />
      <Compile Include="Assets\Scripts\Controller\MonstersController.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\Button5.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\IGameobjectData.cs" />
      <Compile Include="Assets\Scripts\itemcontrol\GameManager.cs" />
      <Compile Include="Assets\Scripts\itemcontrol\Button3.cs" />

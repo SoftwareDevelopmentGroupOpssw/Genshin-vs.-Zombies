@@ -76,11 +76,13 @@ public class camerajp : MonoBehaviour
             gamestart = true;
             flag = false;
         }
+
        if (tot<f+360)
         { 
             this.transform.position -= this.transform.right * 5 * Time.deltaTime;
         }
         //选择完毕后屏幕向左平移
+
         if (tot==f+500)
         {
             Instantiate(panel, new Vector3(x-2,y+4,z), this.transform.rotation);

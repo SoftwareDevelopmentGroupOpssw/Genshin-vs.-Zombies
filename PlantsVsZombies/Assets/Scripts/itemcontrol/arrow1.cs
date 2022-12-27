@@ -16,4 +16,5 @@ public class arrow1 : MonoBehaviour
         this.transform.position += this.transform.right * 5 * Time.deltaTime;
         //if (this.transform.position.x >= 200) Destroy(this.gameObject);
     }
+    //从自己生成后，每一帧向右运动一定的距离
 }

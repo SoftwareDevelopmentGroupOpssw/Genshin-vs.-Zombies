@@ -24,10 +24,14 @@ public class shooter : MonoBehaviour
         {
            Instantiate(arrow, this.transform.position, this.transform.rotation);
         }
+        //每隔一段时间射出一支箭
+        //起点是自身的坐标
+
         //Destroy(this.gameObject);
         if (gamestart)
         {
             Destroy(this.gameObject);
         }
+        //摧毁自己
     }
 }

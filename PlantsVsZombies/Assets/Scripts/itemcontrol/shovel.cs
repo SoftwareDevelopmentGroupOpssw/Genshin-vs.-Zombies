@@ -17,4 +17,6 @@ public class shovel : MonoBehaviour
         gamestart = camerajp.gamestart;
         if (gamestart) Destroy(this.gameObject);
     }
+    //从camerajp里调用的static变量
+    //如果游戏开始，那么生成该物品
 }
