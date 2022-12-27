@@ -47,6 +47,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\itemcontrol\role.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\ICharactorData.cs" />
      <Compile Include="Assets\Scripts\itemcontrol\arrow1.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Elements.cs" />

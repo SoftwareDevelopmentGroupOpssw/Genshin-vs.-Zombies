@@ -358,6 +358,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1741486704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1741486705}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1741486705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741486704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.223153, y: -0.15124892, z: -10.505644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1925598446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -471,9 +501,53 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1249113090}
     - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: stt
+      value: 
+      objectReference: {fileID: 2613619175914580714, guid: 141765849b03417498e9e951ab783e86, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: mona
+      value: 
+      objectReference: {fileID: 1725735984070174244, guid: cf39db82fd141fb46be4419babe7bc5b, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: ying
+      value: 
+      objectReference: {fileID: 424295071739904192, guid: 0fe69f1960cb1ee4c80d1ba6dfb9beb2, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: ganyu
+      value: 
+      objectReference: {fileID: 1753676579661228333, guid: 96511d308dc18e4418c1c75f2719d48a, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: kelai
+      value: 
+      objectReference: {fileID: 265163508141624900, guid: bbedc9d0245b2274da249d64a5366f72, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: lisha
+      value: 
+      objectReference: {fileID: 4841179958492225076, guid: a7ecc4b704dc77a429e7f227fb22232e, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
       propertyPath: panel
       value: 
       objectReference: {fileID: 3908587294389166258, guid: 0e1e875750921774183cf5d340f8e970, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: naxida
+      value: 
+      objectReference: {fileID: 1011535989643855244, guid: 7ff156e731897354782f2c912ed9d0c9, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: yanfei
+      value: 
+      objectReference: {fileID: 3881304687749322315, guid: 504a247acfb9d87499d1eb003f8c0198, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: sanbing
+      value: 
+      objectReference: {fileID: 6424822377704891500, guid: 2f9293881e7b3ae48b07cb2423deb536, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: zhongli
+      value: 
+      objectReference: {fileID: 3404906237462931863, guid: a81246be8f01a04438fb296ae3fc48ab, type: 3}
+    - target: {fileID: 5950719056114236529, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
+      propertyPath: ningguang
+      value: 
+      objectReference: {fileID: 1428362340214152086, guid: 0a584249b6b33df44a67677b232566b9, type: 3}
     - target: {fileID: 5950719056114236541, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
       propertyPath: m_Name
       value: MainCamera
