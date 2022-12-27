@@ -48,6 +48,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public EnergyMonitor Energy { get; private set; } = new EnergyMonitor();
 
+    private Updater updater;
 
     /// <summary>
     /// （给UI系统使用）
@@ -105,16 +106,13 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        plantsController = new PlantsController(LevelData);
-        flyerController = new FlyersController();
-        monsterController = new MonstersController(LevelData);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        updater.Update();
     }
     /// <summary>
     /// 游戏是否正在运行
@@ -126,6 +124,13 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
         gameObject.SetActive(true);
+        
+        plantsController = new PlantsController(LevelData);
+        flyerController = new FlyersController();
+        monsterController = new MonstersController(LevelData);
+        
+        updater = new Updater(plantsController, monsterController);
+        
         UIManager.Instance.ShowPanel<LevelBackground>
             (
                 "LevelBackground",

@@ -7,6 +7,16 @@ using UnityEngine;
 public interface IGameobjectData
 {
     /// <summary>
+    /// 向此对象身上添加效果
+    /// </summary>
+    /// <param name="effect">效果</param>
+    public void AddEffect(IEffect effect);
+    /// <summary>
+    /// 向此对象身上移除效果
+    /// </summary>
+    /// <param name="effect">效果</param>
+    public void RemoveEffect(IEffect effect);
+    /// <summary>
     /// 获取/设置 当前data在场景中依附的游戏物体对象
     /// </summary>
     public GameObject GameObject { get; set; }

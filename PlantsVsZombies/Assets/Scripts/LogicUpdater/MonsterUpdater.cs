@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 魔物逻辑更新器
+/// </summary>
 public class MonstersUpdater
 {
-    private MonstersUpdater controller;
-    public MonstersUpdater(MonstersUpdater controller) => this.controller = controller;
+    private MonstersController controller;
+    public MonstersUpdater(MonstersController controller) => this.controller = controller;
+
     /// <summary>
-    /// 更新场景上所有的植物操作
+    /// 帧更新
     /// </summary>
     public void Update()
     {
-        //TODO:实现更新场景上所有的植物
+        controller.Foreach((monster) =>
+        {
+            if (monster.Data.CanAction)
+                monster.Data.Action();
+        });
     }
 }

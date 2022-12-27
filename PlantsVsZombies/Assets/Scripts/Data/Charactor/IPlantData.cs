@@ -16,7 +16,7 @@ public interface IPlantData:ICharactorData
     /// </summary>
     public int EnergyCost { get; }
     /// <summary>
-    /// 植物的技能操作
+    /// 卡槽图片
     /// </summary>
-    public void Action();
+    public Sprite CardSprite { get; }
 }
