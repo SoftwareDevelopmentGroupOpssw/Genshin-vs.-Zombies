@@ -12,7 +12,7 @@ public class SystemObject : Singleton<SystemObject>, IGameobjectData
 
     public GameObject GameObject { get => system; set { } }
 
-    public string ResourcePath => "";
+    public GameObject OriginalReference => system;
 
     public void AddEffect(IEffect effect)
     {

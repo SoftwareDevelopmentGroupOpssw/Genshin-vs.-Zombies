@@ -71,15 +71,13 @@ public abstract class MonsterData : IMonsterData
     public int AtkPower { get => atkPower; set => atkPower = value; }
 
     public GameObject GameObject { get; set; }
-    public abstract string ResourcePath { get; }
+    public abstract GameObject OriginalReference { get; }
 
     public float GetResistance(Elements element) => resistances[element];
     public void SetResistance(float value, Elements element) => resistances[element] = value;
 
     public void AddEffect(IEffect effect) => effects.Add(effect);
     public void RemoveEffect(IEffect effect) => removeList.Add(effect);
-
-    public abstract IGameobjectData Instantiate();
 
     public virtual void OnAwake() { }
 

@@ -19,10 +19,14 @@ public class GameController : MonoBehaviour
     /// 关卡信息
     /// </summary>
     public ILevelData LevelData { get; set; }//当选择关卡完成时，设置关卡
+
+    [SerializeField]
+    private GameObject level;
     /// <summary>
     /// 装载着地图Sprite的游戏对象
     /// </summary>
-    public GameObject Level { get; private set; }
+    public GameObject Level { get => level; }
+
     /// <summary>
     /// 所有植物的控制器
     /// </summary>
@@ -44,10 +48,21 @@ public class GameController : MonoBehaviour
     private List<PlantsSelected> selected = new List<PlantsSelected>();
 
     /// <summary>
+    /// 获取指定槽位的卡牌槽相关信息
+    /// </summary>
+    /// <param name="index">下标</param>
+    /// <returns></returns>
+    public PlantsSelected GetSelectPlant(int index) => selected[index];
+
+    
+    /// <summary>
     /// 能量管理模块
     /// </summary>
     public EnergyMonitor Energy { get; private set; } = new EnergyMonitor();
 
+    /// <summary>
+    /// 更新模块，负责场景上的帧更新
+    /// </summary>
     private Updater updater;
 
     /// <summary>
@@ -59,8 +74,10 @@ public class GameController : MonoBehaviour
     /// <returns>放置结果成功与否</returns>
     public bool TryPlacePlant(int selectIndex,Vector2Int pixelPos)
     {
-        //TODO:实现逻辑判断
-        return true;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector2(pixelPos.x,pixelPos.y));
+        Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
+        Plant plant;
+        return plantsController.TryAddPlant(selected[selectIndex].Data, gridPos, out plant);
     }
     
     /// <summary>
@@ -124,24 +141,19 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
         gameObject.SetActive(true);
+
+        selected.Add(new PlantsSelected(PlantSerializer.Instance.GetPlantData("Mona")));
         
         plantsController = new PlantsController(LevelData);
         flyerController = new FlyersController();
         monsterController = new MonstersController(LevelData);
         
         updater = new Updater(plantsController, monsterController);
-        
-        UIManager.Instance.ShowPanel<LevelBackground>
-            (
-                "LevelBackground",
-                UIManager.UILayer.Top,
-                (panel) =>
-                {
-                    panel.Sprite = LevelData.Sprite;
-                    Level = panel.gameObject;
-                }
-            );
-        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(8));
+
+        level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
+
+        //展示卡槽图片
+        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
 
         for (int i = 200; i < 800; i += 100)
         {

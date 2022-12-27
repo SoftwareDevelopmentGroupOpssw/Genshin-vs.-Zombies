@@ -8,22 +8,37 @@ using UnityEngine.Events;
 /// </summary>
 public class PlantsController
 {
+    private GameObject PlantsFatherObject = new GameObject("Plants");
     private ILevelData levelData;
+    private Plant[,] plants;
     public PlantsController(ILevelData level)
     {
         this.levelData = level;
+        plants = new Plant[levelData.Row, levelData.Col];
     }
     /// <summary>
-    /// 添加植物
+    /// 强制添加植物
     /// </summary>
     /// <param name="data">植物信息</param>
     /// <param name="gridPos">植物添加的格子位置</param>
     /// <returns>植物对象</returns>
     public Plant AddPlant(IPlantData data,Vector2Int gridPos)
     {
-        //TODO:用给定的数据在格子坐标处添加一个植物对象， 并储存起来
-        throw new System.NotImplementedException();
+        GameObject newObj = GameObject.Instantiate(data.OriginalReference,PlantsFatherObject.transform);
+        Plant plant = newObj.GetComponent<Plant>();
+        newObj.transform.position = levelData.GridToWorld(gridPos, GridPosition.Middle, GameController.Instance.Level.transform.position);
+        data.GameObject = newObj;
+        return plant;
     }
+    public bool TryAddPlant(IPlantData data,Vector2Int gridPos, out Plant plant)
+    {
+        GameObject newObj = GameObject.Instantiate(data.OriginalReference,PlantsFatherObject.transform);
+        plant = newObj.GetComponent<Plant>();
+        newObj.transform.position = levelData.GridToWorld(gridPos, GridPosition.Middle, GameController.Instance.Level.transform.position);
+        data.GameObject = newObj;
+        return true;
+    }
+
 
     /// <summary>
     /// 将植物从地图中删除

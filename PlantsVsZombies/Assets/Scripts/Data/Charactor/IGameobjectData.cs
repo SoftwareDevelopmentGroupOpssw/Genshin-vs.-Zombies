@@ -21,9 +21,9 @@ public interface IGameobjectData
     /// </summary>
     public GameObject GameObject { get; set; }
     /// <summary>
-    /// 游戏物体的资源路径，以便使用Resouces.Load方法加载
+    /// 游戏物体的原始预制体，使用它进行实例化操作
     /// </summary>
-    public string ResourcePath { get; }
+    public GameObject OriginalReference { get; }
     /// <summary>
     /// 当游戏物体出现时调用
     /// </summary>
@@ -32,8 +32,4 @@ public interface IGameobjectData
     /// 当游戏物体死亡时调用
     /// </summary>
     public void OnDestroy();
-    /// <summary>
-    /// 复制一份与当前数据相同类型，所有数据为默认值的Data
-    /// </summary>
-    public IGameobjectData Instantiate();
 }

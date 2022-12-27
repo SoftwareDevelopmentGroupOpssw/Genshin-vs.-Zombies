@@ -18,13 +18,7 @@ public class TestMonsterData : MonsterData
         SetResistance(0, Elements.Fire);
     }
 
-    public override string ResourcePath => throw new System.NotImplementedException();
-
-
-    public override IGameobjectData Instantiate()
-    {
-        return new TestMonsterData();
-    }
+    public override GameObject OriginalReference => throw new System.NotImplementedException();
 
     public override string ToString()
     {

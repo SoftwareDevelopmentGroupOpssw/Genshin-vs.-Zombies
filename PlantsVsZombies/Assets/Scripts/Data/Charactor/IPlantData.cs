@@ -19,4 +19,8 @@ public interface IPlantData:ICharactorData
     /// ø®≤€Õº∆¨
     /// </summary>
     public Sprite CardSprite { get; }
+    /// <summary>
+    /// ◊‹¿‰»¥ ±º‰
+    /// </summary>
+    public int CoolTime { get; }
 }

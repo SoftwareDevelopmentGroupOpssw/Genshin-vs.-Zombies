@@ -13,17 +13,16 @@ public abstract class PlantData : IPlantData
     public abstract int AtkPower { get; set; }
     public GameObject GameObject { get; set; }
 
-    public abstract string ResourcePath { get; }
+    public abstract GameObject OriginalReference { get; }
 
     public bool CanAction { get; set; }
     public abstract Sprite CardSprite { get; }
+    public abstract int CoolTime { get; }
 
     public void AddEffect(IEffect effect) => effects.Add(effect);
     public void RemoveEffect(IEffect effect) => effects.Remove(effect);
 
     public abstract void Action();
-
-    public abstract IGameobjectData Instantiate();
 
     public abstract void OnAwake();
 

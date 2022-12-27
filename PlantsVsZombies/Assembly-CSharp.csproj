@@ -53,18 +53,23 @@
     <UnityVersion>2020.3.26f1c1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Data\Element\ElementEvent.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\ICharactorData.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\arrow1.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\ElectroCharged.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Burning.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Elements.cs" />
     <Compile Include="Assets\Scripts\LogicUpdater\Updater.cs" />
     <Compile Include="Assets\Scripts\IO\FlyerSerializer.cs" />
     <Compile Include="Assets\Scripts\Data\Effect\Handler\IEffectHandler.cs" />
     <Compile Include="Assets\Scripts\Data\Level\ILevelData.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Overloaded.cs" />
     <Compile Include="Assets\Scripts\Tool\CountDown.cs" />
     <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Flyer.cs" />
     <Compile Include="Assets\Scripts\IO\MonsterSerializer.cs" />
     <Compile Include="Assets\Scripts\UI\BasePanel.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\ElementalObject.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Quicken.cs" />
     <Compile Include="Assets\Scripts\Data\Element\SystemObject.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\camerajp.cs" />
     <Compile Include="Assets\Scripts\LogicUpdater\RefreshModule.cs" />
@@ -72,21 +77,26 @@
     <Compile Include="Assets\Scripts\Data\Element\SystemDamage.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\IPlantData.cs" />
+    <Compile Include="Assets\Scripts\Data\Effect\ResistanceEffect.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\PlantData.cs" />
     <Compile Include="Assets\Scripts\Main.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\Frozen.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Bloom.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\IFlyerData.cs" />
     <Compile Include="Assets\Scripts\Data\Level\IAreaBuilder.cs" />
+    <Compile Include="Assets\Scripts\Data\Effect\StrengthEffect.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Crystallize.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\shooter.cs" />
     <Compile Include="Assets\Scripts\Data\Effect\SpeedEffect.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\Melt.cs" />
     <Compile Include="Assets\Scripts\Controller\FlyersController.cs" />
     <Compile Include="Assets\Scripts\BasicManagers\MonoManager.cs" />
     <Compile Include="Assets\Scripts\Controller\GameController.cs" />
-    <Compile Include="Assets\Scripts\Data\Level\TestLevel.cs" />
+    <Compile Include="Assets\Scripts\Data\Level\Level1.cs" />
     <Compile Include="Assets\Scripts\Data\Effect\StunEffect.cs" />
     <Compile Include="Assets\Scripts\BasicManagers\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\IO\PlantSerializer.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\Swirl.cs" />
     <Compile Include="Assets\Scripts\IO\Serializer.cs" />
     <Compile Include="Assets\Scripts\UI\Panels\PlantsCardPanel.cs" />
     <Compile Include="Assets\Scripts\Controller\PlantsSelected.cs" />
@@ -102,8 +112,9 @@
     <Compile Include="Assets\Scripts\Controller\MonstersController.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\IGameobjectData.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\Button3.cs" />
-    <Compile Include="Assets\Scripts\ScriptableObject\LevelSprites.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObject\LevelDatabase.cs" />
     <Compile Include="Assets\Scripts\LogicUpdater\MonsterUpdater.cs" />
+    <Compile Include="Assets\Scripts\Data\Element\Reaction\SuperConduct.cs" />
     <Compile Include="Assets\Scripts\UI\Panels\LevelsPanel.cs" />
     <Compile Include="Assets\Scripts\LogicUpdater\PlantsUpdater.cs" />
     <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Plant.cs" />
@@ -114,24 +125,17 @@
     <Compile Include="Assets\Scripts\BasicManagers\Singleton.cs" />
     <Compile Include="Assets\Scripts\IO\LevelSerializer.cs" />
     <Compile Include="Assets\Scripts\Controller\EnergyMonitor.cs" />
+    <Compile Include="Assets\Scripts\Data\Effect\Handler\CommonMonsterHandler.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\Vaporize.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\MonsterData.cs" />
     <Compile Include="Assets\Scripts\Data\Element\ElementsReaction.cs" />
     <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Monster.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\transvert.cs" />
     <Compile Include="Assets\Scripts\Data\Element\IElementalDamage.cs" />
-    <Compile Include="Assets\Scripts\Data\Effect\Handler\CommonMonsterHandler.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\ElementEvent.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\ElementalObject.cs" />
-    <Compile Include="Assets\Scripts\Data\Effect\StrengthEffect.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Overloaded.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\SuperConduct.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Burning.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Quicken.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Bloom.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Swirl.cs" />
-    <Compile Include="Assets\Scripts\Data\Element\Reaction\Crystallize.cs" />
-    <Compile Include="Assets\Scripts\Data\Effect\ResistanceEffect.cs" />
+    <Compile Include="Assets\Scripts\TestBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Data\Level\Level.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObject\PlantDatabase.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonaData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
