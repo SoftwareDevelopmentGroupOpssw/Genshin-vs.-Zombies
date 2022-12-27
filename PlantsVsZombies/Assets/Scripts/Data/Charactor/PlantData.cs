@@ -15,9 +15,11 @@ public abstract class PlantData : IPlantData
 
     public abstract string ResourcePath { get; }
 
-    public bool CanAction { get ; private set;}
+    public bool CanAction { get; set; }
+    public abstract Sprite CardSprite { get; }
 
     public void AddEffect(IEffect effect) => effects.Add(effect);
+    public void RemoveEffect(IEffect effect) => effects.Remove(effect);
 
     public abstract void Action();
 

@@ -22,7 +22,7 @@ public abstract class CountDownEffect: IEffect
 
     public abstract string EffectName { get; }
 
-    public EffectState State { get; private set; }
+    public EffectState State { get; protected set; }
 
     /// <summary>
     /// 开始倒计时
@@ -38,12 +38,35 @@ public abstract class CountDownEffect: IEffect
         State = EffectState.Processing;
     }
     /// <summary>
-    /// 结束倒计时
+    /// 结束效果，State转为End
     /// </summary>
     protected void End()
     {
-        State = EffectState.End;
+        if(State != EffectState.Error)//不出错，才能够结束
+            State = EffectState.End;
     }
+    /// <summary>
+    /// 中途出错，标识为出错
+    /// </summary>
+    protected void Error()
+    {
+        State = EffectState.Error;
+    }
+    /// <summary>
+    /// 子类重写函数：启动效果时调用
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void EnableEffect(IGameobjectData target) { }
+    /// <summary>
+    /// 子类重写函数：移除效果时调用
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void DisableEffect(IGameobjectData target) { }
+    /// <summary>
+    /// 子类重写函数：更新效果时调用
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void UpdateEffect(IGameobjectData target) { }
 
     public abstract IGameobjectData Caster { get; }
 }

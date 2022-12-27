@@ -16,6 +16,10 @@ public enum EffectState
     /// 效果结束，等待被删除
     /// </summary>
     End,
+    /// <summary>
+    /// 效果在执行中出错
+    /// </summary>
+    Error,
 }
 public interface IEffect
 {
@@ -32,4 +36,20 @@ public interface IEffect
     /// 施加者
     /// </summary>
     public IGameobjectData Caster { get; }
+
+    /// <summary>
+    /// 执行效果
+    /// </summary>
+    /// <param name="target">效果对象</param>
+    public void EnableEffect(IGameobjectData target);
+    /// <summary>
+    /// 移除效果
+    /// </summary>
+    /// <param name="target">效果对象</param>
+    public void DisableEffect(IGameobjectData target);
+    /// <summary>
+    /// 帧更新调用函数
+    /// </summary>
+    /// <param name="target">对象</param>
+    public void UpdateEffect(IGameobjectData target);
 }

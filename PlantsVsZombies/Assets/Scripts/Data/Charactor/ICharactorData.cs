@@ -9,11 +9,11 @@ public interface ICharactorData:IGameobjectData
     /// <summary>
     /// 角色当前生命值
     /// </summary>
-    public int Health { get;}
+    public int Health { get; set; }
     /// <summary>
     /// 角色攻击力
     /// </summary>
-    public int AtkPower { get; }
+    public int AtkPower { get; set; }
     /// <summary>
     /// 帧更新时调用的操作
     /// </summary>
@@ -21,5 +21,5 @@ public interface ICharactorData:IGameobjectData
     /// <summary>
     /// 是否调用更新
     /// </summary>
-    public bool CanAction { get; }
+    public bool CanAction { get; set; }
 }

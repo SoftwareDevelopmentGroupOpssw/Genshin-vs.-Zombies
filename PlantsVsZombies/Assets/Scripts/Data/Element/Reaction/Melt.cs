@@ -5,7 +5,8 @@ using UnityEngine;
 public class Melt : ElementsReaction
 {
     public const float DAMAGE_INCREASE = 1.75f;
-    public override string Name => "Melt";
+    public override string ReactionName => Name;
+    public static string Name => "Melt";
 
     public override void Action(IElementalDamage damage, IMonsterData target)
     {

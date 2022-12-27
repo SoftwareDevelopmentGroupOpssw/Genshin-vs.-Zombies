@@ -41,19 +41,31 @@ public class SpeedEffect : CountDownEffect
     /// <summary>
     /// 增加/减少移速
     /// </summary>
-    /// <param name="speed">改变的移速数值引用</param>
-    public void EnableEffect(ref int speed)
+    /// <param name="target">改变移速的对象</param>
+    /// <exception cref="System.NotSupportedException">尝试向一个非怪物单位添加移速效果</exception>
+    public override void EnableEffect(IGameobjectData target)
     {
-        deltaSpeed = System.Convert.ToInt32(speed * percent);
-        speed += deltaSpeed;
-        Start();
+        if (!(target is IMonsterData))//对象不是一个怪物
+        {
+            Error();
+            throw new System.NotSupportedException("The speed effect can only be added on monsters.");//报错：只有怪物身上能添加移速效果
+        }
+        else
+        {
+            IMonsterData monster = target as IMonsterData;
+            deltaSpeed = System.Convert.ToInt32(monster.Speed * percent);
+            monster.Speed += deltaSpeed;
+            Start();
+        }
     }
     /// <summary>
     /// 将改变的移速值返还
     /// </summary>
-    /// <param name="speed">改变的移速数值的引用</param>
-    public void DisableEffect(ref int speed)
+    /// <param name="target">改变移速的对象</param>
+    public override void DisableEffect(IGameobjectData target)
     {
-        speed -= deltaSpeed;
+        //能被添加,说明一定是怪物
+        IMonsterData monster = target as IMonsterData;
+        monster.Speed -= deltaSpeed;
     }
 }

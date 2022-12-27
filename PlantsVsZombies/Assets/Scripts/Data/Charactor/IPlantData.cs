@@ -15,4 +15,8 @@ public interface IPlantData:ICharactorData
     /// 植物的能量花费
     /// </summary>
     public int EnergyCost { get; }
+    /// <summary>
+    /// 卡槽图片
+    /// </summary>
+    public Sprite CardSprite { get; }
 }

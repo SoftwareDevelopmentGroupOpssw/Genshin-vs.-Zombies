@@ -8,7 +8,8 @@ using UnityEngine;
 public class Vaporize : ElementsReaction
 {
     public const float DAMAGE_INCREASE = 1.75f;
-    public override string Name => "Vaporize";
+    public override string ReactionName => Name;
+    public static string Name => "Vaporize";
 
     public override void Action(IElementalDamage damage, IMonsterData target)
     {

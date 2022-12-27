@@ -24,8 +24,18 @@ public class StunEffect : CountDownEffect
     /// <summary>
     /// Æô¶¯Ñ£ÔÎÐ§¹û
     /// </summary>
-    public void EnableEffect()
+    public override void EnableEffect(IGameobjectData target)
     {
         Start();
+    }
+    public override void UpdateEffect(IGameobjectData target)
+    {
+        if(!(target is ICharactorData))
+        {
+            State = EffectState.Error;
+            throw new System.NotSupportedException("Stun effect can only be added to charactors.");
+        }
+        ICharactorData data = target as ICharactorData;
+        data.CanAction = false;
     }
 }
