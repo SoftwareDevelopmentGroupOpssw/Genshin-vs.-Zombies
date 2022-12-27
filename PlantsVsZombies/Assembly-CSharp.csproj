@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\LogicUpdater\RefreshModule.cs" />
      <Compile Include="Assets\Scripts\Controller\PlantsController.cs" />
      <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\shovel.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\IPlantData.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\PlantData.cs" />
      <Compile Include="Assets\Scripts\Main.cs" />
