@@ -12,26 +12,16 @@ public class SystemObject : Singleton<SystemObject>, IGameobjectData
 
     public GameObject GameObject { get => system; set { } }
 
-    public string ResourcePath => "";
+    public GameObject OriginalReference => system;
 
     public void AddEffect(IEffect effect)
     {
         
     }
 
-    public IGameobjectData Instantiate()
+    public List<IEffect> GetEffects()
     {
-        return this;
-    }
-
-    public void OnAwake()
-    {
-        
-    }
-
-    public void OnDestroy()
-    {
-        
+        return null;
     }
 
     public void RemoveEffect(IEffect effect)

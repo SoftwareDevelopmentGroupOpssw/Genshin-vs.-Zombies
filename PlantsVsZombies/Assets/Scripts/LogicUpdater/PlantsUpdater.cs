@@ -15,6 +15,9 @@ public class PlantsUpdater
     /// </summary>
     public void Update()
     {
-        controller.Foreach((plant) => plant.Data.Action());
+        controller.Foreach((plant) =>
+        {
+            
+        });
     }
 }

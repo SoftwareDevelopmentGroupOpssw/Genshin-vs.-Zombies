@@ -39,20 +39,20 @@ public interface ILevelData
     /// </summary>
     public Queue<IMonsterData> MonsterList { get; }
     /// <summary>
-    /// 将一个像素坐标转换为地图的格子坐标
+    /// 将一个世界坐标转换为地图的格子坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴
-    /// 像素坐标以左下角为原点，向右为x轴，向上为y轴
     /// </summary>
-    /// <param name="pixelPos">像素坐标</param>
+    /// <param name="worldPos">世界坐标</param>
+    /// <param name="levelPos">现在关卡背景所处的位置</param>
     /// <returns>格子坐标，如果在格子之外则返回(-1,-1)</returns>
-    public Vector2Int PixelToGrid(Vector2Int pixelPos);
+    public Vector2Int WorldToGrid(Vector3 worldPos, Vector3 levelPos);
     /// <summary>
-    /// 将一个格子坐标转换为像素坐标
+    /// 将一个格子坐标转换为世界坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴
-    /// 像素坐标以左下角为原点，向右为x轴，向上为y轴
     /// </summary>
     /// <param name="gridPos">格子坐标</param>
-    /// <param name="pos">转化为像素坐标时的偏移枚举</param>
-    /// <returns>对应偏移处的像素坐标</returns>
-    public Vector2Int GridToPixel(Vector2Int gridPos, GridPosition pos);
+    /// <param name="pos">转化为世界坐标时的偏移枚举</param>
+    /// <param name="levelPos">现在关卡背景所处的位置</param>
+    /// <returns>对应偏移处的世界坐标</returns>
+    public Vector3 GridToWorld(Vector2Int gridPos, GridPosition pos,Vector3 levelPos);
 }

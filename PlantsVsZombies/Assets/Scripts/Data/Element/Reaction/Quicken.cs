@@ -11,7 +11,7 @@ public class Quicken : ElementsReaction,IEffect
     private static int grassDamageChange = 15;//草元素伤害提高值
     private static int duration = 6000;//伤害提高持续时间（毫秒）
     private CountDown countDown;
-    private IMonsterData target;//触发对象
+    private IDamageReceiver target;//触发对象
     public Quicken()
     {
         countDown = new CountDown(duration);
@@ -29,7 +29,7 @@ public class Quicken : ElementsReaction,IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
         target.AddEffect(this);

@@ -11,7 +11,7 @@ public class Swirl : ElementsReaction
     private int swirlDamage = 5;//À©É¢ÉËº¦
     public override string ReactionName => "Swirl";
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         ////·¶Î§¼ì²â
         //Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);

@@ -13,18 +13,11 @@ public class TestMonsterData : MonsterData
         health = 100;
         speed = 50;
         atkPower = 100;
-        effectHandler = new CommonMonsterHandler(this);//使用普通魔物 效果处理器来处理魔物身上的效果
         SetResistance(0.1f, Elements.Ice);
         SetResistance(0, Elements.Fire);
     }
 
-    public override string ResourcePath => throw new System.NotImplementedException();
-
-
-    public override IGameobjectData Instantiate()
-    {
-        return new TestMonsterData();
-    }
+    public override GameObject OriginalReference => throw new System.NotImplementedException();
 
     public override string ToString()
     {
@@ -35,10 +28,5 @@ public class TestMonsterData : MonsterData
             elementStr += System.Enum.GetName(typeof(Elements),elements[i]) + ",";
         }
         return $"Stength:{Strength},Health:{Health},Speed:{Speed},AttackPower{AtkPower},Resistance:{GetResistance(Elements.None)}" + elementStr  ;
-    }
-
-    protected override void RealAction()
-    {
-        Debug.Log("Monster is moving");
     }
 }

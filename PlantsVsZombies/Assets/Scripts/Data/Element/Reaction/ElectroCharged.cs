@@ -14,7 +14,7 @@ public class ElectroCharged : ElementsReaction, IEffect
     private static int deltaStrength = -30;//对于怪物所造成的韧性衰减值
     private StrengthEffect strength;
     
-    private IMonsterData target;//触发感电反应的目标
+    private IDamageReceiver target;//触发感电反应的目标
     public StrengthEffect Strength => strength;
     public ElectroCharged()
     {
@@ -30,7 +30,7 @@ public class ElectroCharged : ElementsReaction, IEffect
     public EffectState State { get; private set; }
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
         target.AddEffect(this);

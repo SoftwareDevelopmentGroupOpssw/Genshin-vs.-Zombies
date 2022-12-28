@@ -12,7 +12,7 @@ public class Overloaded : ElementsReaction
     private static int changeTime = 1000;
     public override string ReactionName => "Overloaded";
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         target.AddEffect(new StrengthEffect(strengthChange, changeTime, system));
         target.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));

@@ -11,7 +11,7 @@ public class Vaporize : ElementsReaction
     public override string ReactionName => Name;
     public static string Name => "Vaporize";
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         damage.AtkDmg = (int) (DAMAGE_INCREASE * damage.AtkDmg);
     }
