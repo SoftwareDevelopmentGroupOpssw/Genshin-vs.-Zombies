@@ -9,12 +9,19 @@ using UnityEngine.UI;
 /// </summary>
 public class PlantsCardPanel : BasePanel
 {
+
     private int selected = -1;// 等于-1说明没有选中植物，为其他值则说明选中档位的植物
 
     private GameController controller;
-    private List<GameObject> plotList = new List<GameObject>();
+    /// <summary>
+    /// 生成的卡槽
+    /// </summary>
+    private List<Plot> plotList = new List<Plot>();
 
+    [Header("使用的卡槽")]
     public GameObject plot;
+    [Header("使用的卡槽遮罩")]
+    public GameObject mask;
     public GridLayoutGroup area;
     public Transform energyLocation;
     private void OnEnergyChanged(int value) => GetControl<Text>("Energy").text = value.ToString();
@@ -23,7 +30,7 @@ public class PlantsCardPanel : BasePanel
         controller = GameController.Instance;
         if (controller.gameObject.activeSelf)
         {
-            controller.Energy.OnValueChanged += OnEnergyChanged;
+            controller.EnergyMonitor.OnValueChanged += OnEnergyChanged;
 
             GetControl<Button>("ShovelBtn").onClick.AddListener(OnShovelClicked);
         }
@@ -32,7 +39,7 @@ public class PlantsCardPanel : BasePanel
     }
     protected override void BeforeHide()
     {
-        controller.Energy.OnValueChanged -= OnEnergyChanged;
+        controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;
         GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();
 
         SetPlotCount(0);
@@ -42,9 +49,10 @@ public class PlantsCardPanel : BasePanel
         if (count == plotList.Count)
             return;
 
-        foreach(GameObject plot in plotList)
+        foreach(Plot plot in plotList)
         {
-            Destroy(plot);
+            Destroy(plot.PlotObj.gameObject);
+            Destroy(plot.Mask.gameObject);
         }
         plotList.Clear();
 
@@ -53,17 +61,28 @@ public class PlantsCardPanel : BasePanel
         rect.sizeDelta = new Vector2(basicWidth + area.cellSize.x * count + area.padding.left + area.padding.right + area.spacing.x * (count - 1),rect.sizeDelta.y);
         for(int i = 0; i < count; i++)
         {
+            //生成卡槽
             GameObject obj = Instantiate(plot, area.transform);
-            obj.GetComponent<Image>().sprite = GameController.Instance.GetSelectPlant(i).Data.CardSprite;//设置卡槽图片
+            Image objImage = obj.GetComponent<Image>();
+            objImage.sprite = GameController.Instance.GetSelectPlant(i).Data.CardSprite;//设置卡槽图片
             obj.name = i.ToString();
             obj.GetComponent<Button>().onClick.AddListener(OnPlotClicked);
-            plotList.Add(obj);
+            //生成卡槽遮罩
+            GameObject maskObj = Instantiate(mask, obj.transform);
+            Image maskImage = maskObj.GetComponent<Image>();
+            (maskImage.transform as RectTransform).sizeDelta = area.cellSize;//将遮罩的大小设置成与卡牌大小一致
+            //添加储存
+            plotList.Add(new Plot() { PlotObj = objImage,Mask = maskImage});
         }
     }
-    private void OnPlotClicked()
+
+    private void OnPlotClicked()//点击时调用
     {
-        selected = System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name);
+        int num = System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name);
+        if (controller.CanPlacePlant(num) == null)//没有错误发生
+            selected = num;
     }
+
     private void OnShovelClicked()
     {
         selected = plotList.Count;//如果有8个plot，则选中plot时范围为0-7，此时设置为8来表示为铲子
@@ -73,14 +92,23 @@ public class PlantsCardPanel : BasePanel
     private GameObject real;//选择时，出现的实体植物
     private GameObject unreal;//选择时，出现的虚体植物
 
-    private void DisplayImageOnSelecting()//在选择植物时，产生实像虚像效果
+    /// <summary>
+    /// 在选择植物时，产生实像虚像效果
+    /// </summary>
+    private void DisplayImageOnSelecting()
     {
         PlantsSelected selectPlant = GameController.Instance.GetSelectPlant(selected);
         //生成实像和虚像
-        if(real == null)//不存在实像则创建
+        if (real == null)//不存在实像则创建
+        {
             real = Instantiate(selectPlant.Data.OriginalReference);
+            real.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
+        }
         if(unreal == null)//不存在虚像则创建
+        {
             unreal = Instantiate(selectPlant.Data.OriginalReference);
+            unreal.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
+        }
         //调整虚像透明度
         SpriteRenderer sprite = unreal.GetComponent<SpriteRenderer>();
         Color c = sprite.color; c.a = 0.5f; sprite.color = c;
@@ -100,39 +128,77 @@ public class PlantsCardPanel : BasePanel
         else
             unreal.SetActive(false);
     }
-
+    /// <summary>
+    /// 刷新植物槽是否可用
+    /// </summary>
+    private void RefreshAvailableState()
+    {
+        for(int i = 0; i < plotList.Count; i++)
+        {
+            PlantAddException exception = controller.CanPlacePlant(i);
+            if(exception == null)
+            {
+                plotList[i].PlotObj.color = Color.white;
+                plotList[i].Mask.fillAmount = 0;
+            }
+            else
+            {
+                plotList[i].PlotObj.color = Color.grey;
+                if (exception is PlantAddException.NotCooledDownYet)
+                {
+                    PlantsSelected selectedPlant = controller.GetSelectPlant(i);
+                    plotList[i].Mask.fillAmount = selectedPlant.CooltimePercent;
+                }
+                else if (exception is PlantAddException.NotEnoughEnergy)
+                {
+                    plotList[i].Mask.fillAmount = 0;
+                }
+            }
+        }
+    }
     private void Update()
     {
+        RefreshAvailableState();
         if(selected != -1)
-        {
             DisplayImageOnSelecting();
-        }
         else//摧毁实像和虚像
         {
             Destroy(real); real = null;
             Destroy(unreal); unreal = null;
         }
 
-        if (selected != -1 && Input.GetMouseButtonDown(0))//当有植物被选中且再次按下左键时，判断逻辑
+        //有植物被选中，卡牌显示为白色（没有变灰），按下鼠标左键时，进行操作
+        if (selected != -1 && plotList[selected].PlotObj.color == Color.white && Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Input.mousePosition;
             Vector2Int pixelPos = new Vector2Int((int)mousePos.x, (int)mousePos.y);
             if (selected != plotList.Count)//不是铲子
             {
-                if (controller.TryPlacePlant(selected, pixelPos))
-                {
-                    selected = -1;
-                    Debug.Log("放置植物在" +pixelPos.ToString());
-                }
+                controller.PlacePlant(selected, pixelPos);
+                selected = -1;
+                Debug.Log("放置植物在" + pixelPos.ToString());
             }
             else
             {
-                if (controller.TryRemovePlant(pixelPos))
-                {
-                    selected = -1;
-                    Debug.Log("移除植物" + pixelPos.ToString());
-                }
+                controller.RemovePlant(pixelPos);
+                selected = -1;
+                Debug.Log("移除植物" + pixelPos.ToString());
             }
         }
+    }
+    
+    /// <summary>
+    /// 卡槽数据信息
+    /// </summary>
+    struct Plot
+    {
+        /// <summary>
+        /// 生成的卡槽对象
+        /// </summary>
+        public Image PlotObj;
+        /// <summary>
+        /// 卡槽中对冷却时间的遮罩
+        /// </summary>
+        public Image Mask;
     }
 }

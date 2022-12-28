@@ -117,5 +117,5 @@ public abstract class ElementsReaction
     /// </summary>
     /// <param name="damage">元素伤害来源</param>
     /// <param name="target">元素反应目标</param>
-    public abstract void Action(IElementalDamage damage, IMonsterData target);
+    public abstract void Action(IElementalDamage damage, IDamageReceiver target);
 }

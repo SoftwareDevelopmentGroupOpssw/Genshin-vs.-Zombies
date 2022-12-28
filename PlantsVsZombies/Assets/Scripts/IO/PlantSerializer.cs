@@ -6,14 +6,27 @@ using UnityEngine;
 /// 负责植物数据储存的模块
 /// 存储着所有植物的信息
 /// </summary>
-public class PlantSerializer:Singleton<PlantSerializer>,IEnumerable<IPlantData>
+public class PlantSerializer : Singleton<PlantSerializer>, IEnumerable<IPlantData>
 {
     private const string PLANTDATA_LOCATION = "SO/PlantDatabase";
     private PlantDatabase database;
+    private PlantDatabase Database
+    {
+        get
+        {
+            if (database == null)
+            {
+                database = ResourceManager.Instance.Load<PlantDatabase>(PLANTDATA_LOCATION);
+            }
+            return database;
+        }
+    }
     IPlantData GetPlantData(PlantDatabase.Plant data)
     {
         switch (data.Id)
         {
+            case 0:
+                return new YanfeiData(data.Prefab, data.CardSprite);
             case 1:
                 return new MonaData(data.Prefab, data.CardSprite);
         }
@@ -26,16 +39,12 @@ public class PlantSerializer:Singleton<PlantSerializer>,IEnumerable<IPlantData>
     /// <returns>植物数据</returns>
     public IPlantData GetPlantData(string plantName)
     {
-        if (database == null)
-        {
-            database = ResourceManager.Instance.Load<PlantDatabase>(PLANTDATA_LOCATION);
-        }
-        return GetPlantData(database.GetData(plantName));
+        return GetPlantData(Database.GetData(plantName));
     }
 
     public IEnumerator<IPlantData> GetEnumerator()
     {
-        foreach(var item in database)
+        foreach (var item in Database)
         {
             yield return GetPlantData(item);
         }

@@ -22,9 +22,9 @@ public class PlantsSelected
 
     /// <summary>
     /// 这个植物冷却时间进度的百分比
-    /// 为0时刚开始冷却，为1时冷却完成
+    /// 为1时刚开始冷却，为0时冷却完成
     /// </summary>
-    public float IsReady => timeLeft / data.CoolTime;
+    public float CooltimePercent => timeLeft / data.CoolTime;
 
     /// <summary>
     /// 开始倒计时，计算冷却时间

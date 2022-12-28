@@ -49,6 +49,7 @@ public class Energy : MonoBehaviour
     }
     private IEnumerator FlyingCoroutine()
     {
+        isFlying = true;
         Transform rectEnd = UIManager.Instance
             .GetPanel<PlantsCardPanel>("PlantsCardPanel")
             .energyLocation
@@ -62,7 +63,8 @@ public class Energy : MonoBehaviour
             transform.position = Vector3.Lerp(startPos, pos, i);
             yield return 1;//下次帧更新
         }
-        GameController.Instance.Energy.AddEnergy(energyValue);
+        transform.position = pos;//直接传送到终点
+        GameController.Instance.EnergyMonitor.AddEnergy(energyValue);
 
         isFlying = false;
         StartCoroutine(DestroyCoroutine());
@@ -78,7 +80,6 @@ public class Energy : MonoBehaviour
             image.color = c;
 
             StartCoroutine(FlyingCoroutine());
-            isFlying = true;
         }
     }
 

@@ -17,8 +17,6 @@ public class MonstersUpdater
     {
         controller.Foreach((monster) =>
         {
-            if (monster.Data.CanAction)
-                monster.Data.Action();
         });
     }
 }

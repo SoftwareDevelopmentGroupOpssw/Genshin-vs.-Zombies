@@ -17,12 +17,13 @@ public enum EnergyType
 public class EnergyMonitor
 {
     private const string ENERGY_PREFAB_PATH = "Prefabs/UI/UIElements/";
+    private int energyValue;//能量值
     private static GameObject smallEnergy;
     private static GameObject bigEnergy;
     /// <summary>
-    /// 生成一个可以点击的能量，点击后自动加能量
+    /// 在指定的屏幕位置生成一个可以点击的能量，点击后自动加能量
     /// </summary>
-    /// <param name="pixelPos">能量出现的位置</param>
+    /// <param name="pixelPos">能量在屏幕中出现的位置，以左下角为原点，向右为x正，向上为y正</param>
     /// <param name="type">能量类型</param>
     public static void InstantiateEnergy(Vector2Int pixelPos, EnergyType type)
     {
@@ -59,9 +60,10 @@ public class EnergyMonitor
         }
         GameObject energy = GameObject.Instantiate(obj, UIManager.Instance.GetUILayer(UIManager.UILayer.Bot));
         RectTransform rect = energy.transform as RectTransform;
-        rect.anchoredPosition = new Vector2(pixelPos.x, pixelPos.y);
+        //anchoredPostion以屏幕中心点为原点，而传入的pixelPos是以左下角为原点（也是Input.mousePosition的坐标）
+        Vector2 location = new Vector2(pixelPos.x - Screen.width / 2, pixelPos.y - Screen.height / 2);
+        rect.anchoredPosition = location;
     }
-    private int energyValue;
     /// <summary>
     /// 能量值 大于0
     /// </summary>
@@ -80,21 +82,12 @@ public class EnergyMonitor
         OnValueChanged?.Invoke(energyValue);
     }
     /// <summary>
-    /// 尝试减少能量，若能量不足则不会减少并返回False
+    /// 减少能量
     /// </summary>
     /// <param name="value">能量</param>
-    /// <returns>减少操作是否成功</returns>
-    public bool TryRemoveEnergy(int value)
+    public void RemoveEnergy(int value)
     {
-        if(energyValue < value)
-        {
-            return false;
-        }
-        else
-        {
-            energyValue -= value;
-            OnValueChanged?.Invoke(energyValue);
-            return true;
-        }
+        energyValue -= value;
+        OnValueChanged?.Invoke(energyValue);
     }
 }

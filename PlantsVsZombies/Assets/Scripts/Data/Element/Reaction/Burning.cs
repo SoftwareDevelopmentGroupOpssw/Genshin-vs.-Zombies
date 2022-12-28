@@ -11,7 +11,7 @@ public class Burning : ElementsReaction,IEffect
     private static int damageDealtPerTime = 4;//一次燃烧造成伤害值
     private static int damageSpaceTime = 1000;//两次燃烧伤害之间的间隔时间（毫秒）
 
-    private IMonsterData target;//魔物对象
+    private IDamageReceiver target;//魔物对象
 
     public Burning()
     {
@@ -26,7 +26,7 @@ public class Burning : ElementsReaction,IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
         target.AddEffect(this);
@@ -36,7 +36,7 @@ public class Burning : ElementsReaction,IEffect
     /// </summary>
     /// <param name="monster"></param>
     /// <returns></returns>
-    private IEnumerator DamageCoroutine(IMonsterData monster)
+    private IEnumerator DamageCoroutine(IDamageReceiver monster)
     {
         for (int i = 0; i < damageTimes; i++)
         {

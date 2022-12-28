@@ -3,20 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class MonsterData : IMonsterData
+public abstract class MonsterData : IMonsterData, IDamageReceiver
 {
     /// <summary>
     /// 身上的效果
     /// </summary>
     private List <IEffect> effects = new List<IEffect>();
-    /// <summary>
-    /// 在下一次帧更新时需要删除的效果
-    /// </summary>
-    private List<IEffect> removeList = new List<IEffect>();
-    /// <summary>
-    /// 所使用的效果处理器
-    /// </summary>
-    protected IEffectHandler effectHandler;
 
     /// <summary>
     /// 附着的元素
@@ -52,12 +44,6 @@ public abstract class MonsterData : IMonsterData
     public void RemoveOnElementReactedListener(Elements element, System.Action<ElementsReaction> action) => OnElementReacted.RemoveListener(element, action);
 
 
-    /// <summary>
-    /// 在此次帧更新中调用中，是否还能进行Action操作
-    /// </summary>
-    private bool canAction = true;
-    public bool CanAction { get => canAction; set => canAction = value; }
-
     protected int strength;
     public int Strength { get => strength; set => strength = value; }
 
@@ -77,7 +63,8 @@ public abstract class MonsterData : IMonsterData
     public void SetResistance(float value, Elements element) => resistances[element] = value;
 
     public void AddEffect(IEffect effect) => effects.Add(effect);
-    public void RemoveEffect(IEffect effect) => removeList.Add(effect);
+    public void RemoveEffect(IEffect effect) => effects.Remove(effect);
+    public List<IEffect> GetEffects() => effects;
 
     public virtual void OnAwake() { }
 
@@ -130,8 +117,8 @@ public abstract class MonsterData : IMonsterData
             }
         }
         PlainDealsDamage(damage);
-        
     }
+
 
     public void AddElement(Elements element) => elements[element] = true;
 
@@ -147,61 +134,6 @@ public abstract class MonsterData : IMonsterData
         }
         return total.ToArray();
     }
-    /// <summary>
-    /// 经过触发所有效果后，最终真实的操作
-    /// </summary>
-    protected abstract void RealAction();
 
-    /// <summary>
-    /// 检查所有效果
-    /// </summary>
-    private void CheckAllEffect()
-    {
-        RemoveUselessEffect();
-        for(int i = effects.Count - 1;i >= 0; i--)
-        {
-            IEffect effect = effects[i];
-            switch (effect.State)
-            {
-                case EffectState.Initialized:
-                    try
-                    {
-                        effectHandler?.EnableEffect(effect);//尝试启动效果
-                    }
-                    catch(System.Exception e)//出错
-                    {
-                        RemoveEffect(effect);//删除此效果
-                        Debug.LogException(e);//打印出错信息
-                    }
-                    break;
-                case EffectState.Processing:
-                    effectHandler?.UpdateEffect(effect);
-                    break;
-                //出错和结束时都将效果添加至删除列表
-                case EffectState.End:
-                case EffectState.Error:
-                    RemoveEffect(effect);//将效果添加到待删除列表中
-                    continue;
-            }
-        }
-    }
-    private void RemoveUselessEffect()
-    {
-        foreach(var effect in removeList)
-        {
-            effects.Remove(effect);
-            if(effect.State != EffectState.Error)//不出错才调用关闭函数，不然直接删除
-                effectHandler?.DisableEffect(effect);
-        }
-        removeList.Clear();
-    }
 
-    public void Action()
-    {
-        CheckAllEffect();
-        if (canAction)//没有收到效果，可以继续操作
-            RealAction();
-        else
-            canAction = true;//重新调整，下一帧再判断
-    }
 }

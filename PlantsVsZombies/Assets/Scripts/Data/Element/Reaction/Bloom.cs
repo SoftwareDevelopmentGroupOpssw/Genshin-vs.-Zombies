@@ -22,7 +22,7 @@ public class Bloom : ElementsReaction
     }
     public override string ReactionName => "Bloom";
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         //在怪物的脚下生成一个草种子
         GameObject obj = GameObject.Instantiate(Seed);

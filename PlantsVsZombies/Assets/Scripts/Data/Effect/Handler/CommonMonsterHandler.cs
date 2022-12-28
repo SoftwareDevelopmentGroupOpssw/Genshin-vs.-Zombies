@@ -39,4 +39,45 @@ public class CommonMonsterHandler : IEffectHandler
     {
         effect.DisableEffect(data);
     }
+
+    public void CheckEffect(List<IEffect> effects)
+    {
+        List<IEffect> deletes = new List<IEffect>();
+        foreach(IEffect effect in effects)
+        {
+            if(effect.State == EffectState.End)
+            {
+                deletes.Add(effect);
+                effect.DisableEffect(data);
+            }
+            else if(effect.State == EffectState.Error)
+            {
+                deletes.Add(effect);
+            }
+        }
+        foreach(IEffect delete in deletes)
+        {
+            effects.Remove(delete);  //移除
+        }
+        foreach(IEffect effect in effects)
+        {
+            switch (effect.State)
+            {
+                case EffectState.Initialized:
+                    try
+                    {
+                        EnableEffect(effect);//尝试启动效果
+                    }
+                    catch (System.Exception e)//出错
+                    {
+                        Debug.LogException(e);//打印出错信息
+                    }
+                    break;
+                case EffectState.Processing:
+                    UpdateEffect(effect);
+                    break;
+                //出错和结束时藉由下次调用更新前剔除
+            }
+        }
+    }
 }

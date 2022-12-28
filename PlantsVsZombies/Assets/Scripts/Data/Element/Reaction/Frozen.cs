@@ -25,7 +25,7 @@ public class Frozen : ElementsReaction, IEffect
     /// </summary>
     private float speedPercent = -0.5f;
 
-    private IMonsterData target;
+    private IDamageReceiver target;
 
     private StunEffect stun;
     public StunEffect Stun => stun;
@@ -56,7 +56,7 @@ public class Frozen : ElementsReaction, IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IMonsterData target)
+    public override void Action(IElementalDamage damage, IDamageReceiver target)
     {
         stun = new StunEffect(system, stunTime);
         speed = new SpeedEffect(system, speedPercent, speedTime);

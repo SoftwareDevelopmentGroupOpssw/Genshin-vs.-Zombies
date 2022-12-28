@@ -19,19 +19,9 @@ public class SystemObject : Singleton<SystemObject>, IGameobjectData
         
     }
 
-    public IGameobjectData Instantiate()
+    public List<IEffect> GetEffects()
     {
-        return this;
-    }
-
-    public void OnAwake()
-    {
-        
-    }
-
-    public void OnDestroy()
-    {
-        
+        return null;
     }
 
     public void RemoveEffect(IEffect effect)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 莫娜角色数据
@@ -13,14 +14,12 @@ public class MonaData : PlantData
     /// </summary>
     /// <param name="original">原始对象</param>
     /// <param name="cardSprite">卡牌图片</param>
-    public MonaData(GameObject original,Sprite cardSprite)
+    public MonaData(GameObject original,Sprite cardSprite):base(original,cardSprite)
     {
-        this.original = original;
-        this.cardSprite = cardSprite;
+        
     }
 
     private CountDown countDown = new CountDown(2000);
-    public override bool isReady => countDown.Available;
 
     public override int EnergyCost => 100;
 
@@ -30,26 +29,8 @@ public class MonaData : PlantData
     private int atkPower;
     public override int AtkPower { get => atkPower; set => atkPower = value; }
 
-    private GameObject original;
-    public override GameObject OriginalReference { get => original; }
-
-    private Sprite cardSprite;
-    public override Sprite CardSprite => cardSprite;
-
     public override int CoolTime => 5;
 
-    public override void Action()
-    {
-        Debug.Log("莫娜开始攻击");
-    }
+    public override string PlantName => "Mona";
 
-    public override void OnAwake()
-    {
-        Debug.Log("莫娜出现");
-    }
-
-    public override void OnDestroy()
-    {
-        Debug.Log("莫娜死亡");
-    }
 }

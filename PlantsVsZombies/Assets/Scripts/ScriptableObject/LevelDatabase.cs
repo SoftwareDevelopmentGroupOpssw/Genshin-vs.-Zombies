@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// <summary>
 /// 装载关卡贴图和关卡数据的SO文件
 /// </summary>
-[CreateAssetMenu(fileName = "LevelDataCollection", menuName = "LevelDatabaseSO")]
+[CreateAssetMenu(fileName = "LevelDataCollection", menuName = "SODatabase/LevelDatabaseSO")]
 public class LevelDatabase : ScriptableObject,IEnumerable<LevelDatabase.Level>
 {
     [SerializeField]
