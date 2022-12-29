@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 /// <summary>
-/// 更新模块
+/// 总更新模块：控制所有的更新模块
 /// </summary>
 public class Updater
 {

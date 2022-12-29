@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class PeaBulletBehaviour : Flyer, IElementalDamage
 {
+    
     private ILevelData level => GameController.Instance.LevelData;
-    private Vector3 levelPos => GameController.Instance.Level.transform.position;
+
     private Vector2Int[] area;
     /// <summary>
     /// 是否砸到怪物身上触发了伤害
@@ -42,7 +43,7 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
     void Start()
     {
         //计算目前能打到的位置
-        area = AvailableArea.GetArea(level, level.WorldToGrid(transform.position, levelPos));
+        area = AvailableArea.GetArea(level, GameController.Instance.WorldToGrid(transform.position));
         GetComponent<Rigidbody2D>().velocity = Vector2.right * Velocity;
     }
     
@@ -54,7 +55,7 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
         bool isInArea = false;
         foreach (var grid in area)
         {
-            if (level.WorldToGrid(transform.position, levelPos) == grid)
+            if (GameController.Instance.WorldToGrid(transform.position) == grid)
             {
                 isInArea = true; break;
             }
@@ -77,6 +78,10 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
             Moving();
     }
    
+    /// <summary>
+    /// 碰撞器检测
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Monster" && !isTriggered) //没有触发过，而且砸到了一个怪物的身上
@@ -85,7 +90,7 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
             if(monster is IDamageable)
             {
                 isTriggered = true;
-                StartCoroutine(BrokenCoroutine());
+                StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
                 (monster as IDamageable).GetReceiver().ReceiveDamage(this);
             }
         }

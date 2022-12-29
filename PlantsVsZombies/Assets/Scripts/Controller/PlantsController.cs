@@ -24,7 +24,7 @@ public class PlantsController
         }
     }
     /// <summary>
-    /// 强制添加植物
+    /// 添加植物
     /// </summary>
     /// <param name="data">植物信息</param>
     /// <param name="gridPos">植物添加的格子位置</param>

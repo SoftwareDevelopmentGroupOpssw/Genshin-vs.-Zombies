@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ÀöÉ¯
+/// </summary>
 public class Lisa : PeashooterBehaviour
 {
     private Animator animator;//¶¯»­×´Ì¬»ú

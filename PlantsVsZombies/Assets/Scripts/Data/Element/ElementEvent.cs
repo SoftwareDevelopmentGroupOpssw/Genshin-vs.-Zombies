@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 和元素有关的事件
+/// 和元素有关的函数事件
+/// 可以用一个元素类型去访问，
 /// </summary>
 public class ElementEvent
 {

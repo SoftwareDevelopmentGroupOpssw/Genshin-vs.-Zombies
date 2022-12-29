@@ -48,6 +48,10 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
     public void AddOnElementReactedListener(Elements element, System.Action<ElementsReaction> action) => OnElementReacted.AddListener(element, action);
     public void RemoveOnElementReactedListener(Elements element, System.Action<ElementsReaction> action) => OnElementReacted.RemoveListener(element, action);
 
+    /// <summary>
+    /// 用一个原始预制体对象来初始化
+    /// </summary>
+    /// <param name="original">这个魔物的原始预制体数据</param>
     protected MonsterData(GameObject original)
     {
         this.original = original;

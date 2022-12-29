@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 是一个系统物体
-/// 系统造成的效果可以使用这个类的instance来表明是系统造成的效果
+/// 系统造成的效果可以使用这个类的instance来作为效果的施加者
 /// </summary>
 public class SystemObject : Singleton<SystemObject>, IGameobjectData
 {

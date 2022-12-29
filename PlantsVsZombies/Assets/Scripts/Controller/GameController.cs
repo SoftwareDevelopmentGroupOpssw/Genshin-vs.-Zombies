@@ -175,10 +175,12 @@ public class GameController : MonoBehaviour
     {
         gameObject.SetActive(true);
 
+        //添加植物
         AddSelectPlant("Mona");
         AddSelectPlant("Yanfei");
         AddSelectPlant("Lisa");
         
+        //初始化模块
         plantsController = new PlantsController(LevelData);
         flyerController = new FlyersController();
         monsterController = new MonstersController();
@@ -189,6 +191,7 @@ public class GameController : MonoBehaviour
         //展示卡槽图片
         UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
 
+        //测试：直接添加能量
         EnergyMonitor.AddEnergy(10000);
         for (int i = 200; i < 1600;i +=100)
         {

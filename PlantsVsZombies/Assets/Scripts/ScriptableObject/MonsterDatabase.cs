@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 魔物数据和贴图信息SO文件
+/// 魔物数据和魔物预制体SO文件
 /// </summary>
 [CreateAssetMenu(fileName = "MonsterDataCollection", menuName = "SODatabase/MonsterDatabaseSO")]
 public class MonsterDatabase : ScriptableObject, IEnumerable<MonsterDatabase.Monster>

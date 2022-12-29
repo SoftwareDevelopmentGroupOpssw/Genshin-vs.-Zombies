@@ -20,6 +20,9 @@ public enum GridPosition
     /// </summary>
     Right,
 }
+/// <summary>
+/// 关卡数据接口
+/// </summary>
 public interface ILevelData
 {
     /// <summary>

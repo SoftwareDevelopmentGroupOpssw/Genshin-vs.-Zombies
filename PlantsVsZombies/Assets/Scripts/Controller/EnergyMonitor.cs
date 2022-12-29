@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// 能量的类型
+/// </summary>
 public enum EnergyType
 {
     /// <summary>
@@ -14,6 +17,9 @@ public enum EnergyType
     /// </summary>
     Small,
 }
+/// <summary>
+/// 能量管理模块
+/// </summary>
 public class EnergyMonitor
 {
     private const string ENERGY_PREFAB_PATH = "Prefabs/UI/UIElements/";
@@ -65,7 +71,7 @@ public class EnergyMonitor
         rect.anchoredPosition = location;
     }
     /// <summary>
-    /// 能量值 大于0
+    /// 能量值
     /// </summary>
     public int Energy => energyValue;
     /// <summary>

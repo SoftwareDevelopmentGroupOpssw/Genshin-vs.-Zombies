@@ -22,25 +22,29 @@ public class PlantsCardPanel : BasePanel
     public GameObject plot;
     [Header("使用的卡槽遮罩")]
     public GameObject mask;
-    public GridLayoutGroup area;
-    public Transform energyLocation;
+    public GridLayoutGroup area;//卡槽显示区域
+    public Transform energyLocation;//能量标识的位置（让收集到的能量飞向这个位置）
+    /// <summary>
+    /// 监听能量改变，在改变时修改显示值
+    /// </summary>
+    /// <param name="value"></param>
     private void OnEnergyChanged(int value) => GetControl<Text>("Energy").text = value.ToString();
     protected override void BeforeShow()
     {
         controller = GameController.Instance;
         if (controller.gameObject.activeSelf)
         {
-            controller.EnergyMonitor.OnValueChanged += OnEnergyChanged;
+            controller.EnergyMonitor.OnValueChanged += OnEnergyChanged;//添加监听
 
-            GetControl<Button>("ShovelBtn").onClick.AddListener(OnShovelClicked);
+            GetControl<Button>("ShovelBtn").onClick.AddListener(OnShovelClicked);//添加铲子按钮监听
         }
         else
             Debug.LogError("The game is not started.");
     }
     protected override void BeforeHide()
     {
-        controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;
-        GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();
+        controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;//移除监听
+        GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();//移除铲子按钮监听
 
         SetPlotCount(0);
     }
@@ -52,14 +56,14 @@ public class PlantsCardPanel : BasePanel
     {
         if (count == plotList.Count)
             return;
-
+        //移除之前生成的卡槽
         foreach(Plot plot in plotList)
         {
             Destroy(plot.PlotObj.gameObject);
             Destroy(plot.Mask.gameObject);
         }
         plotList.Clear();
-
+        //开始生成卡槽
         RectTransform rect = transform as RectTransform;
         int basicWidth = 160;
         rect.sizeDelta = new Vector2(basicWidth + area.cellSize.x * count + area.padding.left + area.padding.right + area.spacing.x * (count - 1),rect.sizeDelta.y);
@@ -79,8 +83,10 @@ public class PlantsCardPanel : BasePanel
             plotList.Add(new Plot() { PlotObj = objImage,Mask = maskImage});
         }
     }
-
-    private void OnPlotClicked()//点击时调用
+    /// <summary>
+    /// 按钮被点击时调用
+    /// </summary>
+    private void OnPlotClicked()
     {
         int num = System.Convert.ToInt32(EventSystem.current.currentSelectedGameObject.name);
         if (controller.CanPlacePlant(num) == null)//没有错误发生
@@ -90,7 +96,9 @@ public class PlantsCardPanel : BasePanel
             selected = num;
         }
     }
-
+    /// <summary>
+    /// 铲子被点击时调用
+    /// </summary>
     private void OnShovelClicked()
     {
         selected = plotList.Count;//如果有8个plot，则选中plot时范围为0-7，此时设置为8来表示为铲子
@@ -163,7 +171,7 @@ public class PlantsCardPanel : BasePanel
         for(int i = 0; i < plotList.Count; i++)
         {
             PlantAddException exception = controller.CanPlacePlant(i);
-            if(exception == null)
+            if(exception == null)//没有发生错误
             {
                 plotList[i].PlotObj.color = Color.white;
                 plotList[i].Mask.fillAmount = 0;

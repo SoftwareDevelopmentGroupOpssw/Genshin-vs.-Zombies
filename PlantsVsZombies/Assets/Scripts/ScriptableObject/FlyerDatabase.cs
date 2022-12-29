@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 飞行物数据库：存放着所有飞行物的预制体信息
+/// </summary>
 [CreateAssetMenu(fileName = "FlyerDataCollection",menuName = "SODatabase/FlyerDatabaseSO")]
 public class FlyerDatabase : ScriptableObject, IEnumerable<FlyerDatabase.Flyer>
 {

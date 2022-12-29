@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 能接受伤害的接口
+/// 伤害接受器：自动计算元素反应和元素伤害
 /// </summary>
 public interface IDamageReceiver : ICharactorData
 {

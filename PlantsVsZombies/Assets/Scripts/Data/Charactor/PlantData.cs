@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 植物数据基类
+/// </summary>
 public abstract class PlantData : IPlantData
 {
     private List<IEffect> effects = new List<IEffect>();

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 范围建造者：利用它可以轻松搭建一个由多个范围合并组成的范围
+/// </summary>
 public class AreaBuilder:Area
 {
     /// <summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 植物数据和贴图信息SO文件
+/// 植物数据和植物预制体SO文件
 /// </summary>
 [CreateAssetMenu(fileName = "PlantDataCollection", menuName = "SODatabase/PlantDatabaseSO")]
 public class PlantDatabase : ScriptableObject, IEnumerable<PlantDatabase.Plant>

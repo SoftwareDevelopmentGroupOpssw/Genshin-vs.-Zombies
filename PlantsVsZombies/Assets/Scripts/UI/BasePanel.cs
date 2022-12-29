@@ -25,7 +25,7 @@ public class BasePanel : MonoBehaviour
     /// <summary>
     /// 从子物体上找到组件群
     /// </summary>
-    /// <typeparam name="T">需要的</typeparam>
+    /// <typeparam name="T">需要的控件类型</typeparam>
     protected void FindChildrenControls<T>() where T : UIBehaviour
     {
         T[] controls = GetComponentsInChildren<T>();

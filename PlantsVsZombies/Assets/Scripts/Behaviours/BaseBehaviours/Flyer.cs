@@ -11,5 +11,8 @@ public abstract class Flyer : BaseGameobject
     /// 飞行物能够到达的区域
     /// </summary>
     public Area AvailableArea { get; set; }
+    /// <summary>
+    /// 飞行物数据
+    /// </summary>
     public IFlyerData Data { get; set; }
 }

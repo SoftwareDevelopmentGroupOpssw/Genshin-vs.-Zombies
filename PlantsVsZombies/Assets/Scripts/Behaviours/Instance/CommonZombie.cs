@@ -10,14 +10,26 @@ using UnityEngine;
 /// </summary>
 public class CommonZombie : Monster, IDamageable
 {
+    /// <summary>
+    /// 一个对应普通魔物的效应处理器
+    /// </summary>
     private CommonMonsterHandler handler;
+    
     private SpriteRenderer sprite;
     private Rigidbody2D rigid;
-    private Collider2D collider;
+    private Collider2D colliders;
     private Animator animator;
+   
+    /// <summary>
+    /// 是否还存活
+    /// </summary>
     private bool isAlive = true;
 
+    /// <summary>
+    /// 掉下来的头，死亡的时候会启用这个物体
+    /// </summary>
     public GameObject FallingHead;
+
     public override IEffectHandler Handler => handler;
 
 
@@ -29,7 +41,7 @@ public class CommonZombie : Monster, IDamageable
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        collider = GetComponent<Collider2D>();
+        colliders = GetComponent<Collider2D>();
 
         //随机产生一个走路姿势
         System.Random walkStyle = new System.Random();
@@ -46,6 +58,14 @@ public class CommonZombie : Monster, IDamageable
     {
         rigid.velocity = Vector2.left * Data.Speed / 100;
         animator.speed = Data.Speed / 50f;
+    }
+    /// <summary>
+    /// 被眩晕
+    /// </summary>
+    public void Stun()
+    {
+        rigid.velocity = Vector2.zero;
+        animator.speed = 0;//动画停止
     }
     /// <summary>
     /// 设置受到元素附着时的特效(改变颜色)
@@ -95,24 +115,25 @@ public class CommonZombie : Monster, IDamageable
             Destroy(gameObject);
     }
 
-    string str = "";
     public void Update()
     {
+        //用普通魔物效果分析器来对Data里的所有效果进行分析
         handler.CheckEffect(Data.GetEffects());
         if (isAlive)
         {
-            Walk();
-            CheckLocation();
+            //查找身上有没有眩晕效果
+            IEffect stunEffect = Data.GetEffects().Find((effect) => effect is StunEffect);
+            if (stunEffect == null)
+                Walk();
+            else
+                Stun();
 
+            CheckLocation();
             RefreshElementState();
         }
-        if (Data.Health <= 0 && isAlive)
+
+        if (Data.Health <= 0 && isAlive)//只有活着的时候才能死亡
             StartCoroutine(Die());
-        if(Data.ToString() != str)
-        {
-            str = Data.ToString();
-            //Debug.Log(str);
-        }
     }
     /// <summary>
     /// 死亡时触发的逻辑
@@ -122,7 +143,7 @@ public class CommonZombie : Monster, IDamageable
     {
         isAlive = false;
         rigid.velocity = Vector2.zero;
-        collider.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
+        colliders.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
         float secondsBeforeBodyDisappear = 2;
         animator.Play("Die");
         FallingHead.SetActive(true);

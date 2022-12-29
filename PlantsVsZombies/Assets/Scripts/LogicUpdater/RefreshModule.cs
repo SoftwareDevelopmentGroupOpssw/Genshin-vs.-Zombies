@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 刷新模块
+/// </summary>
 public class RefreshModule
 {
     private const int SUMMON_DISTANCE_TIME = 10000;
@@ -28,7 +31,7 @@ public class RefreshModule
         controller.AddMonster(monsters.Dequeue(), worldPos);
     }
     /// <summary>
-    /// 帧更新时调用
+    /// 帧更新时调用，尝试生成魔物
     /// </summary>
     public void Update()
     {
@@ -40,6 +43,11 @@ public class RefreshModule
             countDown.StartCountDown();
         }
     }
+    /// <summary>
+    /// 随机生成多个魔物
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
     IEnumerator GenerateCoroutine(int count)
     {
         for (int i = 0; i < count; i++)

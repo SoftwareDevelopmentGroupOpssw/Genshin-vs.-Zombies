@@ -7,8 +7,14 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class Plant : BaseGameobject
 {
+    /// <summary>
+    /// 植物数据信息
+    /// </summary>
     public IPlantData Data { get; set; }
-    public UnityAction<Plant> OnDie;
+    /// <summary>
+    /// 死亡时调用的事件
+    /// </summary>
+    public event UnityAction<Plant> OnDie;
     protected virtual void OnDestroy()
     {
         OnDie?.Invoke(this);

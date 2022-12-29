@@ -7,7 +7,13 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class Monster : BaseGameobject
 {
+    /// <summary>
+    /// 效果处理器
+    /// </summary>
     public abstract IEffectHandler Handler { get; }
+    /// <summary>
+    /// 魔物数据信息
+    /// </summary>
     public IMonsterData Data { get; set; }
     // Start is called before the first frame update
     /// <summary>

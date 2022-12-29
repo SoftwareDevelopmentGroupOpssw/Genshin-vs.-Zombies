@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Level1
+/// Level1:Ä¬ÈÏ¹Ø¿¨
 /// </summary>
-public class Level1 : Level
+public class Level1 : GridLevel
 {
     private int row = 5;
     private int col = 10;

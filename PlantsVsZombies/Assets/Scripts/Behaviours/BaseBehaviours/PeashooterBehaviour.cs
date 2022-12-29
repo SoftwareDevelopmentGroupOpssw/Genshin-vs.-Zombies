@@ -20,7 +20,8 @@ public class PeashooterBehaviour : Plant
     [SerializeField]
     private string bulletName = "PhysicalBullet";
     /// <summary>
-    /// 发射的子弹的名字
+    /// 发射的子弹的预制体的名字
+    /// 在发射子弹时会用这个名字到FlyerPrefabSerializer中查找对应子弹数据
     /// </summary>
     public string BulletName { get => bulletName; set => bulletName = value; }
 

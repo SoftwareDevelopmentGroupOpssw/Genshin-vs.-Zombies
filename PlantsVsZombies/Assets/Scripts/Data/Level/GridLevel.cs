@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Level基类
+/// 格子地图基类：所有的格子大小相同，矩形均匀分布
 /// </summary>
-public abstract class Level : ILevelData
+public abstract class GridLevel : ILevelData
 {
     /// <summary>
     /// 使用偏移量（格子的Left,Right）来获取像素位置时，和格子真正的左边框、右边框的偏移量

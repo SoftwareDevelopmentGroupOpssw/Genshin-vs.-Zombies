@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 韧性改变效果
+/// </summary>
 public class StrengthEffect : CountDownEffect
 {
     private int duration;
     private int changeValue;
     public IGameobjectData caster;
+    /// <summary>
+    /// 创建一个韧性改变效果
+    /// </summary>
+    /// <param name="changeValue">改变的值，可以为负数</param>
+    /// <param name="milisecondsDuration">持续时间</param>
+    /// <param name="caster">施加者</param>
     public StrengthEffect(int changeValue, int milisecondsDuration, IGameobjectData caster)
     {
         this.changeValue = changeValue;

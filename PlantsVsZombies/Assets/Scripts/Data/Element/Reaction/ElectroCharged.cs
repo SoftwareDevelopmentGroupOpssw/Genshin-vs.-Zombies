@@ -35,21 +35,26 @@ public class ElectroCharged : ElementsReaction, IEffect
         this.target = target;
         target.AddEffect(this);
 
-        //范围检测
+        //范围检测:范围内的施加感电效果
         Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
         foreach (var collider in colliders)
         {
             if (collider.gameObject.tag == "Monster")
             {
-                Monster monster = collider.gameObject.GetComponent<Monster>();
+                Monster monster = collider.gameObject.GetComponent<Monster>();//获取monster控制脚本
+                //可以受到伤害
                 if(monster is IDamageable)
                 {
+                    //获取一个伤害接收器
                     IDamageReceiver receiver = (monster as IDamageable).GetReceiver();
                     receiver.AddEffect(new ElectroCharged() { target = receiver});
                 }
             }
         }
     }
+    /// <summary>
+    /// 造成持续伤害的协程
+    /// </summary>
     private Coroutine damageCoroutine;
     private IEnumerator DamageCoroutine(IMonsterData monster)
     {
@@ -72,10 +77,13 @@ public class ElectroCharged : ElementsReaction, IEffect
     }
     public void EnableEffect(IGameobjectData target)
     {
+        //开启持续伤害的协程
         damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(this.target as IMonsterData));
         State = EffectState.Processing;
+        //添加水雷共存
         this.target.AddElement(Elements.Water);
         this.target.AddElement(Elements.Electric);
+        //添加元素反应监听
         this.target.AddOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
         this.target.AddOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
         strength.EnableEffect(this.target);//开启韧性削减效果
