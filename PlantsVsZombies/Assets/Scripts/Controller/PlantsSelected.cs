@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlantsSelected
 {
     private IPlantData data;
-    private float timeLeft;//剩余时间
+    private float timeLeft;//剩余时间（毫秒）
 
     public PlantsSelected(IPlantData data)
     {
@@ -33,7 +33,7 @@ public class PlantsSelected
     {
         void Update()//公用mono模块帧更新函数
         {
-            timeLeft -= Time.unscaledDeltaTime;
+            timeLeft -= Time.unscaledDeltaTime * 1000;
             if(timeLeft <= 0)
             {
                 timeLeft = 0;

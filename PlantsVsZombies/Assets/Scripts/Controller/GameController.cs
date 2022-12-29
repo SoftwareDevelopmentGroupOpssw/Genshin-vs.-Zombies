@@ -16,6 +16,11 @@ public class GameController : MonoBehaviour
     public static GameController Instance => instance;
     
     /// <summary>
+    /// 更新模块，负责场景上的帧更新
+    /// </summary>
+    private Updater updater;
+    
+    /// <summary>
     /// 关卡信息
     /// </summary>
     public ILevelData LevelData { get; set; }//当选择关卡完成时，设置关卡
@@ -56,16 +61,22 @@ public class GameController : MonoBehaviour
     /// <param name="index">下标</param>
     /// <returns>卡牌的sprite</returns>
     public PlantsSelected GetSelectPlant(int index) => selected[index];
+
+    /// <summary>
+    /// 添加一个植物到植物卡槽
+    /// </summary>
+    /// <param name="plantName"></param>
+    public void AddSelectPlant(string plantName)
+    {
+        selected.Add(new PlantsSelected(PlantPrefabSerializer.Instance.GetPlantData(plantName)));
+    }
     
     /// <summary>
     /// 能量管理模块
     /// </summary>
     public EnergyMonitor EnergyMonitor { get; private set; } = new EnergyMonitor();
 
-    /// <summary>
-    /// 更新模块，负责场景上的帧更新
-    /// </summary>
-    private Updater updater;
+
 
     /// <summary>
     /// 能否放置这个下标的植物
@@ -87,18 +98,18 @@ public class GameController : MonoBehaviour
     /// 在指定位置处放置一个植物
     /// </summary>
     /// <param name="selectIndex">选择的植物编号</param>
-    /// <param name="pixelPos">指定位置的像素坐标</param>
+    /// <param name="worldPos">指定位置的像素坐标</param>
     /// <exception cref="PlantAddException.NotEnoughEnergy">能量不足</exception>
     /// <exception cref="PlantAddException.NotCooledDownYet">尚未冷却</exception>
-    public void PlacePlant(int selectIndex,Vector2Int pixelPos)
+    /// <exception cref="System.IndexOutOfRangeException">位置不合法</exception>
+    public void PlacePlant(int selectIndex,Vector3 worldPos)
     {
         PlantAddException exception = CanPlacePlant(selectIndex);
         if (exception == null)//没有出错
         {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector2(pixelPos.x, pixelPos.y));
             Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
             IPlantData selectedData = selected[selectIndex].Data;
-            IPlantData newPlantData = PlantSerializer.Instance.GetPlantData(selectedData.PlantName);
+            IPlantData newPlantData = PlantPrefabSerializer.Instance.GetPlantData(selectedData.PlantName);
             plantsController.AddPlant(ref newPlantData, gridPos);
             EnergyMonitor.RemoveEnergy(selectedData.EnergyCost);//移除能量
             selected[selectIndex].StartCoolTime();
@@ -106,17 +117,17 @@ public class GameController : MonoBehaviour
         else
             throw exception;
     }
-    
+
     /// <summary>
     /// （给UI系统使用）
     /// 在指定位置处移除一个植物
     /// </summary>
-    /// <param name="pixelPos">指定位置的像素位置</param>
-    /// <returns>移除结果是否成功</returns>
-    public void RemovePlant(Vector2Int pixelPos)
+    /// <param name="worldPos">指定位置的世界位置</param>
+    /// <exception cref="System.IndexOutOfRangeException">位置不合法</exception>
+    public void RemovePlant(Vector3 worldPos)
     {
         //TODO:实现逻辑判断
-        plantsController.RemoveOnePlant(pixelPos);
+        plantsController.RemoveOnePlant(WorldToGrid(worldPos));
     }
     
     /// <summary>
@@ -127,30 +138,25 @@ public class GameController : MonoBehaviour
     /// <returns>飞行物对象</returns>
     public Flyer AddFlyer(IFlyerData data, Vector3 worldPos) => flyerController.AddFlyer(data, worldPos);
 
-
     /// <summary>
-    /// 游戏启动前相关逻辑
+    /// 将世界坐标转换为格子坐标
     /// </summary>
-    void OnEnable()
-    {
-        
-    }
+    /// <param name="worldPos"></param>
+    /// <returns></returns>
+    public Vector2Int WorldToGrid(Vector3 worldPos) => LevelData.WorldToGrid(worldPos, level.transform.position);
     /// <summary>
-    /// 游戏结束时相关逻辑
+    /// 将格子坐标转换为世界坐标
     /// </summary>
-    void OnDisable()
-    {
+    /// <param name="gridPos"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public Vector3 GridToWorld(Vector2Int gridPos, GridPosition offset) => LevelData.GridToWorld(gridPos, offset, level.transform.position);
 
-    }
+
     void Awake()
     {
         instance = this;
         gameObject.SetActive(false);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -169,21 +175,21 @@ public class GameController : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        selected.Add(new PlantsSelected(PlantSerializer.Instance.GetPlantData("Mona")));
-        selected.Add(new PlantsSelected(PlantSerializer.Instance.GetPlantData("Yanfei")));
+        AddSelectPlant("Mona");
+        AddSelectPlant("Yanfei");
+        AddSelectPlant("Lisa");
         
         plantsController = new PlantsController(LevelData);
         flyerController = new FlyersController();
-        monsterController = new MonstersController(LevelData);
-        
-        updater = new Updater(plantsController, monsterController);
+        monsterController = new MonstersController();
+        updater = new Updater(monsterController, LevelData.MonsterList);
 
         level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
 
         //展示卡槽图片
         UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
 
-        EnergyMonitor.AddEnergy(1000);
+        EnergyMonitor.AddEnergy(10000);
         for (int i = 200; i < 1600;i +=100)
         {
             EnergyMonitor.InstantiateEnergy(new Vector2Int(i, 540), EnergyType.Big);

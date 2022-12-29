@@ -21,3 +21,7 @@ MonoBehaviour:
     Prefab: {fileID: 8899414879856573637, guid: ca000a438781bbe409b2fb3c7a10274d, type: 3}
     Name: Mona
     Id: 1
+  - CardSprite: {fileID: 21300000, guid: 7a6fd135e19a02b42bc4a05257a92cc6, type: 3}
+    Prefab: {fileID: 3435951389600100459, guid: 1f69d6b2f39f68344b32eebaa06daa55, type: 3}
+    Name: Lisa
+    Id: 2

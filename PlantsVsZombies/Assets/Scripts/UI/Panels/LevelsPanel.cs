@@ -20,7 +20,7 @@ public class LevelsPanel : BasePanel
     }
     protected override void BeforeShow()
     {
-        foreach(var item in LevelSerializer.Instance)
+        foreach(var item in LevelSpriteSerializer.Instance)
         {
             GameObject plot = Instantiate(levelPlot, content.transform);
             plot.GetComponent<Image>().sprite = item.Value.Sprite;
@@ -42,7 +42,7 @@ public class LevelsPanel : BasePanel
     void OnButtonClicked()
     {
         string levelName = EventSystem.current.currentSelectedGameObject.name;
-        GameController.Instance.LevelData = LevelSerializer.Instance.GetLevel(levelName);//设置关卡
+        GameController.Instance.LevelData = LevelSpriteSerializer.Instance.GetLevel(levelName);//设置关卡
 
         GameController.Instance.StartGame();
         Hide();

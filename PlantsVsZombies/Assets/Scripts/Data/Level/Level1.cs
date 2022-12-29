@@ -10,11 +10,15 @@ public class Level1 : Level
     private int row = 5;
     private int col = 10;
     private Sprite sprite;
-    private List<IMonsterData> monsterList = new List<IMonsterData>();
+    private List<string> monsterList = new List<string>();
 
     public Level1(Sprite sprite)
     {
         this.sprite = sprite;
+        for(int i = 0; i < 100; i++)
+        {
+            monsterList.Add("CommonZombie");
+        }
     }
     public override int Row => row;
 
@@ -22,7 +26,18 @@ public class Level1 : Level
 
     public override Sprite Sprite => sprite;
 
-    public override Queue<IMonsterData> MonsterList => new Queue<IMonsterData>();
+    public override Queue<IMonsterData> MonsterList
+    {
+        get
+        {
+            Queue<IMonsterData> monsters = new Queue<IMonsterData>(monsterList.Count);
+            foreach(var monsterName in monsterList)
+            {
+                monsters.Enqueue(MonsterPrefabSerializer.Instance.GetMonsterData(monsterName));
+            }
+            return monsters;
+        }
+    }
 
     protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(128, 128);
 

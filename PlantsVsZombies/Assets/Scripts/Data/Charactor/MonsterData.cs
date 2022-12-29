@@ -6,6 +6,11 @@ using UnityEngine.Events;
 public abstract class MonsterData : IMonsterData, IDamageReceiver
 {
     /// <summary>
+    /// 原始预制体
+    /// </summary>
+    private GameObject original;
+
+    /// <summary>
     /// 身上的效果
     /// </summary>
     private List <IEffect> effects = new List<IEffect>();
@@ -13,12 +18,12 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
     /// <summary>
     /// 附着的元素
     /// </summary>
-    private ElementalObject<bool> elements = new ElementalObject<bool>();
+    protected ElementalObject<bool> elements = new ElementalObject<bool>();
 
     /// <summary>
     /// 抗性值
     /// </summary>
-    private ElementalObject<float> resistances = new ElementalObject<float>();
+    protected ElementalObject<float> resistances = new ElementalObject<float>();
 
     /// <summary>
     /// 当受到此元素类型伤害时调用的函数
@@ -43,6 +48,11 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
     public void AddOnElementReactedListener(Elements element, System.Action<ElementsReaction> action) => OnElementReacted.AddListener(element, action);
     public void RemoveOnElementReactedListener(Elements element, System.Action<ElementsReaction> action) => OnElementReacted.RemoveListener(element, action);
 
+    protected MonsterData(GameObject original)
+    {
+        this.original = original;
+    }
+
 
     protected int strength;
     public int Strength { get => strength; set => strength = value; }
@@ -57,7 +67,7 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
     public int AtkPower { get => atkPower; set => atkPower = value; }
 
     public GameObject GameObject { get; set; }
-    public abstract GameObject OriginalReference { get; }
+    public GameObject OriginalReference => original;
 
     public float GetResistance(Elements element) => resistances[element];
     public void SetResistance(float value, Elements element) => resistances[element] = value;
@@ -101,17 +111,18 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
                     continue;
                 Elements element = item.Key;
                 ElementsReaction reaction = ElementsReaction.GetReaction(element, causerElement);//尝试找元素反应
-                Debug.Log("Reaction:" + reaction.ReactionName);
                 if (reaction != null)//存在元素反应，让其发生
                 {
+                    Debug.Log("Reaction:" + reaction.ReactionName);
                     OnElementReacted.Trigger(element,reaction);//触发原来元素的反应逻辑
                     OnElementReacted.Trigger(causerElement, reaction);//触发新添加元素的反应逻辑
 
-                    Debug.Log("ReactionHappened");
                     reaction.Action(damage, this);
-                    
+
+
                     elements[element] = false;
                     damage.CanAddElement = false;//已经触发完反应，因此此次攻击不再附着元素
+
                     break;
                 }
             }
@@ -121,7 +132,6 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
 
 
     public void AddElement(Elements element) => elements[element] = true;
-
     public void RemoveElement(Elements element) => elements[element] = false;
     
     public Elements[] GetAllElements()

@@ -31,6 +31,22 @@ public class ElementalObject<T> : IEnumerable<KeyValuePair<Elements,T>>
         }
     }
     /// <summary>
+    /// 查找
+    /// </summary>
+    /// <param name="match">符合的条件</param>
+    /// <returns>符合条件的数组</returns>
+    public KeyValuePair<Elements,T>[] Find(System.Predicate<T> match)
+    {
+        List<KeyValuePair<Elements, T>> list = new List<KeyValuePair<Elements, T>>();
+        for(int i = 0;i<items.Length;i++)
+        {
+            T item = items[i];
+            if (match.Invoke(item))
+                list.Add(new KeyValuePair<Elements, T>((Elements)i,item));
+        }
+        return list.ToArray();
+    }
+    /// <summary>
     /// 迭代器
     /// </summary>
     /// <returns></returns>

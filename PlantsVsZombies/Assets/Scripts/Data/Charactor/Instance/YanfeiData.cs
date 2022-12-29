@@ -13,10 +13,10 @@ public class YanfeiData : PlantData
     public override int EnergyCost => 200;
 
     public override int Health { get; set; } = 100;
-    public override int AtkPower { get; set; } = 50;
+    public override int AtkPower { get; set; } = 0;
 
 
-    public override int CoolTime => 10;
+    public override int CoolTime => 10000;
 
     public override string PlantName => "Yanfei";
 

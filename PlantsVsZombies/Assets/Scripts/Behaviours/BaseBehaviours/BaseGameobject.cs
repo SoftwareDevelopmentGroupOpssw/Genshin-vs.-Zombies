@@ -7,8 +7,5 @@ using UnityEngine;
 /// </summary>
 public abstract class BaseGameobject : MonoBehaviour
 {
-    /// <summary>
-    /// 物体数据
-    /// </summary>
-    public abstract IGameobjectData Data { get; set; }
+
 }

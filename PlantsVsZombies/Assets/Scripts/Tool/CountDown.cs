@@ -17,8 +17,9 @@ public class CountDown
     public bool Available => miliseconds == -1?true:available;
     /// <summary>
     /// 计时器计时时间
+    /// 改变值会影响下次倒计时时间
     /// </summary>
-    public int MilisecondsCountDown => miliseconds;
+    public int MilisecondsCountDown { get => miliseconds; set => miliseconds = value; }
     /// <summary>
     /// 当计时器每次归零时调用
     /// </summary>

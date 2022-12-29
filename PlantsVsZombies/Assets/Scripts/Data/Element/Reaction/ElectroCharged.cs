@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ElectroCharged : ElementsReaction, IEffect
 {
-    private static int radius = 100;   //感电伤害的半径
+    private static float radius = 1.2f;   //感电伤害的半径
     private static int damageTimes = 4;    //感电造成伤害次数
     private static int damageDealtPerTime = 5;//一次感电造成伤害值
     private static int damageSpaceTime = 500;//两次感电伤害之间的间隔时间（毫秒）
@@ -34,21 +34,26 @@ public class ElectroCharged : ElementsReaction, IEffect
     {
         this.target = target;
         target.AddEffect(this);
-        
-        ////范围检测
-        //Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
-        //foreach(var collider in colliders)
-        //{
-        //    if(collider.gameObject.tag == "Monster")
-        //    {
-        //        collider.GetComponent<Monster>().Data.AddEffect(new ElectroCharged());
-        //    }
-        //}
+
+        //范围检测
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject.tag == "Monster")
+            {
+                Monster monster = collider.gameObject.GetComponent<Monster>();
+                if(monster is IDamageable)
+                {
+                    IDamageReceiver receiver = (monster as IDamageable).GetReceiver();
+                    receiver.AddEffect(new ElectroCharged() { target = receiver});
+                }
+            }
+        }
     }
     private Coroutine damageCoroutine;
     private IEnumerator DamageCoroutine(IMonsterData monster)
     {
-        for(int i = 0; i< damageTimes; i++)
+        for (int i = 0; i< damageTimes; i++)
         {
             monster.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Electric));
             yield return new WaitForSecondsRealtime((float)damageSpaceTime / 1000);
@@ -67,20 +72,18 @@ public class ElectroCharged : ElementsReaction, IEffect
     }
     public void EnableEffect(IGameobjectData target)
     {
-        damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(target as IMonsterData));
+        damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(this.target as IMonsterData));
         State = EffectState.Processing;
-
         this.target.AddElement(Elements.Water);
         this.target.AddElement(Elements.Electric);
         this.target.AddOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
         this.target.AddOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
-        
-        strength.EnableEffect(target);//开启韧性削减效果
+        strength.EnableEffect(this.target);//开启韧性削减效果
     }
 
     public void DisableEffect(IGameobjectData target)
     {
-        strength.DisableEffect(target);
+        strength.DisableEffect(this.target);
         
         //被移除时移除水雷元素
         this.target.RemoveElement(Elements.Electric);

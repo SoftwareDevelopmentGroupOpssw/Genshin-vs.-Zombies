@@ -17,6 +17,13 @@ public interface IDamageReceiver : ICharactorData
     /// </summary>
     /// <param name="element"></param>
     public void RemoveElement(Elements element);
+
+    /// <summary>
+    /// 获得所有元素附着
+    /// </summary>
+    /// <returns></returns>
+    public Elements[] GetAllElements();
+
     /// <summary>
     /// 受到元素伤害
     /// </summary>

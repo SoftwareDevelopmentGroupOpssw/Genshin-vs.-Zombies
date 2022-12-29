@@ -7,7 +7,7 @@ using UnityEngine;
 public class Overloaded : ElementsReaction
 {
     public const int OVERLOAD_DAMAGE = 30;
-    private static int radius = 20;//Ó°Ïì·¶Î§
+    private static float radius = 0.9f;//Ó°Ïì·¶Î§
     private static int strengthChange = -60;
     private static int changeTime = 1000;
     public override string ReactionName => "Overloaded";
@@ -16,5 +16,21 @@ public class Overloaded : ElementsReaction
     {
         target.AddEffect(new StrengthEffect(strengthChange, changeTime, system));
         target.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));
+
+        //·¶Î§¼ì²â
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject.tag == "Monster")
+            {
+                Monster monster = collider.gameObject.GetComponent<Monster>();
+                if (monster is IDamageable)
+                {
+                    IDamageReceiver receiver = (monster as IDamageable).GetReceiver();
+                    receiver.AddEffect(new StrengthEffect(strengthChange, changeTime, system));
+                    receiver.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));
+                }
+            }
+        }
     }
 }

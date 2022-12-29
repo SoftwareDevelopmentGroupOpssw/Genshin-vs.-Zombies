@@ -115,3 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a61657c3f84314abc67154af3175e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  element: 1
+  bulletName: WaterBullet
+  timeDistance: 1000

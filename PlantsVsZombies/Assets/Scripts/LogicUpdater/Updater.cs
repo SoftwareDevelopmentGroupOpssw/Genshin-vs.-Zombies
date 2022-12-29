@@ -7,24 +7,14 @@ using UnityEngine.Events;
 /// </summary>
 public class Updater
 {
-    private PlantsController plantsController;
-    private MonstersController monstersController;
-    private PlantsUpdater plantsUpdater;
-    private MonstersUpdater monstersUpdater;
     private RefreshModule refresh;
-    public Updater(PlantsController plantsController,MonstersController monstersController)
+    public Updater(MonstersController monstersController,Queue<IMonsterData> monsterList)
     {
-        this.plantsController = plantsController;
-        this.monstersController = monstersController;
-        plantsUpdater = new PlantsUpdater(plantsController);
-        monstersUpdater = new MonstersUpdater(monstersController);
-        refresh = new RefreshModule();
+        refresh = new RefreshModule(monstersController,monsterList);
     }
     // Update is called once per frame
     public void Update()
     {
-        plantsUpdater.Update();
-        monstersUpdater.Update();
         refresh.Update();
     }
 }

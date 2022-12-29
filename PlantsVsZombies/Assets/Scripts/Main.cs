@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Run();
@@ -15,7 +14,7 @@ public class Main : MonoBehaviour
     public void Run()
     {
         UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
-        //UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel")
+
 
         //GameController.Instance.StartGame();
 
@@ -32,14 +31,8 @@ public class Main : MonoBehaviour
 
     }
     // Update is called once per frame
-    string str = "";
     void Update()
     {
-        //monster.Data.Action();
-        //if(monster.Data.ToString() != str)
-        //{
-        //    str = monster.Data.ToString();
-        //    Debug.Log(str);
-        //}
+
     }
 }

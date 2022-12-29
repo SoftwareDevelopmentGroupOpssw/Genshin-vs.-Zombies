@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 294816180236726899}
   m_Layer: 0
   m_Name: WaterBullet
-  m_TagString: Untagged
+  m_TagString: Flyer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6bda2a4991e2cb6469162e3a9668338c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a94e8faf9c7b7ec4789726a16efda2ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,6 +131,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5258871162860370201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 790a72fa38c41324aaf1438db93822a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0235c3cdc515a654ab1373b15f7eca1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  velocity: 5
+  element: 1
+  brokenSprite: {fileID: 21300000, guid: d51af248c41faa246b1645f61424cfbd, type: 3}
