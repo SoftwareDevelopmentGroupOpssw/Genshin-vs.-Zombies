@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8899414879856573638}
   - component: {fileID: 8899414879856573639}
   - component: {fileID: 8899414879856573636}
+  - component: {fileID: -3461299733145028006}
   - component: {fileID: -3938573266187920795}
   m_Layer: 0
   m_Name: Mona
@@ -70,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 277712833
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ab336f7d530b49a4bb25d0e7bf4d0de7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -103,6 +104,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!70 &-3461299733145028006
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8899414879856573637}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.010547817, y: -0.075313926}
+  m_Size: {x: 0.32001054, y: 0.9793837}
+  m_Direction: 0
 --- !u!114 &-3938573266187920795
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,7 +28,8 @@ public interface IDamageReceiver : ICharactorData
     /// 受到元素伤害
     /// </summary>
     /// <param name="damage"></param>
-    public void ReceiveDamage(IElementalDamage damage);
+    /// <returns>造成伤害的结果</returns>
+    public bool ReceiveDamage(IElementalDamage damage);
 
     /// <summary>
     /// 添加受到元素伤害监听
@@ -42,6 +43,18 @@ public interface IDamageReceiver : ICharactorData
     /// <param name="element"></param>
     /// <param name="action"></param>
     public void RemoveOnReceiveDamageListener(Elements element, System.Action<IElementalDamage> action);
+
+    /// <summary>
+    /// 为所有类型的元素伤害添加监听
+    /// </summary>
+    /// <param name="action">受到伤害时调用的函数</param>
+    public void AddOnReceiveAllDamageListener(System.Action<IElementalDamage> action);
+    /// <summary>
+    /// 为所有类型的元素伤害移除监听
+    /// </summary>
+    /// <param name="action">受到伤害时调用的函数</param>
+    public void RemoveOnReceiveAllDamageListener(System.Action<IElementalDamage> action);
+
     /// <summary>
     /// 添加元素反应监听
     /// </summary>

@@ -9,7 +9,7 @@ public class ElectroCharged : ElementsReaction, IEffect
 {
     private static float radius = 1.2f;   //感电伤害的半径
     private static int damageTimes = 4;    //感电造成伤害次数
-    private static int damageDealtPerTime = 5;//一次感电造成伤害值
+    private static int damageDealtPerTime = 3;//一次感电造成伤害值
     private static int damageSpaceTime = 500;//两次感电伤害之间的间隔时间（毫秒）
     private static int deltaStrength = -30;//对于怪物所造成的韧性衰减值
     private StrengthEffect strength;
@@ -30,7 +30,7 @@ public class ElectroCharged : ElementsReaction, IEffect
     public EffectState State { get; private set; }
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
         target.AddEffect(this);
@@ -41,13 +41,13 @@ public class ElectroCharged : ElementsReaction, IEffect
         {
             if (collider.gameObject.tag == "Monster")
             {
-                Monster monster = collider.gameObject.GetComponent<Monster>();//获取monster控制脚本
+                IDamageable collideTarget = collider.gameObject.GetComponent<IDamageable>();//获取可以触发感电的对象
                 //可以受到伤害
-                if(monster is IDamageable)
+                if(collideTarget != null)
                 {
                     //获取一个伤害接收器
-                    IDamageReceiver receiver = (monster as IDamageable).GetReceiver();
-                    receiver.AddEffect(new ElectroCharged() { target = receiver});
+                    IDamageReceiver receiver = collideTarget.GetReceiver();
+                    MonoManager.Instance.StartCoroutine(DamageCoroutine(receiver));//对范围内的敌人造成伤害，但不附加元素
                 }
             }
         }
@@ -56,11 +56,11 @@ public class ElectroCharged : ElementsReaction, IEffect
     /// 造成持续伤害的协程
     /// </summary>
     private Coroutine damageCoroutine;
-    private IEnumerator DamageCoroutine(IMonsterData monster)
+    private IEnumerator DamageCoroutine(IDamageReceiver target)
     {
         for (int i = 0; i< damageTimes; i++)
         {
-            monster.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Electric));
+            target.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Electric));
             yield return new WaitForSecondsRealtime((float)damageSpaceTime / 1000);
         }
         State = EffectState.End;

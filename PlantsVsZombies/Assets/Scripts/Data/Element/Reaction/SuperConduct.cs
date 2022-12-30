@@ -13,7 +13,7 @@ public class SuperConduct : ElementsReaction
     public override string ReactionName => "SuperConduct";
     private static float physicalChange = -0.5f;
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         target.ReceiveDamage(new SystemDamage(SuperConduct.damage, Elements.Ice));
         target.AddEffect(new ResistanceEffect(Elements.None, physicalChange, 6000, system));

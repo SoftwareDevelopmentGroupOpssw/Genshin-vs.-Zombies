@@ -33,20 +33,18 @@ public class CountDown
         miliseconds = milisecondsCountDown;
         available = true;
     }
-    private Task task;
-    private void ThreadFunc()
+    Coroutine coroutine;
+    IEnumerator CountCoroutine()
     {
         available = false;
-        Thread.Sleep(miliseconds);
+        yield return new WaitForSecondsRealtime(MilisecondsCountDown / 1000f);
         available = true;
         OnComplete?.Invoke();
-        task = null;
+        coroutine = null;
     }
     public void StartCountDown()
     {
-        if(task == null && miliseconds != -1)
-        {
-            task = Task.Run(ThreadFunc);
-        }
+        if (coroutine == null)
+            coroutine = MonoManager.Instance.StartCoroutine(CountCoroutine());
     }
 }

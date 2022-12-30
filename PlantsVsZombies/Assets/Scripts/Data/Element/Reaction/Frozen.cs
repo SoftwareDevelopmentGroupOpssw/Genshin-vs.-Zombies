@@ -56,7 +56,7 @@ public class Frozen : ElementsReaction, IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         stun = new StunEffect(system, stunTime);
         speed = new SpeedEffect(system, speedPercent, speedTime);

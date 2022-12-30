@@ -11,16 +11,17 @@ public class Swirl : ElementsReaction
     private int swirlDamage = 5;//À©É¢ÉËº¦
     public override string ReactionName => "Swirl";
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        ////·¶Î§¼ì²â
-        //Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
-        //foreach (var collider in colliders)
-        //{
-        //    if (collider.gameObject.tag == "Monster")
-        //    {
-        //        collider.GetComponent<Monster>().Data.ReceiveDamage(new SystemDamage(swirlDamage, damage.ElementType, true));
-        //    }
-        //}
+        //·¶Î§¼ì²â
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            IDamageable damageable = collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.GetReceiver().ReceiveDamage(new SystemDamage(swirlDamage, damage.ElementType, true));
+            }
+        }
     }
 }

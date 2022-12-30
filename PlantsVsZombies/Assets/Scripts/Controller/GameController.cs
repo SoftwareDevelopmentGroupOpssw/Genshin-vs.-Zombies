@@ -129,14 +129,6 @@ public class GameController : MonoBehaviour
         //TODO:实现逻辑判断
         plantsController.RemoveOnePlant(WorldToGrid(worldPos));
     }
-    
-    /// <summary>
-    /// 添加飞行物
-    /// </summary>
-    /// <param name="data">飞行物数据</param>
-    /// <param name="worldPos">飞行物出现的世界坐标</param>
-    /// <returns>飞行物对象</returns>
-    public Flyer AddFlyer(IFlyerData data, Vector3 worldPos) => flyerController.AddFlyer(data, worldPos);
 
     /// <summary>
     /// 将世界坐标转换为格子坐标

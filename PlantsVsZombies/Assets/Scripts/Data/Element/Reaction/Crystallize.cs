@@ -25,7 +25,7 @@ public class Crystallize : ElementsReaction
 
     public override string ReactionName => "Crystallize";
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         damage.AtkDmg += crystallizeDamage;
 

@@ -70,11 +70,12 @@ public class PeashooterBehaviour : Plant
         //获取子弹的贴图信息
         PeaBulletData data = FlyerPrefabSerializer.Instance.GetFlyerData<PeaBulletData>(bulletName);
         //获取子弹身上的脚本
-        PeaBulletBehaviour flyer = GameController.Instance.FlyersController.AddFlyer<PeaBulletBehaviour>(data, transform.position);
-        flyer.AvailableArea = new FrontLine();//子弹的范围为前一行  
-        flyer.ElementType = element;//改变子弹的元素伤害
-        flyer.AtkDmg = Data.AtkPower;//豌豆的伤害与攻击者的攻击力相同
-        flyer.CanAddElement = true;//豌豆一直可以附着元素
-
+        GameController.Instance.FlyersController.AddFlyer<PeaBulletBehaviour>(data, transform.position, (peabullet)=>
+        {
+            peabullet.AvailableArea = new FrontLine();//子弹的范围为前一行  
+            peabullet.ElementType = element;//改变子弹的元素伤害
+            peabullet.AtkDmg = Data.AtkPower;//豌豆的伤害与攻击者的攻击力相同
+            peabullet.CanAddElement = true;//豌豆一直可以附着元素
+        });
     }
 }

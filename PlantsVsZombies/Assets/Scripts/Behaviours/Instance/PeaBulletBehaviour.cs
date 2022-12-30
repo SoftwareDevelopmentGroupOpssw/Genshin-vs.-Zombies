@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 像豌豆子弹一样的飞行物：向右直线飞行，超过区域删除，只能对第一个目标造成效果
+/// 像豌豆子弹一样的飞行物的控制脚本：向右直线飞行，超过区域删除，只能对第一个目标造成效果
+/// 豌豆子弹可以造成元素伤害
 /// </summary>
 public class PeaBulletBehaviour : Flyer, IElementalDamage
 {
-    
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rigid;
+    private Collider2D colliders;
     private ILevelData level => GameController.Instance.LevelData;
-
-    private Vector2Int[] area;
     /// <summary>
-    /// 是否砸到怪物身上触发了伤害
+    /// 计算得到的可行域
     /// </summary>
-    private bool isTriggered = false;
+    private Vector2Int[] area;
 
     [Header("豌豆伤害")]
     [SerializeField]
@@ -31,27 +32,49 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
     private Elements element;
     public Elements ElementType { get => element; set => element = value; }
 
-    [Header("豌豆打击触发时切换的图片")]
+    [Header("豌豆打击触发时碎掉的图片")]
     [SerializeField]
     private Sprite brokenSprite;
-
+    
+    [Header("豌豆飞行时的的图片")]
+    [SerializeField]
+    private Sprite flyingSprite;
 
     public bool CanAddElement { get; set; }
-
-
-
-    void Start()
-    {
-        //计算目前能打到的位置
-        area = AvailableArea.GetArea(level, GameController.Instance.WorldToGrid(transform.position));
-        GetComponent<Rigidbody2D>().velocity = Vector2.right * Velocity;
-    }
     
     /// <summary>
-    /// 子弹飞行
+    /// 移除自己
     /// </summary>
-    void Moving()
+    void RemoveThis()
     {
+        area = null;//清空已经计算得到的区域，下次出现时重新计算
+        GameController.Instance.FlyersController.RemoveFlyer(this);
+    }
+
+    void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+        colliders = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    void OnEnable()//每次被飞行物控制器激活时调用进行初始化
+    {
+        //初始化：
+        colliders.enabled = true;//启用碰撞盒脚本
+        rigid.velocity = Vector2.right * Velocity;//设置速度
+        spriteRenderer.sprite = flyingSprite;//设置为飞行图片
+    }
+
+
+    /// <summary>
+    /// 检查子弹是否还在区域内，不在直接删除
+    /// </summary>
+    void CheckLocation()
+    {
+        if(area == null)
+            //计算目前能打到的位置
+            area = AvailableArea.GetArea(level, GameController.Instance.WorldToGrid(transform.position));
+
         bool isInArea = false;
         foreach (var grid in area)
         {
@@ -62,20 +85,24 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
         }
         if (!isInArea)
         {
-            Destroy(gameObject);
+            RemoveThis();//移除自己
         }
     }
+
     IEnumerator BrokenCoroutine()
     {
-        float waitSecondsBeforeDestroy = 0.2f;//在Destroy前显示broken的时间
-        GetComponent<SpriteRenderer>().sprite = brokenSprite;
+        colliders.enabled = false; //解除触发器检测
+        spriteRenderer.sprite = brokenSprite;
+        rigid.velocity = Vector2.zero;//停止移动
+
+        float waitSecondsBeforeDestroy = 0.1f;//在Destroy前显示broken的时间
         yield return new WaitForSecondsRealtime(waitSecondsBeforeDestroy);
-        Destroy(gameObject);
+        RemoveThis();
     }
     void Update()
     {
-        if (!isTriggered)
-            Moving();
+        if(colliders.enabled == true)//还没有被触发过
+            CheckLocation();
     }
    
     /// <summary>
@@ -84,15 +111,11 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
     /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Monster" && !isTriggered) //没有触发过，而且砸到了一个怪物的身上
+        IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
+        if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            Monster monster = collision.gameObject.GetComponent<Monster>();
-            if(monster is IDamageable)
-            {
-                isTriggered = true;
+            if(target.GetReceiver().ReceiveDamage(this))
                 StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
-                (monster as IDamageable).GetReceiver().ReceiveDamage(this);
-            }
         }
     }
 }

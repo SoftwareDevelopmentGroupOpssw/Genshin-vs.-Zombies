@@ -14,7 +14,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Charactors
   - 
   - 
   - 
@@ -50,6 +50,15 @@ TagManager:
   - name: UIElement
     uniqueID: 3784571985
     locked: 0
-  - name: Charactors
+  - name: Plants
     uniqueID: 277712833
+    locked: 0
+  - name: Flyers
+    uniqueID: 3060408083
+    locked: 0
+  - name: Monsters
+    uniqueID: 2160319957
+    locked: 0
+  - name: Information
+    uniqueID: 541126045
     locked: 0

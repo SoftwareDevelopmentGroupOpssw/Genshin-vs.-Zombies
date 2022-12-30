@@ -71,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1234559213
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5bdf17f0651afe74383130c61442ecdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -138,3 +138,4 @@ MonoBehaviour:
   velocity: 5
   element: 7
   brokenSprite: {fileID: 21300000, guid: 5c728d2e036398544a45c37b6aa32589, type: 3}
+  flyingSprite: {fileID: 21300000, guid: 5bdf17f0651afe74383130c61442ecdc, type: 3}

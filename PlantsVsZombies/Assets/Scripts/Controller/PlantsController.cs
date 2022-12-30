@@ -8,7 +8,7 @@ using UnityEngine.Events;
 /// </summary>
 public class PlantsController
 {
-    private GameObject PlantsFatherObject = new GameObject("Plants");
+    public GameObject PlantsFatherObject = new GameObject("Plants");
     private ILevelData levelData;
     private List<Plant>[,] plants;
     public PlantsController(ILevelData level)
@@ -71,7 +71,7 @@ public class PlantsController
             else //ÒÆ³ý³É¹¦
             {
                 plant.Data.GameObject = null;
-                GameObject.Destroy(plant);
+                GameObject.Destroy(plant.gameObject);
                 return;
             }
         }

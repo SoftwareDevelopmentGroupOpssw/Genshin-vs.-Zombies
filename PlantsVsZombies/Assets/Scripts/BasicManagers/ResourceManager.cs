@@ -17,11 +17,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public T Load<T>(string path) where T : Object
     {
         T res = Resources.Load<T>(path);
-        //如果对象是一个GameObject类型的 把他实例化后 再返回出去 外部 直接使用即可
-        if (res is GameObject)
-            return GameObject.Instantiate(res);
-        else//TextAsset AudioClip
-            return res;
+        return res;
     }
 
     /// <summary>

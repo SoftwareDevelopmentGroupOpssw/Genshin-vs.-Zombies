@@ -34,15 +34,16 @@ public class UIManager:Singleton<UIManager>
     {
         GameObject obj = null;
         obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "Canvas");
-        GameObject.DontDestroyOnLoad(obj);
+        GameObject canvas = GameObject.Instantiate(obj);
+        GameObject.DontDestroyOnLoad(canvas);
 
-        top = obj.transform.Find("Top");
-        mid = obj.transform.Find("Mid");
-        bot = obj.transform.Find("Bot");
-        system = obj.transform.Find("System");
+        top = canvas.transform.Find("Top");
+        mid = canvas.transform.Find("Mid");
+        bot = canvas.transform.Find("Bot");
+        system = canvas.transform.Find("System");
 
         obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "EventSystem");
-        GameObject.DontDestroyOnLoad(obj);
+        GameObject.DontDestroyOnLoad(GameObject.Instantiate(obj));
     }
 
     /// <summary>

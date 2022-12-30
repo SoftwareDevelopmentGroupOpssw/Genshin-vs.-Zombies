@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -11,12 +13,16 @@ public class DelayDestroy : MonoBehaviour
     /// —”≥Ÿ ±º‰£®∫¡√Î£©
     /// </summary>
     public int DelayMiliseconds = 5000;
-    public void Start()
+    public virtual void Start()
     {
-        Invoke("DestroyObj", (float)DelayMiliseconds / 1000);
+        Task.Run(() =>
+        {
+            Thread.Sleep(DelayMiliseconds);
+            DestroyThis();
+        });
 
     }
-    void DestroyObj()
+    protected void DestroyThis()
     {
         Destroy(gameObject);    
     }

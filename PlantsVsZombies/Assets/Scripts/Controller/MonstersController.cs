@@ -8,7 +8,12 @@ using UnityEngine.Events;
 /// </summary>
 public class MonstersController
 {
-    private static readonly GameObject MonsterFatherObject = new GameObject("Monsters");
+    public static readonly GameObject MonsterFatherObject = new GameObject("Monsters");
+    /// <summary>
+    /// 在sprite排序时的起始优先级
+    /// </summary>
+    public const int MONSMTER_START_ORDER = 20;
+
     private List<Monster> monsters = new List<Monster>();
     /// <summary>
     /// 场上怪物的数量
@@ -63,7 +68,24 @@ public class MonstersController
         }
         return false;
     }
-    
+    /// <summary>
+    /// 找到一个在最前的Monster
+    /// </summary>
+    /// <returns></returns>
+    public Monster GetMostForwardMonster()
+    {
+        if(monsters.Count > 0)
+        {
+            Monster monster = monsters[0];
+            for(int i = 1; i < monsters.Count; i++)
+            {
+                if (monsters[i].transform.position.x < monster.transform.position.x) //新找到的魔物比之前找到的更前
+                    monster = monsters[i];
+            }
+            return monster;
+        }
+        return null;
+    }
     /// <summary>
     /// 遍历所有的魔物
     /// </summary>

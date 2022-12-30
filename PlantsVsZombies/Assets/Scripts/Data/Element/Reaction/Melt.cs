@@ -8,7 +8,7 @@ public class Melt : ElementsReaction
     public override string ReactionName => Name;
     public static string Name => "Melt";
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         damage.AtkDmg = (int)(DAMAGE_INCREASE * damage.AtkDmg);
     }

@@ -22,8 +22,9 @@ public class Mona : PeashooterBehaviour
         animator.SetTrigger("Atk");//´¥·¢¹¥»÷¶¯»­
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (CountDown.Available && HaveMonster())
         {
             Atk();

@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class RefreshModule
 {
-    private const int SUMMON_DISTANCE_TIME = 10000;
+    private const int SUMMON_DISTANCE_TIME = 8000;
     private Queue<IMonsterData> monsters;
     private MonstersController controller;
     private CountDown countDown = new CountDown(SUMMON_DISTANCE_TIME);
@@ -20,7 +20,7 @@ public class RefreshModule
     /// <summary>
     /// 生成新的魔物
     /// </summary>
-    public void GenerateNewMonsters()
+    public void GenerateNewMonster()
     {
         ILevelData level = GameController.Instance.LevelData;
 
@@ -52,7 +52,7 @@ public class RefreshModule
     {
         for (int i = 0; i < count; i++)
         {
-            GenerateNewMonsters();//帧更新结束时尝试生成魔物
+            GenerateNewMonster();//帧更新结束时尝试生成魔物
             yield return new WaitForSecondsRealtime(0.5f);
         }
     }

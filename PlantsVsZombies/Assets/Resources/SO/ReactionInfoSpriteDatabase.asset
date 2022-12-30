@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f7ae8a72d6c154aba20145491d4404, type: 3}
+  m_Name: ReactionInfoSpriteDatabase
+  m_EditorClassIdentifier: 
+  infos:
+  - Sprite: {fileID: 21300000, guid: 8b80d86304ec2c349822c18aa3831ec5, type: 3}
+    Name: Frozen
+  - Sprite: {fileID: 21300000, guid: 103bf92217445ba489138118ba35ee42, type: 3}
+    Name: Electro-Charged
+  - Sprite: {fileID: 21300000, guid: 5d34dde5d1617944cabe5c6de66444a5, type: 3}
+    Name: Swirl
+  - Sprite: {fileID: 21300000, guid: 7c6a6cb447387d446995304add3fe9de, type: 3}
+    Name: Quicken
+  - Sprite: {fileID: 21300000, guid: 5741ae90707ca4145b786bc3bab34a48, type: 3}
+    Name: PyroBloom
+  - Sprite: {fileID: 21300000, guid: 80c77da2603fd7249a152cc84399b6d0, type: 3}
+    Name: Crystallize
+  - Sprite: {fileID: 21300000, guid: c8e1cdf266c0d4d4f9c4117b035e1147, type: 3}
+    Name: Bloom
+  - Sprite: {fileID: 21300000, guid: 0dbd6c0e4358a1845b9ce0577f1cf0a5, type: 3}
+    Name: Vaporize
+  - Sprite: {fileID: 21300000, guid: 88105df850fc376428106e32fd8a857e, type: 3}
+    Name: Melt
+  - Sprite: {fileID: 21300000, guid: 6225535ab4a12b544bc010c7df3c0685, type: 3}
+    Name: SuperConduct
+  - Sprite: {fileID: 21300000, guid: 132dfdc65fac2c8409f4db90150f1d70, type: 3}
+    Name: HyperBloom
+  - Sprite: {fileID: 21300000, guid: 1f25f7822453ae844a7d76a98e7b4700, type: 3}
+    Name: Overloaded

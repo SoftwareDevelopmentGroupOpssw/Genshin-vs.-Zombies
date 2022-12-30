@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,8 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
     private ElementEvent<IElementalDamage> OnReceivedDamage = new ElementEvent<IElementalDamage>();
     public void AddOnReceiveDamageListener(Elements element, System.Action<IElementalDamage> action) => OnReceivedDamage.AddListener(element, action);
     public void RemoveOnReceiveDamageListener(Elements element, System.Action<IElementalDamage> action) => OnReceivedDamage.RemoveListener(element, action);
+    public void AddOnReceiveAllDamageListener(Action<IElementalDamage> action) => OnReceivedDamage.AddAllListener(action);
+    public void RemoveOnReceiveAllDamageListener(Action<IElementalDamage> action) => OnReceivedDamage.RemoveAllListener(action);
 
     /// <summary>
     /// 当受到此元素类型附着时调用的函数
@@ -84,7 +87,7 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
 
     public virtual void OnDestroy() { }
 
-    public void ReceiveDamage(IElementalDamage damage)
+    public bool ReceiveDamage(IElementalDamage damage)
     {
         //本地函数：没有反应，仅仅考虑抗性和附着
         void PlainDealsDamage(IElementalDamage damage)
@@ -100,6 +103,7 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
                 }
             }
             OnReceivedDamage.Trigger(damage.ElementType,damage);//触发受到伤害逻辑
+            OnReceivedDamage.TriggerAll(damage);//触发所有类型的监听
 
             float value = GetResistance(damage.ElementType);
             health -= (int)(damage.AtkDmg * (1 - value));
@@ -117,7 +121,6 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
                 ElementsReaction reaction = ElementsReaction.GetReaction(element, causerElement);//尝试找元素反应
                 if (reaction != null)//存在元素反应，让其发生
                 {
-                    Debug.Log("Reaction:" + reaction.ReactionName);
                     OnElementReacted.Trigger(element,reaction);//触发原来元素的反应逻辑
                     OnElementReacted.Trigger(causerElement, reaction);//触发新添加元素的反应逻辑
 
@@ -132,6 +135,7 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
             }
         }
         PlainDealsDamage(damage);
+        return true;
     }
 
 
@@ -148,6 +152,4 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
         }
         return total.ToArray();
     }
-
-
 }
