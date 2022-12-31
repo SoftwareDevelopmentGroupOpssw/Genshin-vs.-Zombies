@@ -12,6 +12,7 @@ public class GameMa : MonoBehaviour
 
     bool flag = true;
     public static bool gamestart = false;
+    public static float tx = -4, ty = 6, tz = 0,num=0;
     public static float x = 4;
     int  f = -20000;
 
@@ -25,6 +26,7 @@ public class GameMa : MonoBehaviour
     {
          tot++;
          if (tot<900&&tot>=500) Camera.main.transform.position += Camera.main.transform.right * 5 * Time.deltaTime;
+
 
         Vector3 pos = obj.transform.position;
         float x = pos.x;

@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonaData.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\SpeedEffect.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Reaction\Melt.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\Panel.cs" />
      <Compile Include="Assets\Scripts\Controller\FlyersController.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\MonoManager.cs" />
      <Compile Include="Assets\Scripts\Controller\GameController.cs" />
@@ -138,6 +139,7 @@
      <Compile Include="Assets\Scripts\BasicManagers\Singleton.cs" />
      <Compile Include="Assets\Scripts\Data\Level\Level.cs" />
      <Compile Include="Assets\Scripts\IO\LevelSerializer.cs" />
+     <Compile Include="Assets\Scripts\itemcontrol\GameMa.cs" />
      <Compile Include="Assets\Scripts\Controller\EnergyMonitor.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\Handler\CommonMonsterHandler.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Reaction\Vaporize.cs" />
