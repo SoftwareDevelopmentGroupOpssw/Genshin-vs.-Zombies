@@ -34,7 +34,7 @@ public class StrengthEffect : CountDownEffect
         if(!(target is IMonsterData))
         {
             State = EffectState.Error;
-            throw new System.NotSupportedException("Strength effect can only be added on monsters");
+            throw new System.NotSupportedException("Strength effect can only be added on monsters. Target:" + target.GameObject.name);
         }
         IMonsterData monster = target as IMonsterData;
         monster.Strength += changeValue;

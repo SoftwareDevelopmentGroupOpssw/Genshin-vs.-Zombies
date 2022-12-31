@@ -11,7 +11,7 @@ public class CommonZombieData : MonsterData
     {
         strength = 100;
         health = 100;
-        speed = 50;
+        speed = 35;
         atkPower = 20;
         //SetResistance(0.1f, Elements.None);
         //SetResistance(0.1f, Elements.Water);

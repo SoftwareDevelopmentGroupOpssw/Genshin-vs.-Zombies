@@ -16,13 +16,28 @@ public class ObjectBuffer
     {
         fatherTransform = parent;
     }
+    /// <summary>
+    /// 清除池子里的东西
+    /// </summary>
+    public void Clear()
+    {
+        foreach(var item in objDic)
+        {
+            foreach(var obj in item.Value)
+            {
+                GameObject.Destroy(obj);
+            }
+        }
+        objDic.Clear();
+    }
 
     /// <summary>
     /// 从池子中获取一个物体
     /// </summary>
     /// <param name="key">原始预制体</param>
+    /// <param name="action">在激活之前的操作</param>
     /// <returns></returns>
-    public GameObject Get(GameObject key)
+    public GameObject Get(GameObject key, System.Action<GameObject> action = null)
     {
         if (!objDic.ContainsKey(key))
             objDic.Add(key, new Stack<GameObject>());
@@ -31,12 +46,15 @@ public class ObjectBuffer
         if (objList.Count > 0)
         {
             GameObject obj = objList.Pop();
+            action?.Invoke(obj);
             obj.SetActive(true);
             return obj;
         }
         else
         {
-            return GameObject.Instantiate(key, fatherTransform);
+            GameObject obj = GameObject.Instantiate(key, fatherTransform);
+            action?.Invoke(obj);
+            return obj;
         }
     }
     /// <summary>
@@ -72,6 +90,11 @@ public class ObjectBuffer<T>
     }
 
     /// <summary>
+    /// 清除池子里的东西
+    /// </summary>
+    public void Clear() => objDic.Clear();
+
+    /// <summary>
     /// 查询是否可以存取此种key类型的对象
     /// 必须先设定过原始预制体后 才能存取
     /// </summary>
@@ -105,22 +128,26 @@ public class ObjectBuffer<T>
     /// 从池子中获取一个物体
     /// </summary>
     /// <param name="key"></param>
+    /// <param name="action">在激活之前对其操作</param>
     /// <returns></returns>
-    public GameObject Get(T key)
+    public GameObject Get(T key, System.Action<GameObject> action = null)
     {
         if (!objDic.ContainsKey(key))
             throw new System.InvalidOperationException("The original of gameobject has not set yet.");
         else
         {
             Pair pair = objDic[key];
+            GameObject obj;
             if(pair.ObjList.Count > 0)
             {
-                return pair.ObjList.Pop();
+                obj = pair.ObjList.Pop();
             }
             else
             {
-                return GameObject.Instantiate(pair.Original, fatherTransform);
+                obj = GameObject.Instantiate(pair.Original, fatherTransform);
             }
+            action?.Invoke(obj);
+            return obj;
         }
     }
     public void Put(T key, GameObject obj)

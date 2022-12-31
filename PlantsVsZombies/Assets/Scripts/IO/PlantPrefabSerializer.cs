@@ -31,6 +31,10 @@ public class PlantPrefabSerializer : Singleton<PlantPrefabSerializer>, IEnumerab
                 return new MonaData(data.Prefab, data.CardSprite);
             case 2:
                 return new LisaData(data.Prefab, data.CardSprite);
+            case 3:
+                return new NahidaData(data.Prefab, data.CardSprite);
+            case 4:
+                return new SucroseData(data.Prefab, data.CardSprite);
         }
         return null;
     }

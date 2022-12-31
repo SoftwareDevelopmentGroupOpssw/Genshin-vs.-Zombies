@@ -19,10 +19,14 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && GameController.Instance.IsGameStarted)
+        if (Input.GetMouseButtonDown(1) && GameController.Instance.IsGameStarted)
         {
-            Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Bloom.AddSeed(new Vector3(world.x, world.y, 0));
+            if (GameController.Instance.IsPaused)
+                GameController.Instance.Resume();
+            else
+                GameController.Instance.Pause();
+            //Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //Bloom.AddSeed(new Vector3(world.x, world.y, 0));
         }
     }
 }

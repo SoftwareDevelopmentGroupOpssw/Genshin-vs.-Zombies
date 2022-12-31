@@ -7,7 +7,7 @@ using UnityEngine.Events;
 /// 当程序运行时作为物体的脚本自动被添加到场景中，只有一个实例
 /// 当游戏进行中时为Active，游戏不在进行中时为Disactive
 /// </summary>
-public class GameController : MonoBehaviour
+public sealed partial class GameController : MonoBehaviour
 {
     private static GameController instance;
     /// <summary>
@@ -108,6 +108,8 @@ public class GameController : MonoBehaviour
         if (exception == null)//没有出错
         {
             Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
+            if (gridPos == new Vector2(-1, -1))
+                throw new System.IndexOutOfRangeException("Not available location");
             IPlantData selectedData = selected[selectIndex].Data;
             IPlantData newPlantData = PlantPrefabSerializer.Instance.GetPlantData(selectedData.PlantName);
             plantsController.AddPlant(ref newPlantData, gridPos);
@@ -126,7 +128,6 @@ public class GameController : MonoBehaviour
     /// <exception cref="System.IndexOutOfRangeException">位置不合法</exception>
     public void RemovePlant(Vector3 worldPos)
     {
-        //TODO:实现逻辑判断
         plantsController.RemoveOnePlant(WorldToGrid(worldPos));
     }
 
@@ -165,18 +166,28 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
+        if(LevelData == null)
+        {
+            Debug.LogError("Level not selected. The game cannot be started");
+            return;
+        }
+
+        System.GC.Collect();
         gameObject.SetActive(true);
 
         //添加植物
         AddSelectPlant("Mona");
         AddSelectPlant("Yanfei");
         AddSelectPlant("Lisa");
+        AddSelectPlant("Nahida");
+        AddSelectPlant("Sucrose");
         
         //初始化模块
-        plantsController = new PlantsController(LevelData);
+        plantsController = new PlantsController();
         flyerController = new FlyersController();
         monsterController = new MonstersController();
-        updater = new Updater(monsterController, LevelData.MonsterList);
+
+        updater = new Updater();
 
         level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
 
@@ -191,12 +202,91 @@ public class GameController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 结束游戏
+    /// 游戏是否被暂停
     /// </summary>
+    public bool IsPaused { get; private set; } = false;
+    /// <summary>
+    /// 暂停游戏
+    /// </summary>
+    public void Pause()
+    {
+        PlantsController.Foreach((plant) =>
+        {
+            plant.GetComponent<Animator>().enabled = false;
+            plant.enabled = false;
+        });
+        FlyersController.Foreach((flyer) =>
+        {
+            flyer.GetComponent<Rigidbody2D>().Sleep();
+            flyer.enabled = false;
+        });
+        MonstersController.Foreach((monster) =>
+        {
+            monster.GetComponent<Rigidbody2D>().Sleep();
+            monster.GetComponent<Animator>().enabled = false;
+            monster.enabled = false;
+        });
+        EnergyMonitor.ForeachEnergy((energy) =>
+        {
+            energy.enabled = false;
+        });
+        IsPaused = true;
+    }
+    /// <summary>
+    /// 继续游戏
+    /// </summary>
+    public void Resume()
+    {
+        PlantsController.Foreach((plant) =>
+        {
+            plant.GetComponent<Animator>().enabled = true;
+            plant.enabled = true;
+        });
+        FlyersController.Foreach((flyer) =>
+        {
+            flyer.GetComponent<Rigidbody2D>().WakeUp();
+            flyer.enabled = true;
+        });
+        MonstersController.Foreach((monster) =>
+        {
+            monster.GetComponent<Rigidbody2D>().WakeUp();
+            monster.GetComponent<Animator>().enabled = true;
+            monster.enabled = true;
+        });
+        EnergyMonitor.ForeachEnergy((energy) =>
+        {
+            energy.enabled = true;
+        });
+        IsPaused = false;
+    }
+    /// <summary>
+    /// 显示游戏结果
+    /// </summary>
+    public void ShowResult(bool result)
+    {
+        Pause();
+        if (result == true)
+        {
+            UIManager.Instance.ShowPanel<VictoryPanel>("VictoryPanel", UIManager.UILayer.System);
+        }
+        else
+        {
+            UIManager.Instance.ShowPanel<DefeatPanel>("DefeatPanel", UIManager.UILayer.System);
+        }
+    }
     public void EndGame()
     {
+        plantsController.Clear();
+        monsterController.Clear();
+        flyerController.Clear();
+        selected.Clear();
+        IsPaused = false;
+
+
+        EnergyMonitor.Energy = 0;
+        EnergyMonitor.Clear();
+
+        UIManager.Instance.HidePanel("PlantsCardPanel");
         gameObject.SetActive(false);
     }
-
-
 }

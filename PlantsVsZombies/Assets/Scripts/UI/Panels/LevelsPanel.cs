@@ -41,11 +41,12 @@ public class LevelsPanel : BasePanel
     }
     void OnButtonClicked()
     {
+        Hide();
         string levelName = EventSystem.current.currentSelectedGameObject.name;
         GameController.Instance.LevelData = LevelSpriteSerializer.Instance.GetLevel(levelName);//…Ë÷√πÿø®
 
         GameController.Instance.StartGame();
-        Hide();
+
     }
     // Update is called once per frame
     void Update()

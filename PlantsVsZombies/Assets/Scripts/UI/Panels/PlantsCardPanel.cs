@@ -71,8 +71,10 @@ public class PlantsCardPanel : BasePanel
         {
             //生成卡槽
             GameObject obj = Instantiate(plot, area.transform);
-            Image objImage = obj.GetComponent<Image>();
-            objImage.sprite = GameController.Instance.GetSelectPlant(i).Data.CardSprite;//设置卡槽图片
+            CardPlot plotObj = obj.GetComponent<CardPlot>();
+            IPlantData data = GameController.Instance.GetSelectPlant(i).Data;//植物数据
+            plotObj.Sprite = (data.CardSprite);//设置卡槽图片
+            plotObj.SetEnergyCost(data.EnergyCost);
             obj.name = i.ToString();
             obj.GetComponent<Button>().onClick.AddListener(OnPlotClicked);
             //生成卡槽遮罩
@@ -80,7 +82,7 @@ public class PlantsCardPanel : BasePanel
             Image maskImage = maskObj.GetComponent<Image>();
             (maskImage.transform as RectTransform).sizeDelta = area.cellSize;//将遮罩的大小设置成与卡牌大小一致
             //添加储存
-            plotList.Add(new Plot() { PlotObj = objImage,Mask = maskImage});
+            plotList.Add(new Plot() { PlotObj = plotObj, Mask = maskImage});
         }
     }
     /// <summary>
@@ -113,7 +115,7 @@ public class PlantsCardPanel : BasePanel
     /// </summary>
     private void DisplayImageOnSelecting()
     {
-        if(selected != plotList.Count)//不是铲子
+        if(selected != plotList.Count)//选择的物体不是铲子
         {
             PlantsSelected selectPlant = GameController.Instance.GetSelectPlant(selected);
             //生成实像和虚像
@@ -146,7 +148,20 @@ public class PlantsCardPanel : BasePanel
             else
                 unreal.SetActive(false);
         }
-
+        else//选择的物体是铲子
+        {
+            Button btn = GetControl<Button>("ShovelBtn");
+            RectTransform rect = btn.transform as RectTransform;
+            Vector3 worldPos;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle
+                (
+                    UIManager.Instance.Canvas.transform as RectTransform,
+                    Input.mousePosition,
+                    null,
+                    out worldPos
+                );
+            rect.position = worldPos;
+        }
         
     }
     /// <summary>
@@ -162,6 +177,8 @@ public class PlantsCardPanel : BasePanel
         {
             Destroy(unreal); unreal = null;
         }
+        RectTransform btnTransform = GetControl<Button>("ShovelBtn").transform as RectTransform;
+        btnTransform.anchoredPosition = Vector2.zero;//铲子回到原位
     }
     /// <summary>
     /// 刷新植物槽是否可用
@@ -173,13 +190,13 @@ public class PlantsCardPanel : BasePanel
             PlantAddException exception = controller.CanPlacePlant(i);
             if(exception == null)//没有发生错误
             {
-                plotList[i].PlotObj.color = Color.white;
+                plotList[i].PlotObj.SpriteColor = Color.white;
                 plotList[i].Mask.fillAmount = 0;
                 plotList[i].Available = true;
             }
             else
             {
-                plotList[i].PlotObj.color = Color.grey;
+                plotList[i].PlotObj.SpriteColor = Color.grey;
                 if (exception is PlantAddException.NotCooledDownYet)
                 {
                     PlantsSelected selectedPlant = controller.GetSelectPlant(i);
@@ -225,6 +242,10 @@ public class PlantsCardPanel : BasePanel
                 catch (System.IndexOutOfRangeException) { }
             }
         }
+        else if(selected != -1 && Input.GetMouseButtonDown(1))//有选择物体时，按右键清除选择
+        {
+            selected = -1;
+        }
     }
     
     /// <summary>
@@ -235,7 +256,7 @@ public class PlantsCardPanel : BasePanel
         /// <summary>
         /// 生成的卡槽对象
         /// </summary>
-        public Image PlotObj;
+        public CardPlot PlotObj;
         /// <summary>
         /// 卡槽中对冷却时间的遮罩
         /// </summary>

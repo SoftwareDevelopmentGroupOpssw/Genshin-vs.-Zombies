@@ -37,3 +37,6 @@ MonoBehaviour:
   - Prefab: {fileID: 7740553858383720623, guid: 7bf8a0f85c3d8fd4a98c3abe34bc4075, type: 3}
     Name: GrassBullet
     Id: 7
+  - Prefab: {fileID: 758575164564133500, guid: a6d8346543853624c85619a5a934421e, type: 3}
+    Name: GrassSpike
+    Id: 15

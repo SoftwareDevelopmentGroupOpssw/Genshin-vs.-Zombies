@@ -20,10 +20,10 @@ public abstract class ElementsReaction
         if (database == null)
             database = ResourceManager.Instance.Load<ReactionInfoSpriteDatabase>("SO/ReactionInfoSpriteDatabase");
         GameObject text = informationBuffer.Get(reactionText);
-        text.GetComponent<ReactInformation>().Text = database.GetSprite(reactionName);
+        text.GetComponent<ReactInformation>().Show(database.GetSprite(reactionName));
         text.transform.position = worldPos;
     }
-    
+    public static void RemoveReaction(GameObject information) => informationBuffer.Put(reactionText, information);
     /// <summary>
     /// 系统物体
     /// </summary>
@@ -51,7 +51,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new ElectroCharged();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Water);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:
@@ -68,7 +68,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new Overloaded();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Fire);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:
@@ -85,7 +85,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new SuperConduct();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Ice);
                     case Elements.Stone:
                         return new Crystallize();
                 }
@@ -100,7 +100,7 @@ public abstract class ElementsReaction
                     case Elements.Ice:
                         return new SuperConduct();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Electric);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:

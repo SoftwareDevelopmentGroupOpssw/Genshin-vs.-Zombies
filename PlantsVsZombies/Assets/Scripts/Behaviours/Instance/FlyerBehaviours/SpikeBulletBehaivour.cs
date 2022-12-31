@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 像豌豆子弹一样的飞行物的控制脚本：向右直线飞行，超过区域删除，只能对第一个目标造成效果
-/// 豌豆子弹可以造成元素伤害
+/// 像尖刺一样的飞行物的脚本：打击一行的魔物，可以贯穿
 /// </summary>
-public class PeaBulletBehaviour : Flyer, IElementalDamage
+public class SpikeBulletBehaivour : Bullet
 {
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigid;
@@ -17,31 +16,27 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
     /// </summary>
     private Vector2Int[] area;
 
-    [Header("豌豆伤害")]
+    [Header("尖刺伤害")]
     [SerializeField]
     private int damage;
-    public int AtkDmg { get => damage; set => damage = value; }
-    
-    [Header("豌豆运动速度")]
+    public override int AtkDmg { get => damage; set => damage = value; }
+
+    [Header("尖刺运动速度")]
     [SerializeField]
     private int velocity = 5;
     public int Velocity { get => velocity; set => velocity = value; }
 
-    [Header("豌豆的元素类型")]
+    [Header("尖刺的元素类型")]
     [SerializeField]
     private Elements element;
-    public Elements ElementType { get => element; set => element = value; }
+    public override Elements ElementType { get => element; set => element = value; }
 
-    [Header("豌豆打击触发时碎掉的图片")]
-    [SerializeField]
-    private Sprite brokenSprite;
-    
     [Header("豌豆飞行时的的图片")]
     [SerializeField]
     private Sprite flyingSprite;
 
-    public bool CanAddElement { get; set; }
-    
+    public override bool CanAddElement { get; set; }
+
     /// <summary>
     /// 移除自己
     /// </summary>
@@ -71,7 +66,7 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
     /// </summary>
     void CheckLocation()
     {
-        if(area == null)
+        if (area == null)
             //计算目前能打到的位置
             area = AvailableArea.GetArea(level, GameController.Instance.WorldToGrid(transform.position));
 
@@ -89,22 +84,11 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
         }
     }
 
-    IEnumerator BrokenCoroutine()
-    {
-        colliders.enabled = false; //解除触发器检测
-        spriteRenderer.sprite = brokenSprite;
-        rigid.velocity = Vector2.zero;//停止移动
-
-        float waitSecondsBeforeDestroy = 0.1f;//在Destroy前显示broken的时间
-        yield return new WaitForSecondsRealtime(waitSecondsBeforeDestroy);
-        RemoveThis();
-    }
     void Update()
     {
-        if(colliders.enabled == true)//还没有被触发过
-            CheckLocation();
+        CheckLocation();
     }
-   
+
     /// <summary>
     /// 碰撞器检测
     /// </summary>
@@ -114,8 +98,7 @@ public class PeaBulletBehaviour : Flyer, IElementalDamage
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
         if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            if(target.GetReceiver().ReceiveDamage(this))
-                StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
+            target.GetReceiver().ReceiveDamage(this);
         }
     }
 }

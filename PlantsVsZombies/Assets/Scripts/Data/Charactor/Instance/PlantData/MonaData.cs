@@ -24,7 +24,7 @@ public class MonaData : PlantData
     private int health = 100;
     public override int Health { get => health; set => health = value; }
 
-    private int atkPower = 0;
+    private int atkPower = 10;
     public override int AtkPower { get => atkPower; set => atkPower = value; }
 
     public override int CoolTime => 5000;

@@ -11,19 +11,17 @@ public abstract class Plant : BaseGameobject,IMonsterAttackable
     /// 植物数据信息
     /// </summary>
     public IPlantData Data { get; set; }
-    /// <summary>
-    /// 死亡时调用的事件
-    /// </summary>
-    public event UnityAction<Plant> OnDie;
+
     protected virtual void Update()
     {
         if (Data.Health <= 0)
+        {
             GameController.Instance.PlantsController.RemovePlant(this);
+
+            return;
+        }
     }
-    protected virtual void OnDestroy()
-    {
-        OnDie?.Invoke(this);
-    }
+ 
 
     public ICharactorData GetData()
     {

@@ -9,10 +9,6 @@ using UnityEngine.Events;
 public class MonstersController
 {
     public static readonly GameObject MonsterFatherObject = new GameObject("Monsters");
-    /// <summary>
-    /// 在sprite排序时的起始优先级
-    /// </summary>
-    public const int MONSMTER_START_ORDER = 20;
 
     private List<Monster> monsters = new List<Monster>();
     /// <summary>
@@ -33,7 +29,6 @@ public class MonstersController
 
         Monster component = monster.GetComponent<Monster>();
         component.Data = data;
-        component.OnDie += RemoveMonster;
 
         monsters.Add(component);
         return component;
@@ -46,7 +41,6 @@ public class MonstersController
     {
         monsters.Remove(monster);
         monster.Data.GameObject = null;
-        monster.OnDie -= RemoveMonster;
     }
     /// <summary>
     /// 当前区域是否有怪物
@@ -92,6 +86,15 @@ public class MonstersController
     /// <param name="action">遍历的函数</param>
     public void Foreach(UnityAction<Monster> action)
     {
-        //TODO：遍历其中
+        monsters.ForEach((monster) => action.Invoke(monster));
+    }
+    public void Clear()
+    {
+        foreach(var monster in monsters)
+        {
+            monster.Data.GameObject = null;
+            GameObject.Destroy(monster.gameObject);
+        }
+        monsters.Clear();
     }
 }

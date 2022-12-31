@@ -68,14 +68,14 @@ public class PeashooterBehaviour : Plant
     protected void ReleasePeaBullet()
     {
         //获取子弹的贴图信息
-        PeaBulletData data = FlyerPrefabSerializer.Instance.GetFlyerData<PeaBulletData>(bulletName);
+        CommonFlyerData data = FlyerPrefabSerializer.Instance.GetFlyerData<CommonFlyerData>(bulletName);
         //获取子弹身上的脚本
-        GameController.Instance.FlyersController.AddFlyer<PeaBulletBehaviour>(data, transform.position, (peabullet)=>
+        GameController.Instance.FlyersController.AddFlyer<Bullet>(data, transform.position, (bullet)=>
         {
-            peabullet.AvailableArea = new FrontLine();//子弹的范围为前一行  
-            peabullet.ElementType = element;//改变子弹的元素伤害
-            peabullet.AtkDmg = Data.AtkPower;//豌豆的伤害与攻击者的攻击力相同
-            peabullet.CanAddElement = true;//豌豆一直可以附着元素
+            bullet.AvailableArea = new FrontLine();//子弹的范围为前一行  
+            bullet.ElementType = element;//改变子弹的元素伤害
+            bullet.AtkDmg = Data.AtkPower;//豌豆的伤害与攻击者的攻击力相同
+            bullet.CanAddElement = true;//豌豆一直可以附着元素
         });
     }
 }

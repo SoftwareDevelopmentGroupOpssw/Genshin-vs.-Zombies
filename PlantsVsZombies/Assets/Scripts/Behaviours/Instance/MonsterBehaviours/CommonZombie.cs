@@ -183,12 +183,15 @@ public class CommonZombie : Monster, IDamageable
     }
     
     /// <summary>
-    /// 超出地图删除
+    /// 超出地图直接游戏结束
     /// </summary>
     public void CheckLocation()
     {
         if (GameController.Instance.WorldToGrid(transform.position) == new Vector2(-1, -1))
-            Destroy(gameObject);
+        {
+            GameController.Instance.ShowResult(false);
+
+        }
     }
 
     public void Update()
@@ -199,16 +202,17 @@ public class CommonZombie : Monster, IDamageable
         {
             //查找身上有没有眩晕效果
             IEffect stunEffect = Data.GetEffects().Find((effect) => effect is StunEffect);
-            if (stunEffect == null)
+            if (stunEffect != null || Data.Strength <= 0)
             {
-                if(state != State.Atk)
-                {
-                    Walk();
-                }
+                Stun();
+
             }
             else
             {
-                Stun();
+                if (state != State.Atk)
+                {
+                    Walk();
+                }
             }
 
             CheckLocation();
@@ -233,10 +237,12 @@ public class CommonZombie : Monster, IDamageable
         isAlive = false;
         rigid.velocity = Vector2.zero;
         colliders.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
-        float secondsBeforeBodyDisappear = 2;
+        GameController.Instance.MonstersController.RemoveMonster(this);
+        float secondsBeforeBodyDisappear = 1;
         Color elementColor = CalculateElementColor();//计算此时附着的颜色
         sprite.color = elementColor;
         FallingHead.GetComponent<SpriteRenderer>().color = elementColor ;//把掉的头设置成和自己一样的颜色
+        animator.speed = Data.Speed / 50f;
         animator.Play("Die");
         FallingHead.SetActive(true);
         yield return new WaitForSecondsRealtime(secondsBeforeBodyDisappear);

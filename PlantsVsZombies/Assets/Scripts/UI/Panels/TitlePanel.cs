@@ -8,6 +8,7 @@ public class TitlePanel : BasePanel
     // Start is called before the first frame update
     protected override void BeforeShow()
     {
+        System.GC.Collect();
         GetControl<Button>("Start").onClick.AddListener(StartGame);
         GetControl<Button>("Setting").onClick.AddListener(OpenSetting);
         GetControl<Button>("Exit").onClick.AddListener(Exit);

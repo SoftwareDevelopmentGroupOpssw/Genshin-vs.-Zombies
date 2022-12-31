@@ -38,11 +38,14 @@ public class PlantsSelected
     {
         void Update()//公用mono模块帧更新函数
         {
-            timeLeft -= Time.unscaledDeltaTime * 1000;
-            if(timeLeft <= 0)
+            if (!GameController.Instance.IsPaused)
             {
-                timeLeft = 0;
-                MonoManager.Instance.RemoveUpdateListener(Update);
+                timeLeft -= Time.unscaledDeltaTime * 1000;
+                if (timeLeft <= 0)
+                {
+                    timeLeft = 0;
+                    MonoManager.Instance.RemoveUpdateListener(Update);
+                }
             }
         }
         timeLeft = data.CoolTime;//设定好开始时间

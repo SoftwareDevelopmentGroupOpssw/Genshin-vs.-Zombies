@@ -37,3 +37,5 @@ MonoBehaviour:
     Name: HyperBloom
   - Sprite: {fileID: 21300000, guid: 1f25f7822453ae844a7d76a98e7b4700, type: 3}
     Name: Overloaded
+  - Sprite: {fileID: 21300000, guid: e0bbb9b07cf52794381b81be3df22b4c, type: 3}
+    Name: Burning

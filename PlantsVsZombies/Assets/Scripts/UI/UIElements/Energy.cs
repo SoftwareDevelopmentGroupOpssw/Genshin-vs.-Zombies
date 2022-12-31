@@ -47,7 +47,7 @@ public class Energy : MonoBehaviour
             }
         }
         //摧毁
-        Destroy(gameObject);
+        EnergyMonitor.DestroyEnergy(this);
     }
     /// <summary>
     /// 慢慢移动
@@ -92,7 +92,7 @@ public class Energy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
         if (countDown.Available && !isFlying)//时间到了，也没有被点击飞行
             StartCoroutine(DestroyCoroutine());
     }

@@ -52,6 +52,7 @@ public class GrassCore : MonoBehaviour, IDamageable
         {
             isTriggered = true;
             animator.SetTrigger("Hyper");
+            ElementsReaction.ShowReaction("HyperBloom", transform.position);
         }
     }
     /// <summary>
@@ -64,6 +65,7 @@ public class GrassCore : MonoBehaviour, IDamageable
         {
             isTriggered = true;
             animator.SetTrigger("Pyro");
+            ElementsReaction.ShowReaction("PyroBloom", transform.position);
         }
     }
     /// <summary>

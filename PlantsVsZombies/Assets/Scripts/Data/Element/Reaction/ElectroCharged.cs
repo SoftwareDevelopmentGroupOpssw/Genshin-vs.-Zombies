@@ -9,11 +9,15 @@ public class ElectroCharged : ElementsReaction, IEffect
 {
     private static float radius = 1.2f;   //感电伤害的半径
     private static int damageTimes = 4;    //感电造成伤害次数
-    private static int damageDealtPerTime = 3;//一次感电造成伤害值
+    private static int damageDealtPerTime = 5;//一次感电造成伤害值
     private static int damageSpaceTime = 500;//两次感电伤害之间的间隔时间（毫秒）
     private static int deltaStrength = -30;//对于怪物所造成的韧性衰减值
     private StrengthEffect strength;
-    
+    /// <summary>
+    /// 这个感电效果能否添加元素
+    /// </summary>
+    private bool canAddElement = true;
+
     private IDamageReceiver target;//触发感电反应的目标
     public StrengthEffect Strength => strength;
     public ElectroCharged()
@@ -33,21 +37,28 @@ public class ElectroCharged : ElementsReaction, IEffect
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
-        target.AddEffect(this);
+        target.AddEffect(this);//为主要目标加一个能添加元素的感电效果
 
         //范围检测:范围内的施加感电效果
         Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
         foreach (var collider in colliders)
         {
-            if (collider.gameObject.tag == "Monster")
+            IDamageable damageable = collider.gameObject.GetComponent<IDamageable>();//获取可以触发感电的对象
+            //可以受到伤害
+            if (damageable != null)
             {
-                IDamageable collideTarget = collider.gameObject.GetComponent<IDamageable>();//获取可以触发感电的对象
-                //可以受到伤害
-                if(collideTarget != null)
+                //获取一个伤害接收器
+                IDamageReceiver receiver = damageable.GetReceiver();
+                List<IEffect> effects = receiver.GetEffects();
+                if(effects != null)
                 {
-                    //获取一个伤害接收器
-                    IDamageReceiver receiver = collideTarget.GetReceiver();
-                    MonoManager.Instance.StartCoroutine(DamageCoroutine(receiver));//对范围内的敌人造成伤害，但不附加元素
+                    bool contained = !effects.TrueForAll((effect) => !(effect is ElectroCharged));
+                    if (!contained)
+                        receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });//对范围内的敌人造成伤害，但不附加元素
+                }
+                else
+                {
+                    receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });//对范围内的敌人造成伤害，但不附加元
                 }
             }
         }
@@ -78,28 +89,36 @@ public class ElectroCharged : ElementsReaction, IEffect
     public void EnableEffect(IGameobjectData target)
     {
         //开启持续伤害的协程
-        damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(this.target as IMonsterData));
+        damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(this.target));
         State = EffectState.Processing;
-        //添加水雷共存
-        this.target.AddElement(Elements.Water);
-        this.target.AddElement(Elements.Electric);
-        //添加元素反应监听
-        this.target.AddOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
-        this.target.AddOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
+        
+        if (canAddElement)
+        {
+            //添加水雷共存
+            this.target.AddElement(Elements.Electric);
+            this.target.AddElement(Elements.Water);
+            //添加元素反应监听
+            this.target.AddOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
+            this.target.AddOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
+        }
+        
         strength.EnableEffect(this.target);//开启韧性削减效果
     }
 
     public void DisableEffect(IGameobjectData target)
     {
+
         strength.DisableEffect(this.target);
-        
-        //被移除时移除水雷元素
-        this.target.RemoveElement(Elements.Electric);
-        this.target.RemoveElement(Elements.Water);
-        //移除监听
-        this.target.RemoveOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
-        this.target.RemoveOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
-        
+
+        if (canAddElement)
+        {
+            //被移除时移除水雷元素
+            this.target.RemoveElement(Elements.Electric);
+            this.target.RemoveElement(Elements.Water);
+            //移除监听
+            this.target.RemoveOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
+            this.target.RemoveOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
+        }
         MonoManager.Instance.StopCoroutine(damageCoroutine);//被移除时停止伤害协程
     }
 

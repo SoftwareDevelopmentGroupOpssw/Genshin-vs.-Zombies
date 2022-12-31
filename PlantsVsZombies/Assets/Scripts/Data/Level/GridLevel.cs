@@ -35,7 +35,7 @@ public abstract class GridLevel : ILevelData
 
     public abstract Sprite Sprite { get; }
 
-    public abstract Queue<IMonsterData> MonsterList { get; }
+    public abstract IEnumerator GenerateEnumerator();
 
     public Vector3 GridToWorld(Vector2Int gridPos, GridPosition pos, Vector3 levelPos)
     {
@@ -90,4 +90,5 @@ public abstract class GridLevel : ILevelData
         
         return new Vector2Int(gridX, gridY);
     }
+
 }

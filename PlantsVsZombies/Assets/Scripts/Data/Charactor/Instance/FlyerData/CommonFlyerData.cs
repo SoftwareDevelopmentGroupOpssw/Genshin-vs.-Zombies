@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 通用飞行物数据：豌豆
+/// 通用飞行物数据
 /// </summary>
-public class PeaBulletData : IFlyerData
+public class CommonFlyerData : IFlyerData
 {
-    public PeaBulletData(GameObject original)
+    public CommonFlyerData(GameObject original)
     {
         OriginalReference = original;
     }

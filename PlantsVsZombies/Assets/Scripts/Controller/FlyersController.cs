@@ -14,6 +14,10 @@ public class FlyersController
     /// 如果不够用了再用预制体生成
     /// </summary>
     private ObjectBuffer flyerPool = new ObjectBuffer(FlyersFatherObject.transform);
+    /// <summary>
+    /// 飞行物物体集合
+    /// </summary>
+    private List<Flyer> flyers = new List<Flyer>();
 
     /// <summary>
     /// 添加飞行物
@@ -32,7 +36,7 @@ public class FlyersController
     /// <param name="worldPos">飞行物出现的世界坐标</param>
     /// <param name="callBack">飞行物在激活前调用的函数</param>
     /// <returns>飞行物对象脚本</returns>
-    public void AddFlyer<T>(IFlyerData data, Vector3 worldPos, UnityAction<T> callBack = null) where T : Flyer 
+    public T AddFlyer<T>(IFlyerData data, Vector3 worldPos, UnityAction<T> callBack = null) where T : Flyer 
     {
         GameObject obj = flyerPool.Get(data.OriginalReference);
         obj.transform.position = worldPos;
@@ -42,6 +46,10 @@ public class FlyersController
         data.GameObject = obj;
 
         callBack?.Invoke(flyer);//调用函数
+        flyers.Add(flyer);
+
+        return flyer;
+
     }
     /// <summary>
     /// 将飞行物从场景上移除
@@ -50,11 +58,29 @@ public class FlyersController
     /// <param name="flyer">要移除的飞行物</param>
     public void RemoveFlyer(Flyer flyer)
     {
+        flyers.Remove(flyer);
         flyerPool.Put(flyer.Data.OriginalReference, flyer.gameObject);
 
         //取消关联链表
         flyer.Data.GameObject = null;
         flyer.Data = null;
 
+    }
+    /// <summary>
+    /// 遍历
+    /// </summary>
+    /// <param name="action"></param>
+    public void Foreach(System.Action<Flyer> action)
+    {
+        flyers.ForEach(action);
+    }
+    public void Clear()
+    {
+        foreach(Flyer flyer in flyers)
+        {
+            flyer.Data.GameObject = null;
+            GameObject.Destroy(flyer.gameObject);
+        }
+        flyerPool.Clear();
     }
 }

@@ -10,15 +10,10 @@ public class Level1 : GridLevel
     private int row = 5;
     private int col = 10;
     private Sprite sprite;
-    private List<string> monsterList = new List<string>();
 
     public Level1(Sprite sprite)
     {
         this.sprite = sprite;
-        for(int i = 0; i < 100; i++)
-        {
-            monsterList.Add("CommonZombie");
-        }
     }
     public override int Row => row;
 
@@ -26,16 +21,28 @@ public class Level1 : GridLevel
 
     public override Sprite Sprite => sprite;
 
-    public override Queue<IMonsterData> MonsterList
+    /// <summary>
+    /// 关卡1的生怪策略——一定时间内随机刷一波怪
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator GenerateEnumerator()
     {
-        get
+        int monsterTotalCount = 20;//怪物总数
+        float geneateSpaceTime = 5f;//生成间隔
+        int minGenerateCount = 2;//最小生成数量
+        int maxGenerateCount = 8;//最大生成数量
+
+        int nowGenerated = 0;
+        int generateAmount = 0;
+        System.Random r = new System.Random();
+        for(; nowGenerated < monsterTotalCount; nowGenerated += generateAmount)
         {
-            Queue<IMonsterData> monsters = new Queue<IMonsterData>(monsterList.Count);
-            foreach(var monsterName in monsterList)
+            generateAmount = r.Next(minGenerateCount, maxGenerateCount);
+            for(int i = 0; i < Mathf.Min(generateAmount, monsterTotalCount - nowGenerated); i++)
             {
-                monsters.Enqueue(MonsterPrefabSerializer.Instance.GetMonsterData(monsterName));
+                yield return MonsterPrefabSerializer.Instance.GetMonsterData("CommonZombie");
             }
-            return monsters;
+            yield return new WaitForSecondsRealtime(geneateSpaceTime);
         }
     }
 
@@ -44,4 +51,6 @@ public class Level1 : GridLevel
     protected override int GridWidth => 137;
 
     protected override int GridHeight => 134;
+
+
 }

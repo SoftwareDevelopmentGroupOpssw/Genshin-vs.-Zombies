@@ -15,19 +15,17 @@ public class SuperConduct : ElementsReaction
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        target.ReceiveDamage(new SystemDamage(SuperConduct.damage, Elements.Ice));
-        target.AddEffect(new ResistanceEffect(Elements.None, physicalChange, 6000, system));
-
-        ////·¶Î§¼ì²â
-        //Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
-        //foreach (var collider in colliders)
-        //{
-        //    if (collider.gameObject.tag == "Monster")
-        //    {
-        //        IMonsterData monster = collider.GetComponent<Monster>().Data;
-        //        monster.ReceiveDamage(new SystemDamage(SuperConduct.damage, Elements.Ice));
-        //        monster.AddEffect(new ResistanceEffect(Elements.None, physicalChange, 6000, system));
-        //    }
-        //}
+        //·¶Î§¼ì²â
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            IDamageable damageable = collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                IDamageReceiver receiver = damageable.GetReceiver();
+                receiver.ReceiveDamage(new SystemDamage(SuperConduct.damage, Elements.Ice));
+                receiver.AddEffect(new ResistanceEffect(Elements.None, physicalChange, 6000, system));
+            }
+        }
     }
 }

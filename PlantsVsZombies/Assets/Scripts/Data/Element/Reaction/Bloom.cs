@@ -98,9 +98,6 @@ public class Bloom : ElementsReaction
     {
         GameObject obj = GameObject.Instantiate(HyperExplosion);
         obj.transform.position = worldPos;
-
-        ShowReaction("HyperBloom", worldPos);
-
         obj.GetComponent<HyperExplosion>().Explode(HyperBloomCount);
     }
 
@@ -110,7 +107,6 @@ public class Bloom : ElementsReaction
     /// <param name="worldPos">ÊÀ½ç×ø±ê</param>
     public static void TriggerPyroBloom(Vector3 worldPos)
     {
-        ShowReaction("PyroBloom", worldPos);
         Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, PyroBloomRadius);
         foreach (var collider in colliders)
         {

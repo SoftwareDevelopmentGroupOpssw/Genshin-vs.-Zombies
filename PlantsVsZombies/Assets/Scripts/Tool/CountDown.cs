@@ -6,6 +6,7 @@ using UnityEngine;
 
 /// <summary>
 /// 计时器类（沙漏)
+/// 会被Gamecontroller暂停计时
 /// </summary>
 public class CountDown
 {

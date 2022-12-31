@@ -6,13 +6,13 @@ using UnityEngine;
 /// </summary>
 public class ReactInformation : MonoBehaviour
 {
-    public Sprite Text;
-    IEnumerator DisappearCoroutine()
+    IEnumerator DisappearCoroutine(Sprite text)
     {
-        float displayTime = 0.5f;
-        yield return new WaitForSecondsRealtime(displayTime);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Text;
+        spriteRenderer.color = Color.white;
+        spriteRenderer.sprite = text;
+        float displayTime = 0.25f;
+        yield return new WaitForSecondsRealtime(displayTime);
         float startY = transform.position.y;
         float speed = 2;//字移动的速度
         float upOffset = 0.5f;//字向上移动的距离
@@ -24,12 +24,11 @@ public class ReactInformation : MonoBehaviour
             spriteRenderer.color = c;
             yield return 1;
         }
-        Destroy(gameObject);
+        ElementsReaction.RemoveReaction(gameObject);
     }
-    // Start is called before the first frame update
-    void Start()
+    public void Show(Sprite sprite)
     {
-        StartCoroutine(DisappearCoroutine());
+        StartCoroutine(DisappearCoroutine(sprite));
     }
 
     // Update is called once per frame
