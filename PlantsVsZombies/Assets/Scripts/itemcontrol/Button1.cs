@@ -8,6 +8,6 @@ public class Button1 : MonoBehaviour
     // Start is called before the first frame update
     public void See()
     {
-        SceneManager.LoadScene("play");
+        SceneManager.LoadScene("GameScene");
     }
 }

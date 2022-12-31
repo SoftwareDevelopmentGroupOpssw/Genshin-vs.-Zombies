@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7346759685417034391}
   - component: {fileID: 1829895230754183236}
+  - component: {fileID: -6232104464662858623}
   m_Layer: 0
   m_Name: ganyu
   m_TagString: Untagged
@@ -82,3 +83,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6232104464662858623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3128935575239946862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5c911788d1f8c439abf9717a0f4c10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrow: {fileID: 8565408529227495076, guid: db6fd50579e4e804aa81f2eab8734135, type: 3}
+  gamestart: 0
+  MainCamera: {fileID: 5950719056114236541, guid: 456f418ea0139a544a78be01447c59ff, type: 3}
