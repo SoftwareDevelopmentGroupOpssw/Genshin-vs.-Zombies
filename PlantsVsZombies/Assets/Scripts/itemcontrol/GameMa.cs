@@ -11,9 +11,11 @@ public class GameMa : MonoBehaviour
     public int fun = 0;
 
     bool flag = true;
+
     public static bool gamestart = false;
     public static float tx = -4, ty = 6, tz = 0,num=0;
     public static float x = 4;
+
     int  f = -20000;
 
     void Start()
@@ -34,6 +36,7 @@ public class GameMa : MonoBehaviour
         float z = pos.z;
         Vector3 pos1 = new Vector3(x - 7, y + 3, z);
         x += 10;y -= 5;
+        //初始坐标的确定
 
         if (tot == 1100)
         {
@@ -47,16 +50,19 @@ public class GameMa : MonoBehaviour
             Instantiate(mona, new Vector3(x + 4, y - 3, z), this.transform.rotation);
             Instantiate(kelai, new Vector3(x + 6, y - 3, z), this.transform.rotation);
             Instantiate(zhongli, new Vector3(x + 8, y - 3, z), this.transform.rotation);
+            //生成角色头像
 
             Instantiate(stt, new Vector3(x + 13, y , z), this.transform.rotation);
             //生成开始按钮
 
 
             Instantiate(column, new Vector3(x + 4, y + 3, z), this.transform.rotation);
+            //生成选择栏
 
         }
 
         fun = sttk.fun;
+        //传参，用来决定游戏的开始与否
 
         if (fun == 1 && flag && tot > 1100)
         {
@@ -64,6 +70,7 @@ public class GameMa : MonoBehaviour
             f = tot;
             gamestart = true;
             flag = false;
+            //满足上述条件，那么游戏开始
         }
 
         if (tot < f + 360)

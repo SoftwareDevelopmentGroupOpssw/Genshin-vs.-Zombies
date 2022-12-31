@@ -6,12 +6,17 @@ public class camerajp : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject ganyu,obj,column,panel,lisha,ying,ningguang,sanbing,kelai,yanfei,naxida,mona,zhongli,stt;
+
     public int fun = 0;
   //  public GameObject a[30];
     bool flag = true;
+
     public static bool gamestart = false;
+
     public static float x = 4;
+
     int tot = 0,f=-20000;
+
     void Start()
     {
         
@@ -29,8 +34,12 @@ public class camerajp : MonoBehaviour
         float x = pos.x;
         float y = pos.y;
         float z = pos.z;
+
         Vector3 pos1= new Vector3(x-7,y+3, z);
+        //这里是坐标的修正
+
         x -= 6;y += 4;
+        //位置坐标的初始化
      
         
         if (tot==1100)
