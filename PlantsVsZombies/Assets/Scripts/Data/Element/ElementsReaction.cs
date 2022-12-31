@@ -7,6 +7,23 @@ using UnityEngine;
 /// </summary>
 public abstract class ElementsReaction
 {
+    protected readonly static GameObject InformationFatherObject = new GameObject("ReactionInformation");
+    protected static ObjectBuffer informationBuffer;
+    protected static GameObject reactionText;
+    protected static ReactionInfoSpriteDatabase database;
+    public static void ShowReaction(string reactionName,Vector3 worldPos)
+    {
+        if (informationBuffer == null)
+            informationBuffer = new ObjectBuffer(InformationFatherObject.transform);
+        if (reactionText == null)
+            reactionText = ResourceManager.Instance.Load<GameObject>("Prefabs/UI/UIElements/ReactInformation");
+        if (database == null)
+            database = ResourceManager.Instance.Load<ReactionInfoSpriteDatabase>("SO/ReactionInfoSpriteDatabase");
+        GameObject text = informationBuffer.Get(reactionText);
+        text.GetComponent<ReactInformation>().Show(database.GetSprite(reactionName));
+        text.transform.position = worldPos;
+    }
+    public static void RemoveReaction(GameObject information) => informationBuffer.Put(reactionText, information);
     /// <summary>
     /// 系统物体
     /// </summary>
@@ -34,7 +51,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new ElectroCharged();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Water);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:
@@ -51,7 +68,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new Overloaded();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Fire);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:
@@ -68,7 +85,7 @@ public abstract class ElementsReaction
                     case Elements.Electric:
                         return new SuperConduct();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Ice);
                     case Elements.Stone:
                         return new Crystallize();
                 }
@@ -83,7 +100,7 @@ public abstract class ElementsReaction
                     case Elements.Ice:
                         return new SuperConduct();
                     case Elements.Wind:
-                        return new Swirl();
+                        return new Swirl(Elements.Electric);
                     case Elements.Stone:
                         return new Crystallize();
                     case Elements.Grass:
@@ -117,5 +134,10 @@ public abstract class ElementsReaction
     /// </summary>
     /// <param name="damage">元素伤害来源</param>
     /// <param name="target">元素反应目标</param>
-    public abstract void Action(IElementalDamage damage, IDamageReceiver target);
+    protected abstract void RealAction(IElementalDamage damage, IDamageReceiver target);
+    public void Action(IElementalDamage damage,IDamageReceiver target)
+    {
+        ShowReaction(ReactionName, target.GameObject.transform.position);
+        RealAction(damage,target);
+    }
 }

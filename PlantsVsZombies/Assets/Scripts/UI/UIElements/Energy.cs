@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 能量按钮的脚本逻辑
+/// </summary>
 public class Energy : MonoBehaviour
 {
     [Header("能量值")]
@@ -11,7 +13,6 @@ public class Energy : MonoBehaviour
     [Header("消失时间(毫秒)")]
     public int disappearTime;
     private CountDown countDown;
-    private Coroutine fadeCoroutine;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,8 +46,13 @@ public class Energy : MonoBehaviour
                 yield return 1;
             }
         }
-        Destroy(gameObject);
+        //摧毁
+        EnergyMonitor.DestroyEnergy(this);
     }
+    /// <summary>
+    /// 慢慢移动
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator FlyingCoroutine()
     {
         isFlying = true;
@@ -72,6 +78,7 @@ public class Energy : MonoBehaviour
     private bool isFlying = false;//正在移动中
     private void OnClicked()
     {
+        //飞行中的能量点击后不触发逻辑
         if (!isFlying)
         {
             Image image = GetComponent<Image>();
@@ -85,7 +92,7 @@ public class Energy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
         if (countDown.Available && !isFlying)//时间到了，也没有被点击飞行
             StartCoroutine(DestroyCoroutine());
     }

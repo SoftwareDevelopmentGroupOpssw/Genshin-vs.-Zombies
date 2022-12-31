@@ -7,20 +7,32 @@ using UnityEngine;
 /// </summary>
 public class Swirl : ElementsReaction
 {
-    private int radius = 20;//À©É¢·¶Î§
-    private int swirlDamage = 5;//À©É¢ÉËº¦
+    private static float radius = 0.8f;//À©É¢·¶Î§
+    private static int SWIRL_DAMAGE = 5;//À©É¢ÉËº¦
+
+    private Elements swirledElement;
+    public Swirl(Elements element)
+    {
+        swirledElement = element;
+    }
     public override string ReactionName => "Swirl";
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        ////·¶Î§¼ì²â
-        //Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
-        //foreach (var collider in colliders)
-        //{
-        //    if (collider.gameObject.tag == "Monster")
-        //    {
-        //        collider.GetComponent<Monster>().Data.ReceiveDamage(new SystemDamage(swirlDamage, damage.ElementType, true));
-        //    }
-        //}
+        
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            IDamageable damageable = collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                IDamageReceiver receiver = damageable.GetReceiver();
+                if(receiver.Equals(target))
+                    receiver.ReceiveDamage(new SystemDamage(SWIRL_DAMAGE, swirledElement)); //´¥·¢Ä¿±ê²»ÄÜÊÜµ½¸½×Å
+                else
+                    receiver.ReceiveDamage(new SystemDamage(SWIRL_DAMAGE, swirledElement, true));
+            }
+        }
     }
 }

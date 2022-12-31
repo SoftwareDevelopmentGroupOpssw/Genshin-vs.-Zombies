@@ -13,9 +13,30 @@ MonoBehaviour:
   m_Name: FlyerDatabase
   m_EditorClassIdentifier: 
   flyers:
-  - Prefab: {fileID: 0}
-    Name: 
+  - Prefab: {fileID: 4037461578366510559, guid: 5a10577b91e50fa4294f3a93ab703a1f, type: 3}
+    Name: PhysicalBullet
     Id: 0
   - Prefab: {fileID: 5258871162860370201, guid: 76ee5220b2f54e14b81386a6d353b790, type: 3}
-    Name: MonaWaterBullet
+    Name: WaterBullet
     Id: 1
+  - Prefab: {fileID: 6926206481236681534, guid: d338a3d9c8cb25345afee1fe51199427, type: 3}
+    Name: FireBullet
+    Id: 2
+  - Prefab: {fileID: 76297688620724469, guid: c86d9c318b9893444b38e1aebe741f34, type: 3}
+    Name: IceBullet
+    Id: 3
+  - Prefab: {fileID: 6800045949935635553, guid: ece4728a643fb04428983363a551e4d2, type: 3}
+    Name: ElectricBullet
+    Id: 4
+  - Prefab: {fileID: 4097706808377909552, guid: 9a872d0eef3d7594f8567aac5daf1d24, type: 3}
+    Name: WindBullet
+    Id: 5
+  - Prefab: {fileID: 1875620114857884717, guid: db4878b9644c83844ad761660f3d3e16, type: 3}
+    Name: StoneBullet
+    Id: 6
+  - Prefab: {fileID: 7740553858383720623, guid: 7bf8a0f85c3d8fd4a98c3abe34bc4075, type: 3}
+    Name: GrassBullet
+    Id: 7
+  - Prefab: {fileID: 758575164564133500, guid: a6d8346543853624c85619a5a934421e, type: 3}
+    Name: GrassSpike
+    Id: 15

@@ -20,7 +20,10 @@ public enum GridPosition
     /// </summary>
     Right,
 }
-public interface ILevelData
+/// <summary>
+/// 关卡数据接口
+/// </summary>
+public interface ILevelData : IGenerateStrategy
 {
     /// <summary>
     /// 行数
@@ -34,10 +37,7 @@ public interface ILevelData
     /// 地图的Sprite
     /// </summary>
     public Sprite Sprite { get; }
-    /// <summary>
-    /// 地图的出怪序列
-    /// </summary>
-    public Queue<IMonsterData> MonsterList { get; }
+
     /// <summary>
     /// 将一个世界坐标转换为地图的格子坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴

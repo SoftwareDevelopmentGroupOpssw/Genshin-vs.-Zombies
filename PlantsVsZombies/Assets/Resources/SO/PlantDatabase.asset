@@ -21,3 +21,15 @@ MonoBehaviour:
     Prefab: {fileID: 8899414879856573637, guid: ca000a438781bbe409b2fb3c7a10274d, type: 3}
     Name: Mona
     Id: 1
+  - CardSprite: {fileID: 21300000, guid: 7a6fd135e19a02b42bc4a05257a92cc6, type: 3}
+    Prefab: {fileID: 3435951389600100459, guid: 1f69d6b2f39f68344b32eebaa06daa55, type: 3}
+    Name: Lisa
+    Id: 2
+  - CardSprite: {fileID: 21300000, guid: 052c3eda963cfd747b7896467a489bac, type: 3}
+    Prefab: {fileID: 7564410638385279972, guid: df17bfb422a6eb04b8240e8f98f061b3, type: 3}
+    Name: Nahida
+    Id: 3
+  - CardSprite: {fileID: 21300000, guid: 6545687d477038f44a5daf1f647bbba5, type: 3}
+    Prefab: {fileID: 8675915639447147460, guid: 0acc707f6518411439fc1ce94fe2596e, type: 3}
+    Name: Sucrose
+    Id: 4

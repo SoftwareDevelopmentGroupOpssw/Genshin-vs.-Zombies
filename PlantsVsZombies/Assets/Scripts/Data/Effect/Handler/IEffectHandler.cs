@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// 效果处理接口
+/// 效果处理接口，是一个效果处理器
 /// </summary>
 public interface IEffectHandler
 {

@@ -11,12 +11,8 @@ public abstract class Flyer : BaseGameobject
     /// 飞行物能够到达的区域
     /// </summary>
     public Area AvailableArea { get; set; }
-
-    public override IGameobjectData Data { get; set; }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (Data is IFlyerData)
-            (Data as IFlyerData).OnTriggered(other.gameObject);
-    }
+    /// <summary>
+    /// 飞行物数据
+    /// </summary>
+    public IFlyerData Data { get; set; }
 }

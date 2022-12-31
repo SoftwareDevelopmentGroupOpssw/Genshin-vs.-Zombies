@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// 已选择的植物
+/// 已选择的植物卡槽
 /// </summary>
 public class PlantsSelected
 {
+ 
     private IPlantData data;
-    private float timeLeft;//剩余时间
+    private float timeLeft;//剩余时间（毫秒）
 
+    /// <summary>
+    /// 创建一个已选择卡槽对象
+    /// </summary>
+    /// <param name="data">卡槽中的植物信息</param>
     public PlantsSelected(IPlantData data)
     {
         this.data = data;
@@ -33,11 +38,14 @@ public class PlantsSelected
     {
         void Update()//公用mono模块帧更新函数
         {
-            timeLeft -= Time.unscaledDeltaTime;
-            if(timeLeft <= 0)
+            if (!GameController.Instance.IsPaused)
             {
-                timeLeft = 0;
-                MonoManager.Instance.RemoveUpdateListener(Update);
+                timeLeft -= Time.unscaledDeltaTime * 1000;
+                if (timeLeft <= 0)
+                {
+                    timeLeft = 0;
+                    MonoManager.Instance.RemoveUpdateListener(Update);
+                }
             }
         }
         timeLeft = data.CoolTime;//设定好开始时间

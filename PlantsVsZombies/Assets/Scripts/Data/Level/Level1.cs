@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Level1
+/// Level1:默认关卡
 /// </summary>
-public class Level1 : Level
+public class Level1 : GridLevel
 {
     private int row = 5;
     private int col = 10;
     private Sprite sprite;
-    private List<IMonsterData> monsterList = new List<IMonsterData>();
 
     public Level1(Sprite sprite)
     {
@@ -22,11 +21,36 @@ public class Level1 : Level
 
     public override Sprite Sprite => sprite;
 
-    public override Queue<IMonsterData> MonsterList => new Queue<IMonsterData>();
+    /// <summary>
+    /// 关卡1的生怪策略——一定时间内随机刷一波怪
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator GenerateEnumerator()
+    {
+        int monsterTotalCount = 20;//怪物总数
+        float geneateSpaceTime = 5f;//生成间隔
+        int minGenerateCount = 2;//最小生成数量
+        int maxGenerateCount = 8;//最大生成数量
+
+        int nowGenerated = 0;
+        int generateAmount = 0;
+        System.Random r = new System.Random();
+        for(; nowGenerated < monsterTotalCount; nowGenerated += generateAmount)
+        {
+            generateAmount = r.Next(minGenerateCount, maxGenerateCount);
+            for(int i = 0; i < Mathf.Min(generateAmount, monsterTotalCount - nowGenerated); i++)
+            {
+                yield return MonsterPrefabSerializer.Instance.GetMonsterData("CommonZombie");
+            }
+            yield return new WaitForSecondsRealtime(geneateSpaceTime);
+        }
+    }
 
     protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(128, 128);
 
     protected override int GridWidth => 137;
 
     protected override int GridHeight => 134;
+
+
 }

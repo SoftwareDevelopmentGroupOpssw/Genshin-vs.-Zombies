@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// 能量的类型
+/// </summary>
 public enum EnergyType
 {
     /// <summary>
@@ -14,12 +17,23 @@ public enum EnergyType
     /// </summary>
     Small,
 }
+/// <summary>
+/// 能量管理模块
+/// </summary>
 public class EnergyMonitor
 {
     private const string ENERGY_PREFAB_PATH = "Prefabs/UI/UIElements/";
     private int energyValue;//能量值
     private static GameObject smallEnergy;
     private static GameObject bigEnergy;
+    private static List<GameObject> energyList = new List<GameObject>();
+    public static void ForeachEnergy(System.Action<Energy> action)
+    {
+        energyList.ForEach((obj) =>
+        {
+            action.Invoke(obj.GetComponent<Energy>());
+        });
+    }
     /// <summary>
     /// 在指定的屏幕位置生成一个可以点击的能量，点击后自动加能量
     /// </summary>
@@ -28,15 +42,15 @@ public class EnergyMonitor
     public static void InstantiateEnergy(Vector2Int pixelPos, EnergyType type)
     {
         void LogError(string name)
-        {   
-            Debug.LogError("Prefab:"+ name + " is missing. It supposed to be at Resources/" + ENERGY_PREFAB_PATH + name);
+        {
+            Debug.LogError("Prefab:" + name + " is missing. It supposed to be at Resources/" + ENERGY_PREFAB_PATH + name);
         }
-        
+
         GameObject obj = null;
         switch (type)
         {
             case EnergyType.Big:
-                if(bigEnergy == null)
+                if (bigEnergy == null)
                     bigEnergy = ResourceManager.Instance.Load<GameObject>(ENERGY_PREFAB_PATH + "BigEnergy");
                 if (bigEnergy == null)
                 {
@@ -47,8 +61,8 @@ public class EnergyMonitor
                     obj = bigEnergy;
                 break;
             case EnergyType.Small:
-                if(smallEnergy == null)
-                    smallEnergy = ResourceManager.Instance.Load<GameObject> (ENERGY_PREFAB_PATH + "SmallEnergy");
+                if (smallEnergy == null)
+                    smallEnergy = ResourceManager.Instance.Load<GameObject>(ENERGY_PREFAB_PATH + "SmallEnergy");
                 if (smallEnergy == null)
                 {
                     LogError("SmallEnergy");
@@ -63,11 +77,34 @@ public class EnergyMonitor
         //anchoredPostion以屏幕中心点为原点，而传入的pixelPos是以左下角为原点（也是Input.mousePosition的坐标）
         Vector2 location = new Vector2(pixelPos.x - Screen.width / 2, pixelPos.y - Screen.height / 2);
         rect.anchoredPosition = location;
+        energyList.Add(energy);
+    }
+    public static void DestroyEnergy(Energy energy)
+    {
+        energyList.Remove(energy.gameObject);
+        GameObject.Destroy(energy.gameObject);
+    }
+    public static void Clear()
+    {
+        foreach(var energy in energyList)
+        {
+            GameObject.Destroy(energy.gameObject);
+        }
+        energyList.Clear();
     }
     /// <summary>
-    /// 能量值 大于0
+    /// 能量值
     /// </summary>
-    public int Energy => energyValue;
+    public int Energy 
+    { 
+        get => energyValue; 
+        set
+        {
+            if (value >= 0)
+                energyValue = value;
+        } 
+    }
+    
     /// <summary>
     /// 当能量值改变时，调用的事件广播
     /// </summary>

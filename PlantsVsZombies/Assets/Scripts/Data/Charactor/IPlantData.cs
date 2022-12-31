@@ -20,7 +20,7 @@ public interface IPlantData:ICharactorData
     /// </summary>
     public Sprite CardSprite { get; }
     /// <summary>
-    /// 总冷却时间
+    /// 总冷却时间（毫秒）
     /// </summary>
     public int CoolTime { get; }
 }

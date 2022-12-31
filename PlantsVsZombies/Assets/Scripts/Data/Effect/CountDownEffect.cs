@@ -19,9 +19,15 @@ public abstract class CountDownEffect: IEffect
     /// 效果的持续时间
     /// </summary>
     public abstract int MilisecondsDuration { get; }
-
+    
+    /// <summary>
+    /// 效果的名字
+    /// </summary>
     public abstract string EffectName { get; }
 
+    /// <summary>
+    /// 效果所处的状态
+    /// </summary>
     public EffectState State { get; protected set; }
 
     /// <summary>
@@ -67,6 +73,5 @@ public abstract class CountDownEffect: IEffect
     /// </summary>
     /// <param name="target"></param>
     public virtual void UpdateEffect(IGameobjectData target) { }
-
     public abstract IGameobjectData Caster { get; }
 }

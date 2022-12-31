@@ -26,10 +26,18 @@ public class Burning : ElementsReaction,IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
-        target.AddEffect(this);
+        List<IEffect> effects = target.GetEffects();
+        if(effects != null)
+        {
+            bool contained = !effects.TrueForAll((effect) => !(effect is Burning));
+            if(!contained)
+                target.AddEffect(this);
+        }
+        else
+            target.AddEffect(this);
     }
     /// <summary>
     /// 持续造成伤害

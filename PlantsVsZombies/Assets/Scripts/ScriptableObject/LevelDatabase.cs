@@ -24,7 +24,7 @@ public class LevelDatabase : ScriptableObject,IEnumerable<LevelDatabase.Level>
     public int Count => levels.Count;
 
     /// <summary>
-    /// 遍历，存储的是关卡名-关卡数据的键值对
+    /// 遍历，存储的是关卡数据的队列
     /// </summary>
     /// <returns></returns>
     public IEnumerator<Level> GetEnumerator()

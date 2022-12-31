@@ -451,6 +451,7 @@ MonoBehaviour:
   mask: {fileID: 4256384455943791142, guid: 332619f2257c311459f7650b4e8e0a7c, type: 3}
   area: {fileID: 7729641977763591394}
   energyLocation: {fileID: 4433013426251865859}
+  shovelLocation: {fileID: 6851442804888225209}
 --- !u!1 &7729641977763591396
 GameObject:
   m_ObjectHideFlags: 0

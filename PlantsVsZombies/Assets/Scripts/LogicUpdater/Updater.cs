@@ -2,29 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-/// <summary>
-/// 更新模块
-/// </summary>
-public class Updater
+
+
+
+public partial class GameController
 {
-    private PlantsController plantsController;
-    private MonstersController monstersController;
-    private PlantsUpdater plantsUpdater;
-    private MonstersUpdater monstersUpdater;
-    private RefreshModule refresh;
-    public Updater(PlantsController plantsController,MonstersController monstersController)
+    /// <summary>
+    /// 总更新模块：控制所有的更新模块
+    /// 隶属于游戏控制器的子模块
+    /// </summary>
+    class Updater
     {
-        this.plantsController = plantsController;
-        this.monstersController = monstersController;
-        plantsUpdater = new PlantsUpdater(plantsController);
-        monstersUpdater = new MonstersUpdater(monstersController);
-        refresh = new RefreshModule();
-    }
-    // Update is called once per frame
-    public void Update()
-    {
-        plantsUpdater.Update();
-        monstersUpdater.Update();
-        refresh.Update();
+        private RefreshModule refresh;
+        public Updater()
+        {
+            refresh = new RefreshModule();
+        }
+        // Update is called once per frame
+        public void Update()
+        {
+            refresh.Update();
+        }
     }
 }

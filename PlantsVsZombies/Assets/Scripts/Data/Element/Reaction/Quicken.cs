@@ -29,7 +29,7 @@ public class Quicken : ElementsReaction,IEffect
 
     public IGameobjectData Caster => system;
 
-    public override void Action(IElementalDamage damage, IDamageReceiver target)
+    protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
         target.AddEffect(this);

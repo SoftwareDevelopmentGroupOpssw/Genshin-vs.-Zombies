@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 效果状态
+/// </summary>
 public enum EffectState
 {
     /// <summary>
@@ -21,6 +24,9 @@ public enum EffectState
     /// </summary>
     Error,
 }
+/// <summary>
+/// 效果接口
+/// </summary>
 public interface IEffect
 {
     /// <summary>

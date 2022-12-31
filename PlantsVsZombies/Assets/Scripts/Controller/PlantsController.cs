@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 /// <summary>
 /// 植物控制器
 /// </summary>
 public class PlantsController
 {
-    private GameObject PlantsFatherObject = new GameObject("Plants");
-    private ILevelData levelData;
+    public GameObject PlantsFatherObject = new GameObject("Plants");
     private List<Plant>[,] plants;
-    public PlantsController(ILevelData level)
+    public PlantsController()
     {
-        this.levelData = level;
-        plants = new List<Plant>[levelData.Col, levelData.Row];//x的数量是列数，y的数量是行数
-        for(int i = 0; i< levelData.Col; i++)
+        ILevelData level = GameController.Instance.LevelData;
+        plants = new List<Plant>[level.Col, level.Row];//x的数量是列数，y的数量是行数
+        for(int i = 0; i< level.Col; i++)
         {
-            for(int j = 0;j < levelData.Row; j++)
+            for(int j = 0;j < level.Row; j++)
             {
                 plants[i, j] = new List<Plant>(5);
             }
         }
     }
     /// <summary>
-    /// 强制添加植物
+    /// 添加植物
     /// </summary>
     /// <param name="data">植物信息</param>
     /// <param name="gridPos">植物添加的格子位置</param>
@@ -33,7 +33,7 @@ public class PlantsController
     {
         GameObject newObj = GameObject.Instantiate(data.OriginalReference,PlantsFatherObject.transform);
         Plant plant = newObj.GetComponent<Plant>();
-        newObj.transform.position = levelData.GridToWorld(gridPos, GridPosition.Middle, GameController.Instance.Level.transform.position);
+        newObj.transform.position = GameController.Instance.GridToWorld(gridPos, GridPosition.Middle);
         
         data.GameObject = newObj;
         plant.Data = data;
@@ -51,9 +51,10 @@ public class PlantsController
         if (plants[gridPos.x, gridPos.y].Count > 0)
         {
             int count = plants[gridPos.x, gridPos.y].Count;
-            Plant plant = plants[gridPos.x, gridPos.y][count - 1];//获取最后一个
-            
+            List<Plant> plantList = plants[gridPos.x, gridPos.y];
+            Plant plant = plantList[count - 1];//获取最后一个
             plant.Data.GameObject = null;
+            plantList.Remove(plant);
             GameObject.Destroy(plant.gameObject);
         }
     }
@@ -64,14 +65,14 @@ public class PlantsController
     /// <param name="plant">删除的植物对象</param>
     public void RemovePlant(Plant plant)
     {
-        foreach(var item in plants)
+        Vector2Int gridPos = GameController.Instance.WorldToGrid(plant.transform.position);
+        foreach(var item in plants[gridPos.x - 1,gridPos.y - 1])
         {
-            if (!item.Remove(plant))//移除失败
-                continue;
-            else //移除成功
-            {
+            if (item.Equals(plant)) 
+            { 
                 plant.Data.GameObject = null;
-                GameObject.Destroy(plant);
+                GameObject.Destroy(plant.gameObject);
+                plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
                 return;
             }
         }
@@ -110,5 +111,21 @@ public class PlantsController
                 action.Invoke(p);
             }
         }
+    }
+    /// <summary>
+    /// 清除所有的植物
+    /// </summary>
+    public void Clear()
+    {
+        foreach(var plantList in plants)
+        {
+            foreach (var plant in plantList)
+            {
+                plant.Data.GameObject = null;
+                plant.Data = null;
+                GameObject.Destroy(plant.gameObject);
+            }
+        }
+        plants = null;
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 /// <summary>
 /// 计时器类（沙漏)
+/// 会被Gamecontroller暂停计时
 /// </summary>
 public class CountDown
 {
@@ -17,8 +18,9 @@ public class CountDown
     public bool Available => miliseconds == -1?true:available;
     /// <summary>
     /// 计时器计时时间
+    /// 改变值会影响下次倒计时时间
     /// </summary>
-    public int MilisecondsCountDown => miliseconds;
+    public int MilisecondsCountDown { get => miliseconds; set => miliseconds = value; }
     /// <summary>
     /// 当计时器每次归零时调用
     /// </summary>
@@ -32,20 +34,18 @@ public class CountDown
         miliseconds = milisecondsCountDown;
         available = true;
     }
-    private Task task;
-    private void ThreadFunc()
+    Coroutine coroutine;
+    IEnumerator CountCoroutine()
     {
         available = false;
-        Thread.Sleep(miliseconds);
+        yield return new WaitForSecondsRealtime(MilisecondsCountDown / 1000f);
         available = true;
         OnComplete?.Invoke();
-        task = null;
+        coroutine = null;
     }
     public void StartCountDown()
     {
-        if(task == null && miliseconds != -1)
-        {
-            task = Task.Run(ThreadFunc);
-        }
+        if (coroutine == null)
+            coroutine = MonoManager.Instance.StartCoroutine(CountCoroutine());
     }
 }

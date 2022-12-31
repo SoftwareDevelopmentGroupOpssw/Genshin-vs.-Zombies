@@ -28,21 +28,25 @@ public class UIManager:Singleton<UIManager>
     private Transform mid;  //中层
     private Transform bot;  //底层
     private Transform system;   //系统层
+    public Canvas Canvas { get; private set; }
 
     [Obsolete("不应使用new方法创建UIManager",true)]
     public UIManager()
     {
         GameObject obj = null;
         obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "Canvas");
-        GameObject.DontDestroyOnLoad(obj);
+        GameObject canvas = GameObject.Instantiate(obj);
+        Canvas = canvas.GetComponent<Canvas>();
+        GameObject.DontDestroyOnLoad(canvas);
 
-        top = obj.transform.Find("Top");
-        mid = obj.transform.Find("Mid");
-        bot = obj.transform.Find("Bot");
-        system = obj.transform.Find("System");
+        top = canvas.transform.Find("Top");
+        mid = canvas.transform.Find("Mid");
+        bot = canvas.transform.Find("Bot");
+        system = canvas.transform.Find("System");
 
         obj = ResourceManager.Instance.Load<GameObject>(UI_PATH + "EventSystem");
-        GameObject.DontDestroyOnLoad(obj);
+        GameObject eventSystem = GameObject.Instantiate(obj);
+        GameObject.DontDestroyOnLoad(eventSystem);
     }
 
     /// <summary>
