@@ -4,20 +4,18 @@ using UnityEngine;
 /// <summary>
 /// 怪物脚本基类
 /// </summary>
-public abstract class Monster : MonoBehaviour
+public abstract class Monster : BaseGameobject
 {
-    /// <summary>
-    /// 怪物数据
-    /// </summary>
-    public IMonsterData Data { get; set; }
+    public abstract IEffectHandler Handler { get; }
+    public override IGameobjectData Data { get; set; }
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        Data.OnAwake();
+        
     }
     
     protected virtual void OnDestroy()
     {
-        Data.OnDestroy();
+        
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c624b1201a2c944fbb36699dd80eacf, type: 3}
+  m_Name: FlyerDatabase
+  m_EditorClassIdentifier: 
+  flyers:
+  - Prefab: {fileID: 0}
+    Name: 
+    Id: 0
+  - Prefab: {fileID: 5258871162860370201, guid: 76ee5220b2f54e14b81386a6d353b790, type: 3}
+    Name: MonaWaterBullet
+    Id: 1

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class PlantData : IPlantData
 {
-    public abstract bool isReady { get; }
+    private List<IEffect> effects = new List<IEffect>();
 
     public abstract int EnergyCost { get; }
 
@@ -12,13 +12,28 @@ public abstract class PlantData : IPlantData
     public abstract int AtkPower { get; set; }
     public GameObject GameObject { get; set; }
 
-    public abstract string ResourcePath { get; }
+    /// <summary>
+    /// 父类构造函数：设置植物预制体和卡牌图片
+    /// </summary>
+    /// <param name="original">预制体</param>
+    /// <param name="cardSprite">卡牌图片</param>
+    protected PlantData(GameObject original, Sprite cardSprite)
+    {
+        this.original = original;
+        this.cardSprite = cardSprite;
+    }
+    
+    protected GameObject original;
+    public GameObject OriginalReference => original;
 
-    public abstract void Action();
+    protected Sprite cardSprite;
+    public Sprite CardSprite => cardSprite;
 
-    public abstract IGameobjectData Instantiate();
+    public abstract int CoolTime { get; }
+    public abstract string PlantName { get; }
 
-    public abstract void OnAwake();
+    public void AddEffect(IEffect effect) => effects.Add(effect);
+    public void RemoveEffect(IEffect effect) => effects.Remove(effect);
+    public List<IEffect> GetEffects() => effects;
 
-    public abstract void OnDestroy();
 }

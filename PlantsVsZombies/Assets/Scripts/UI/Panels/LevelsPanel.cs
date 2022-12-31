@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public class LevelsPanel : BasePanel
 {
-    public LevelSprites sprites;
+    public LevelDatabase sprites;
     public GridLayoutGroup content;
     public GameObject levelPlot;
     private List<Button> levelButtons = new List<Button>();
@@ -20,15 +20,15 @@ public class LevelsPanel : BasePanel
     }
     protected override void BeforeShow()
     {
-        sprites.Foreach((level) =>
+        foreach(var item in LevelSerializer.Instance)
         {
             GameObject plot = Instantiate(levelPlot, content.transform);
-            plot.GetComponent<Image>().sprite = level.Sprite;
-            plot.name = level.Name;
+            plot.GetComponent<Image>().sprite = item.Value.Sprite;
+            plot.name = item.Key;
             Button btn = plot.GetComponent<Button>();
             btn.onClick.AddListener(OnButtonClicked);
             levelButtons.Add(btn);
-        });
+        }
     }
     protected override void BeforeHide()
     {
@@ -42,8 +42,7 @@ public class LevelsPanel : BasePanel
     void OnButtonClicked()
     {
         string levelName = EventSystem.current.currentSelectedGameObject.name;
-        //GameController.Instance.LevelData = LevelSerializer.GetLevel(levelName);//设置关卡
-        GameController.Instance.LevelData = new TestLevel(sprites.SearchSprite(levelName));//测试用
+        GameController.Instance.LevelData = LevelSerializer.Instance.GetLevel(levelName);//设置关卡
 
         GameController.Instance.StartGame();
         Hide();

@@ -66,5 +66,6 @@ public class MonoManager : Singleton<MonoManager>
     {
         return controller.StartCoroutine(methodName);
     }
-   
+    public void StopCoroutine(Coroutine routine) => controller.StopCoroutine(routine);
+    public void StopCoroutine(IEnumerator routine) => controller.StopCoroutine(routine);
 }

@@ -5,20 +5,21 @@ using UnityEngine;
 public class role : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject obj;
     public static bool flag = false;
+    public int fun = 0;
     
     Vector3 pos1 = new Vector3(-4,6,0);
 
     void Start()
     {
-        //  Vector3 pos = obj.transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+          fun = sttk.fun;
+        if (fun == 1) DestroyRole();
     }
 
     private void FlyAnimation(Vector3 pos1)

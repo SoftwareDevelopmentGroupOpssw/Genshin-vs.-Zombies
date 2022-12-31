@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 /// <summary>
 /// ¸üÐÂÄ£¿é
 /// </summary>
@@ -16,7 +17,7 @@ public class Updater
         this.plantsController = plantsController;
         this.monstersController = monstersController;
         plantsUpdater = new PlantsUpdater(plantsController);
-        monstersUpdater = new MonstersUpdater(monstersUpdater);
+        monstersUpdater = new MonstersUpdater(monstersController);
         refresh = new RefreshModule();
     }
     // Update is called once per frame

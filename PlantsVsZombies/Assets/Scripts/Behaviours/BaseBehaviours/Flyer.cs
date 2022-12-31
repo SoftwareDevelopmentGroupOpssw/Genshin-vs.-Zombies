@@ -4,23 +4,19 @@ using UnityEngine;
 /// <summary>
 /// 飞行物脚本基类
 /// </summary>
-public abstract class Flyer : MonoBehaviour
+public abstract class Flyer : BaseGameobject
 {
-    /// <summary>
-    /// 飞行物数据
-    /// </summary>
-    public IFlyerData Data { get; set; }
     // Start is called before the first frame update
-    protected virtual void Start()
+    /// <summary>
+    /// 飞行物能够到达的区域
+    /// </summary>
+    public Area AvailableArea { get; set; }
+
+    public override IGameobjectData Data { get; set; }
+
+    public void OnTriggerEnter(Collider other)
     {
-        Data.OnAwake();
-    }
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        Data.OnTriggered(collision.gameObject);
-    }
-    protected virtual void OnDestroy()
-    {
-        Data.OnDestroy();
+        if (Data is IFlyerData)
+            (Data as IFlyerData).OnTriggered(other.gameObject);
     }
 }

@@ -352,9 +352,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -10, y: 25}
+  m_AnchoredPosition: {x: 65.92, y: 91.78}
   m_SizeDelta: {x: 10, y: 10}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7729641977519231314
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +425,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a02874e6399363a4696ce52ed9798c96, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3297bb32cbb93be45a36771d77e645d0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plot: {fileID: 8833985450888408876, guid: 4187f7b7a806029439b3028cc0d131b4, type: 3}
+  mask: {fileID: 4256384455943791142, guid: 332619f2257c311459f7650b4e8e0a7c, type: 3}
   area: {fileID: 7729641977763591394}
   energyLocation: {fileID: 4433013426251865859}
 --- !u!1 &7729641977763591396

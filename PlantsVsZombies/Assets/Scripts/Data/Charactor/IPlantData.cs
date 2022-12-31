@@ -8,15 +8,19 @@ using UnityEngine;
 public interface IPlantData:ICharactorData
 {
     /// <summary>
-    /// 植物是否准备好下次行动
+    /// 植物的名字
     /// </summary>
-    public bool isReady { get; }
+    public string PlantName { get; }
     /// <summary>
     /// 植物的能量花费
     /// </summary>
     public int EnergyCost { get; }
     /// <summary>
-    /// 植物的技能操作
+    /// 卡槽图片
     /// </summary>
-    public void Action();
+    public Sprite CardSprite { get; }
+    /// <summary>
+    /// 总冷却时间
+    /// </summary>
+    public int CoolTime { get; }
 }
