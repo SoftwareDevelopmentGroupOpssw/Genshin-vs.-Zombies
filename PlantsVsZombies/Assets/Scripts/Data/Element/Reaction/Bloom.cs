@@ -45,6 +45,7 @@ public class Bloom : ElementsReaction
     private const string HYPEREXPLOSION_PATH = "ElementReaction/HyperExplosion";
     private static GameObject seed;
     private static GameObject hyperExplosion;
+
     /// <summary>
     /// 绽放生成的种子预制体
     /// </summary>
@@ -74,20 +75,33 @@ public class Bloom : ElementsReaction
         }
     }
 
-    private static ObjectBuffer seedPool = new ObjectBuffer(FlyersController.FlyersFatherObject.transform);
-
+    private static readonly string bufferName = "Bloom";
+    public static ObjectBuffer Pool
+    {
+        get
+        {
+            EntitiesController controller = GameController.Instance.EntitiesController;
+            if (!controller.ContainsBuffer(bufferName))
+            {
+                controller.AddBufferToManagement(bufferName, new ObjectBuffer(FlyersController.FlyersFatherObject.transform));
+                controller.AddBehaviourManagement<GrassCore>(bufferName, Seed); //将种子和GrassCore脚本纳入管理
+            }
+            return controller[bufferName];
+        }
+    }
     /// <summary>
     /// 产生一个种子对象
     /// </summary>
     /// <param name="worldPos"></param>
-    public static void AddSeed(Vector3 worldPos)
+    public static GameObject AddSeed(Vector3 worldPos)
     {
-        GameObject newSeed = seedPool.Get(Seed);
+        GameObject newSeed = Pool.Get(Seed);
         newSeed.transform.position = worldPos;
+        return newSeed;
     }
     public static void RemoveSeed(GrassCore core)
     {
-        seedPool.Put(Seed,core.gameObject);
+        Pool.Put(Seed,core.gameObject);
     }
 
     /// <summary>
@@ -111,7 +125,7 @@ public class Bloom : ElementsReaction
         foreach (var collider in colliders)
         {
             IDamageable target = collider.GetComponent<IDamageable>();
-            if (target != null)
+            if (target != null && target is Monster)
                 target.GetReceiver().ReceiveDamage(new SystemDamage(PyroBloomDamage, Elements.Grass));
         }
     }
@@ -121,7 +135,28 @@ public class Bloom : ElementsReaction
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        //在怪物的脚下生成一个草种子
-        AddSeed(target.GameObject.transform.position);
+        IEnumerator SeedFlyingCoroutine(GameObject seed)
+        {
+            //种子蹦出来的距离
+            float offset = 0.7f;
+            float farestLocation = 0.35f;
+            float nearestLocation = 0.2f;
+            int sign = Random.value - offset > 0 ? 1 : -1;
+            float now = Random.Range(sign * nearestLocation,sign * farestLocation);
+
+            Vector3 startPos = seed.transform.position;
+            float flySpeed = 1;
+            float polonomialArg = 15;
+
+            for(float x = 0; Mathf.Abs(x) < Mathf.Abs(now); x += sign * flySpeed * Time.deltaTime)
+            {
+                float y = -polonomialArg *  x * (x - now);
+                seed.transform.position = startPos + new Vector3(x, y, 0);
+                yield return 1;
+            }
+        }
+        //在怪物的脚下生成一个草种子,草种子的具体位置有扰动
+        GameObject seed =  AddSeed(target.GameObject.transform.position);
+        seed.GetComponent<GrassCore>().StartCoroutine(SeedFlyingCoroutine(seed));
     }
-}
+} 

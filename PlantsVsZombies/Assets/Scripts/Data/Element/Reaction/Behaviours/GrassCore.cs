@@ -8,6 +8,7 @@ using UnityEngine;
 public class GrassCore : MonoBehaviour, IDamageable
 {
     private Animator animator;
+    private CountDown countdown = new CountDown(Bloom.MilisecondsBeforeSeedExplode);
     private bool isTriggered;//是否已经触发
     /// <summary>
     /// 一个草原核的伤害接收器
@@ -24,7 +25,7 @@ public class GrassCore : MonoBehaviour, IDamageable
         foreach (var collider in colliders)
         {
             IDamageable target = collider.GetComponent<IDamageable>();
-            if (target != null)
+            if (target != null && target is Monster)
                 target.GetReceiver().ReceiveDamage(new SystemDamage(Bloom.SeedExplodeDamage, Elements.Grass));
         }
     }
@@ -71,9 +72,8 @@ public class GrassCore : MonoBehaviour, IDamageable
     /// <summary>
     /// 等到时间到时调用
     /// </summary>
-    IEnumerator BloomListen()
+    void Bloomed()
     {
-        yield return new WaitForSecondsRealtime(Bloom.MilisecondsBeforeSeedExplode / 1000);
         if (!isTriggered)
         {
             isTriggered = true;
@@ -85,15 +85,16 @@ public class GrassCore : MonoBehaviour, IDamageable
     {
         animator = GetComponent<Animator>();
     }
-    public void Start()
+    public void Update()
     {
-
+        if (countdown.Available)
+            Bloomed();
     }
     public void OnEnable()
     {
         isTriggered = false;
         animator.Play("Empty");
-        StartCoroutine(BloomListen());
+        countdown.StartCountDown();
         receiver.AddOnReceiveDamageListener(Elements.Electric, ElecticListen);
         receiver.AddOnReceiveDamageListener(Elements.Fire, FireListen);
     }

@@ -19,7 +19,6 @@ public class SpikeBulletBehaivour : Bullet
     [Header("尖刺伤害")]
     [SerializeField]
     private int damage;
-    public override int AtkDmg { get => damage; set => damage = value; }
 
     [Header("尖刺运动速度")]
     [SerializeField]
@@ -29,13 +28,12 @@ public class SpikeBulletBehaivour : Bullet
     [Header("尖刺的元素类型")]
     [SerializeField]
     private Elements element;
-    public override Elements ElementType { get => element; set => element = value; }
 
     [Header("豌豆飞行时的的图片")]
     [SerializeField]
     private Sprite flyingSprite;
 
-    public override bool CanAddElement { get; set; }
+    protected override BulletDamage bulletDamage => new BulletDamage() { AtkDmg = damage, ElementType = element, CanAddElement = true };
 
     /// <summary>
     /// 移除自己
@@ -98,7 +96,7 @@ public class SpikeBulletBehaivour : Bullet
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
         if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            target.GetReceiver().ReceiveDamage(this);
+            target.GetReceiver().ReceiveDamage(bulletDamage);
         }
     }
 }

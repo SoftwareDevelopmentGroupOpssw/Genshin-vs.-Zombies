@@ -20,7 +20,6 @@ public class PeaBulletBehaviour : Bullet
     [Header("豌豆伤害")]
     [SerializeField]
     private int damage;
-    public override int  AtkDmg { get => damage; set => damage = value; }
     
     [Header("豌豆运动速度")]
     [SerializeField]
@@ -30,18 +29,17 @@ public class PeaBulletBehaviour : Bullet
     [Header("豌豆的元素类型")]
     [SerializeField]
     private Elements element;
-    public override Elements ElementType { get => element; set => element = value; }
 
     [Header("豌豆打击触发时碎掉的图片")]
     [SerializeField]
     private Sprite brokenSprite;
-    
+
     [Header("豌豆飞行时的的图片")]
     [SerializeField]
     private Sprite flyingSprite;
 
-    public override bool CanAddElement { get; set; }
-    
+    protected override BulletDamage bulletDamage => new BulletDamage() { AtkDmg = damage, ElementType = element, CanAddElement = true };
+
     /// <summary>
     /// 移除自己
     /// </summary>
@@ -114,7 +112,7 @@ public class PeaBulletBehaviour : Bullet
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
         if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            if(target.GetReceiver().ReceiveDamage(this))
+            if(target.GetReceiver().ReceiveDamage(bulletDamage))
                 StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
         }
     }

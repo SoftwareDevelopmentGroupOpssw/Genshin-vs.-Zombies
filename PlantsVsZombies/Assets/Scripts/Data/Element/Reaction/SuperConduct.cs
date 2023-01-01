@@ -20,7 +20,7 @@ public class SuperConduct : ElementsReaction
         foreach (var collider in colliders)
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (damageable != null && damageable is Monster)
             {
                 IDamageReceiver receiver = damageable.GetReceiver();
                 receiver.ReceiveDamage(new SystemDamage(SuperConduct.damage, Elements.Ice));

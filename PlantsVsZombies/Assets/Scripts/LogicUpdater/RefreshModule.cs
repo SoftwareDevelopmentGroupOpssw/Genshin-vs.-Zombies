@@ -19,7 +19,7 @@ public partial class GameController
             ILevelData level = GameController.Instance.LevelData;
 
             System.Random random = new System.Random();
-            int row = random.Next(1, level.Row);//随机选一行
+            int row = random.Next(1, level.Row+1);//随机选一行
 
             Vector3 worldPos = GameController.Instance.GridToWorld(new Vector2Int(level.Col, row), GridPosition.Right);
             GameController.Instance.MonstersController.AddMonster(data, worldPos);
@@ -32,7 +32,7 @@ public partial class GameController
         public void Update()
         {
             if (generateCoroutine == null)
-                generateCoroutine = MonoManager.Instance.StartCoroutine(GenerateCoroutine());
+                generateCoroutine = GameController.Instance.StartCoroutine(GenerateCoroutine());
             
             if(GameController.Instance.MonstersController.MonsterCount == 0 && isGenerateCompleted && !isResultShowed)
             {
@@ -60,11 +60,6 @@ public partial class GameController
                 }
                 else //在生成策略中，仍然可以用unity协程中的yield instructions来延迟时间
                     yield return enumerator.Current;
-
-                while (GameController.Instance.IsPaused)
-                {
-                    yield return 1;
-                }
 
             } while (enumerator.MoveNext() && GameController.Instance.IsGameStarted);
             isGenerateCompleted = true;

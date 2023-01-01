@@ -137,7 +137,17 @@ public abstract class ElementsReaction
     protected abstract void RealAction(IElementalDamage damage, IDamageReceiver target);
     public void Action(IElementalDamage damage,IDamageReceiver target)
     {
-        ShowReaction(ReactionName, target.GameObject.transform.position);
-        RealAction(damage,target);
+        try
+        {
+            ShowReaction(ReactionName, target.GameObject.transform.position);
+
+            RealAction(damage, target);
+        }
+        catch (System.Exception)
+        {
+            Debug.Log(ReactionName);
+            Debug.Log(target is null);
+            Debug.Log(target.GameObject is null);
+        }
     }
 }

@@ -74,6 +74,7 @@ public class UIManager:Singleton<UIManager>
     }
 
     #region PanelOperate
+    
     /// <summary>
     /// 用类型来显示面板
     /// </summary>

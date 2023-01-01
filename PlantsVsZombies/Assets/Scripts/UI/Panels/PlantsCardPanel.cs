@@ -37,6 +37,8 @@ public class PlantsCardPanel : BasePanel
             controller.EnergyMonitor.OnValueChanged += OnEnergyChanged;//添加监听
 
             GetControl<Button>("ShovelBtn").onClick.AddListener(OnShovelClicked);//添加铲子按钮监听
+
+            GetControl<Button>("SettingBtn").onClick.AddListener(OnSettingClicked);
         }
         else
             Debug.LogError("The game is not started.");
@@ -45,6 +47,8 @@ public class PlantsCardPanel : BasePanel
     {
         controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;//移除监听
         GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();//移除铲子按钮监听
+
+        GetControl<Button>("SettingBtn").onClick.RemoveAllListeners();
 
         SetPlotCount(0);
     }
@@ -105,6 +109,14 @@ public class PlantsCardPanel : BasePanel
     {
         selected = plotList.Count;//如果有8个plot，则选中plot时范围为0-7，此时设置为8来表示为铲子
     }
+    private void OnSettingClicked()
+    {
+
+
+        GameController.Instance.Pause();
+        UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel", UIManager.UILayer.Bot);
+
+    }
 
 
     private GameObject real;//选择时，出现的实体植物
@@ -151,6 +163,7 @@ public class PlantsCardPanel : BasePanel
         else//选择的物体是铲子
         {
             Button btn = GetControl<Button>("ShovelBtn");
+            btn.interactable = false;
             RectTransform rect = btn.transform as RectTransform;
             Vector3 worldPos;
             RectTransformUtility.ScreenPointToWorldPointInRectangle
@@ -177,7 +190,9 @@ public class PlantsCardPanel : BasePanel
         {
             Destroy(unreal); unreal = null;
         }
-        RectTransform btnTransform = GetControl<Button>("ShovelBtn").transform as RectTransform;
+        Button shovel = GetControl<Button>("ShovelBtn");
+        shovel.interactable = true;
+        RectTransform btnTransform = shovel.transform as RectTransform;
         btnTransform.anchoredPosition = Vector2.zero;//铲子回到原位
     }
     /// <summary>

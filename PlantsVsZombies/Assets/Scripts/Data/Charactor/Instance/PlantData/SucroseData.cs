@@ -15,7 +15,7 @@ public class SucroseData : PlantData
     public override int Health { get; set; } = 100;
     public override int AtkPower { get; set; } = 8;
 
-    public override int CoolTime => 5;
+    public override int CoolTime => 5000;
 
     public override string PlantName => "Sucrose";
 }

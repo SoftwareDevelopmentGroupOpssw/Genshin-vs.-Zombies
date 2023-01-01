@@ -19,6 +19,7 @@ public class MonoManager : Singleton<MonoManager>
         //保证了MonoController对象的唯一性
         GameObject obj = new GameObject("MonoController");
         controller = obj.AddComponent<MonoController>();
+        GameObject.DontDestroyOnLoad(obj);
     }
 
     /// <summary>
@@ -68,4 +69,5 @@ public class MonoManager : Singleton<MonoManager>
     }
     public void StopCoroutine(Coroutine routine) => controller.StopCoroutine(routine);
     public void StopCoroutine(IEnumerator routine) => controller.StopCoroutine(routine);
+
 }

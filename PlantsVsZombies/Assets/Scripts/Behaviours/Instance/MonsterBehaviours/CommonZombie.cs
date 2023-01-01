@@ -13,6 +13,7 @@ public class CommonZombie : Monster, IDamageable
 {
     enum State
     {
+        Idle,
         Walk,
         Atk,
         Stun,
@@ -20,7 +21,7 @@ public class CommonZombie : Monster, IDamageable
     /// <summary>
     /// 一个对应普通魔物的效应处理器
     /// </summary>
-    private CommonMonsterHandler handler;
+    private DefaultHandler handler;
     
     private SpriteRenderer sprite;
     private Rigidbody2D rigid;
@@ -43,11 +44,9 @@ public class CommonZombie : Monster, IDamageable
 
     public override IEffectHandler Handler => handler;
 
-
-
     private void Start()
     {
-        handler = new CommonMonsterHandler(Data);
+        handler = new DefaultHandler(Data);
 
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -61,45 +60,48 @@ public class CommonZombie : Monster, IDamageable
 
         Data.AddOnReceiveAllDamageListener(OnDamage);
     }
-
+    bool TrySetState(State changeState)
+    {
+        if ((int)changeState > (int)state)//切换的状态的优先级比现在高
+        {
+            state = changeState;
+            return true;
+        }
+        else
+            return false;
+    }
     /// <summary>
     /// 走路
     /// </summary>
     void Walk()
     {
-        state = State.Walk;
-        rigid.velocity = Vector2.left * Data.Speed / 100;
+        rigid.velocity = Vector2.left * Data.Speed / 100f;
         animator.speed = Data.Speed / 50f;
     }
 
     Coroutine atkCoroutine;
     //攻击协程
-    IEnumerator AtkCoroutine(ICharactorData charactor)
+    IEnumerator AtkCoroutine(IDamageReceiver receiver)
     {
-        state = State.Atk;
-        
-        float atkDistanceSeconds = 0.5f;
+        float atkDistanceSeconds = 0.1f;
         rigid.velocity = Vector2.zero;
-        animator.SetBool("IsAttack", true);
 
-        while(charactor.Health > 0 && isAlive)
+        do
         {
-            while (state == State.Stun)//处于眩晕状态 不进行处理
+            while (state != State.Atk || this.enabled == false) //不在攻击状态或者脚本被失活了
             {
-                animator.SetBool("IsAttack", false);
+                if (TrySetState(State.Atk) && this.enabled == true)
+                    animator.SetBool("IsAttack", true);
                 yield return 1;
             }
-            yield return true;
-
-            state = State.Atk;
-
-            charactor.Health -= Data.AtkPower;
+  
+            receiver.ReceiveDamage(new SystemDamage(Data.AtkPower, Elements.None));
             yield return new WaitForSecondsRealtime(atkDistanceSeconds);
-        }
+
+        } while (receiver.Health > 0 && isAlive);
         //停止攻击动画
         animator.SetBool("IsAttack", false);
-        state = State.Walk;
-
+        state = State.Idle;
         atkCoroutine = null;
     }
     /// <summary>
@@ -107,7 +109,6 @@ public class CommonZombie : Monster, IDamageable
     /// </summary>
     void Stun()
     {
-        state = State.Stun;
         rigid.velocity = Vector2.zero;
         animator.speed = 0;//动画停止
     }
@@ -124,14 +125,14 @@ public class CommonZombie : Monster, IDamageable
                 case Elements.Water:
                     return new Color(0, 0.5f, 1f);
                 case Elements.Fire:
-                    return new Color(1f, 0.25f, 0);
+                    return new Color(1f, 0.4f, 0.2f);
                 case Elements.Ice:
                     return new Color(0, 1f, 1f);
                 case Elements.Electric:
                     return new Color(0.75f, 0, 1f);
                 //风和岩不会附着
                 case Elements.Grass:
-                    return Color.green;
+                    return new Color(0.6f,1f,0);
             }
             return Color.black;
         }
@@ -190,37 +191,43 @@ public class CommonZombie : Monster, IDamageable
         if (GameController.Instance.WorldToGrid(transform.position) == new Vector2(-1, -1))
         {
             GameController.Instance.ShowResult(false);
-
+            animator.enabled = true;//让这个超出地图的僵尸开启动画
         }
     }
 
     public void Update()
     {
-        //用普通魔物效果分析器来对Data里的所有效果进行分析
-        handler.CheckEffect(Data.GetEffects());
+        //用普通效果分析器来对Data里的所有效果进行分析
+        handler.CheckEffect();
+        
+        CheckLocation();
+
+        //计算颜色
+        Color c = CalculateElementColor();
+        if (damageCoroutine != null)//现在还在显示伤害特效的帧里
+            c = (c + DamageColor) / 2;
+        sprite.color = c;
+        
         if (isAlive)
         {
+
             //查找身上有没有眩晕效果
             IEffect stunEffect = Data.GetEffects().Find((effect) => effect is StunEffect);
-            if (stunEffect != null || Data.Strength <= 0)
+            if (stunEffect != null || Data.Strength < 0)
             {
-                Stun();
-
+                TrySetState(State.Stun);
             }
-            else
+            TrySetState(State.Walk);
+            switch (state)
             {
-                if (state != State.Atk)
-                {
+                case State.Walk:
                     Walk();
-                }
+                    break;
+                case State.Stun:
+                    Stun();
+                    break;
             }
 
-            CheckLocation();
-            //计算颜色
-            Color c = CalculateElementColor();
-            if (damageCoroutine != null)//现在还在显示伤害特效的帧里
-                c = (c + DamageColor) / 2;
-            sprite.color = c;
         }
         if (Data.Health <= 0 && isAlive)//只有活着的时候才能死亡
         {
@@ -237,6 +244,7 @@ public class CommonZombie : Monster, IDamageable
         isAlive = false;
         rigid.velocity = Vector2.zero;
         colliders.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
+        handler.DisableAll();
         GameController.Instance.MonstersController.RemoveMonster(this);
         float secondsBeforeBodyDisappear = 1;
         Color elementColor = CalculateElementColor();//计算此时附着的颜色
@@ -252,14 +260,14 @@ public class CommonZombie : Monster, IDamageable
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        IMonsterAttackable attackable = collision.gameObject.GetComponent<IMonsterAttackable>();
-        if (attackable != null && atkCoroutine == null)
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (damageable != null && atkCoroutine == null && damageable is Plant)
         {
-            ICharactorData data = attackable.GetData();
+            IDamageReceiver receiver = damageable.GetReceiver();
             //这个函数是在物理帧调用，而Data的赋值是在渲染帧调用，
             //刚放下一个植物的时候容易出现 触发器已经触发但是Data还未赋值的情况
-            if (data != null)
-                atkCoroutine = StartCoroutine(AtkCoroutine(data));
+            if (receiver != null)
+                atkCoroutine = StartCoroutine(AtkCoroutine(receiver));
         }
     }
     public IDamageReceiver GetReceiver()

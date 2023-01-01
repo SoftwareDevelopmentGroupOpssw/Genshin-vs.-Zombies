@@ -10,21 +10,17 @@ public class Main : MonoBehaviour
     {
         Run();
     }
-    Monster monster;
     public void Run()
     {
+        AudioManager.Instance.PlayRandomBackgroundMusic();
         UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
-
     }
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1) && GameController.Instance.IsGameStarted)
         {
-            if (GameController.Instance.IsPaused)
-                GameController.Instance.Resume();
-            else
-                GameController.Instance.Pause();
+
             //Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             //Bloom.AddSeed(new Vector3(world.x, world.y, 0));
         }

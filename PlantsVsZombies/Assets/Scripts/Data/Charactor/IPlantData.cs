@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 植物接口
 /// </summary>
-public interface IPlantData:ICharactorData
+public interface IPlantData:ICharactorData , IDamageReceiver
 {
     /// <summary>
     /// 植物的名字

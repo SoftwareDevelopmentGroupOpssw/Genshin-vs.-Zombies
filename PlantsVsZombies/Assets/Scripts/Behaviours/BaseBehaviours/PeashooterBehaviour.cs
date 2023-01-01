@@ -42,15 +42,23 @@ public class PeashooterBehaviour : Plant
     {
         get
         {
+            if(countdown == null)
+                countdown = new CountDown(timeDistance);
             if (countdown.MilisecondsCountDown != timeDistance)
                 countdown.MilisecondsCountDown = timeDistance;
             return countdown;
         }
     }
-    
-    public PeashooterBehaviour()
+
+    private DefaultHandler handler;
+    public override IEffectHandler Handler
     {
-        countdown = new CountDown(timeDistance);
+        get
+        {
+            if (handler == null)
+                handler = new DefaultHandler(Data);
+            return handler;
+        }
     }
     /// <summary>
     /// 是否有怪物在攻击距离中
@@ -74,8 +82,8 @@ public class PeashooterBehaviour : Plant
         {
             bullet.AvailableArea = new FrontLine();//子弹的范围为前一行  
             bullet.ElementType = element;//改变子弹的元素伤害
-            bullet.AtkDmg = Data.AtkPower;//豌豆的伤害与攻击者的攻击力相同
-            bullet.CanAddElement = true;//豌豆一直可以附着元素
+            bullet.AtkDmg = Data.AtkPower;//子弹的伤害与攻击者的攻击力相同
+            bullet.CanAddElement = true;//子弹一直可以附着元素
         });
     }
 }

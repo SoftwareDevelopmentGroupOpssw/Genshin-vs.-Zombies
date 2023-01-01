@@ -20,17 +20,15 @@ public class TitlePanel : BasePanel
     }
     void StartGame()
     {
-        //TODO
-        UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
         Hide();
+        UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
+
     }
     void OpenSetting()
     {
-        //TODO
-
-        //打开设置面板
 
         Hide();
+        UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel");
     }
     void Exit()
     {

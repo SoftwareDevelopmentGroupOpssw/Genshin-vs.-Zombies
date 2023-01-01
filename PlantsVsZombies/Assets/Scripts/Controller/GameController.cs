@@ -49,6 +49,13 @@ public sealed partial class GameController : MonoBehaviour
     /// 所有魔物的控制器
     /// </summary>
     public MonstersController MonstersController => monsterController;
+
+
+    private EntitiesController entitiesController;
+    /// <summary>
+    /// 所有实体的控制器
+    /// </summary>
+    public EntitiesController EntitiesController => entitiesController;
     
     /// <summary>
     /// 已选择的植物
@@ -155,12 +162,13 @@ public sealed partial class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updater.Update();
+        if(!IsPaused)
+            updater.Update();
     }
     /// <summary>
     /// 游戏是否正在运行
     /// </summary>
-    public bool IsGameStarted => gameObject.activeSelf;
+    public bool IsGameStarted { get; private set; } = false;
     /// <summary>
     /// 启动游戏
     /// </summary>
@@ -181,11 +189,13 @@ public sealed partial class GameController : MonoBehaviour
         AddSelectPlant("Lisa");
         AddSelectPlant("Nahida");
         AddSelectPlant("Sucrose");
+        AddSelectPlant("Ningguang");
         
         //初始化模块
         plantsController = new PlantsController();
         flyerController = new FlyersController();
         monsterController = new MonstersController();
+        entitiesController = new EntitiesController();
 
         updater = new Updater();
 
@@ -194,11 +204,13 @@ public sealed partial class GameController : MonoBehaviour
         //展示卡槽图片
         UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
 
+        IsGameStarted = true;
+
         //测试：直接添加能量
         EnergyMonitor.AddEnergy(10000);
         for (int i = 200; i < 1600;i +=100)
         {
-            EnergyMonitor.InstantiateEnergy(new Vector2Int(i, 540), EnergyType.Big);
+            EnergyMonitor.CreateEnergy(new Vector2Int(i, 540), EnergyType.Big);
         }
     }
     /// <summary>
@@ -226,9 +238,30 @@ public sealed partial class GameController : MonoBehaviour
             monster.GetComponent<Animator>().enabled = false;
             monster.enabled = false;
         });
-        EnergyMonitor.ForeachEnergy((energy) =>
+        EntitiesController.Foreach((unite) =>
         {
-            energy.enabled = false;
+            Rigidbody2D rigid;
+            Animator animator;
+            foreach(KeyValuePair<GameObject,List<GameObject>> pair in unite.ActiveLists)//pair是预制体和激活列表的键值对
+            {
+                if (TryGetComponent<Rigidbody2D>(out rigid))
+                    rigid.Sleep();
+                if (TryGetComponent<Animator>(out animator))
+                    animator.enabled = false;
+                //obj是激活列表里的所有物体
+                foreach(var obj in pair.Value)
+                {
+                    //type是此种预制体所有已经监听的类
+                    if (unite.ManagedBehaviours.ContainsKey(pair.Key))
+                    {
+                        foreach (var type in unite.ManagedBehaviours[pair.Key])
+                        {
+                            Behaviour behaviour = obj.GetComponent(type) as Behaviour;
+                            behaviour.enabled = false;
+                        }
+                    }
+                }
+            }
         });
         IsPaused = true;
     }
@@ -253,9 +286,30 @@ public sealed partial class GameController : MonoBehaviour
             monster.GetComponent<Animator>().enabled = true;
             monster.enabled = true;
         });
-        EnergyMonitor.ForeachEnergy((energy) =>
+        EntitiesController.Foreach((unite) =>
         {
-            energy.enabled = true;
+            Rigidbody2D rigid;
+            Animator animator;
+            foreach (KeyValuePair<GameObject, List<GameObject>> pair in unite.ActiveLists)//pair是预制体和激活列表的键值对
+            {
+                if (TryGetComponent<Rigidbody2D>(out rigid))
+                    rigid.WakeUp();
+                if (TryGetComponent<Animator>(out animator))
+                    animator.enabled = true;
+                //obj是激活列表里的所有物体
+                foreach (var obj in pair.Value)
+                {
+                    //type是此种预制体所有已经监听的类
+                    if (unite.ManagedBehaviours.ContainsKey(pair.Key))
+                    {
+                        foreach (var type in unite.ManagedBehaviours[pair.Key])
+                        {
+                            Behaviour behaviour = obj.GetComponent(type) as Behaviour;
+                            behaviour.enabled = true;
+                        }
+                    }
+                }
+            }
         });
         IsPaused = false;
     }
@@ -279,14 +333,31 @@ public sealed partial class GameController : MonoBehaviour
         plantsController.Clear();
         monsterController.Clear();
         flyerController.Clear();
+        entitiesController.ClearAll();
+
         selected.Clear();
         IsPaused = false;
-
-
         EnergyMonitor.Energy = 0;
-        EnergyMonitor.Clear();
 
         UIManager.Instance.HidePanel("PlantsCardPanel");
+
+        IsGameStarted = false;
+
         gameObject.SetActive(false);
+    }
+
+    public new Coroutine StartCoroutine(IEnumerator enumerator)
+    {
+        IEnumerator RealCoroutine(IEnumerator arg)
+        {
+            arg.MoveNext();
+            do
+            {
+                yield return arg.Current;
+                while (IsPaused)
+                    yield return 1;
+            } while (arg.MoveNext());
+        }
+        return base.StartCoroutine(RealCoroutine(enumerator));
     }
 }

@@ -40,3 +40,6 @@ MonoBehaviour:
   - Prefab: {fileID: 758575164564133500, guid: a6d8346543853624c85619a5a934421e, type: 3}
     Name: GrassSpike
     Id: 15
+  - Prefab: {fileID: 8208304545425816519, guid: aa8bdbefc0dfb1340ab38332c97d24c8, type: 3}
+    Name: StoneBombBullet
+    Id: 22

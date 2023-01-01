@@ -44,6 +44,16 @@ public class FlyerPrefabSerializer : Singleton<FlyerPrefabSerializer>
             case 14://岩弹
             case 15://草弹
                 return new CommonFlyerData(flyer.Prefab);
+            //id 16~23都是西瓜子弹 ——只有元素类型发生了改变，体现在了脚本之中，因此数据上没有区别
+            case 16://物理子弹
+            case 17://水弹
+            case 18://火弹
+            case 19://冰弹
+            case 20://雷弹
+            case 21://风弹
+            case 22://岩弹
+            case 23://草弹
+                return new CommonFlyerData(flyer.Prefab);
         }
         return null;
     }

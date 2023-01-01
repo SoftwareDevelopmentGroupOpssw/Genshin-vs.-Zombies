@@ -25,7 +25,7 @@ public class Swirl : ElementsReaction
         foreach (var collider in colliders)
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (damageable != null && damageable is Monster )
             {
                 IDamageReceiver receiver = damageable.GetReceiver();
                 if(receiver.Equals(target))

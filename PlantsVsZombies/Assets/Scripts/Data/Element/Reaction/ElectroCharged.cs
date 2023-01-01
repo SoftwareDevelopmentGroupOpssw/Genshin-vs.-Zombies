@@ -37,7 +37,26 @@ public class ElectroCharged : ElementsReaction, IEffect
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
-        target.AddEffect(this);//为主要目标加一个能添加元素的感电效果
+        List<IEffect> targetEffects = target.GetEffects();
+        bool targetHavePrevious = false;
+        if(targetEffects != null)
+        {
+            targetEffects.ForEach((effect) =>
+            {
+                if(effect is ElectroCharged)
+                {
+                    ElectroCharged electroCharged = effect as ElectroCharged;
+                    if(electroCharged.canAddElement == true)
+                    {
+                        electroCharged.nowTimes = 0; //刷新时间
+                        targetHavePrevious = true;//已经有一个能加元素的感电效果了
+                        return;
+                    }
+                }
+            });
+        }
+        if(!targetHavePrevious)
+            target.AddEffect(this);//为主要目标加一个能添加元素的感电效果
 
         //范围检测:范围内的施加感电效果
         Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
@@ -45,21 +64,32 @@ public class ElectroCharged : ElementsReaction, IEffect
         {
             IDamageable damageable = collider.gameObject.GetComponent<IDamageable>();//获取可以触发感电的对象
             //可以受到伤害
-            if (damageable != null)
+            if (damageable != null && damageable is Monster)
             {
                 //获取一个伤害接收器
                 IDamageReceiver receiver = damageable.GetReceiver();
                 List<IEffect> effects = receiver.GetEffects();
+                bool havePrevious = false;
                 if(effects != null)
                 {
-                    bool contained = !effects.TrueForAll((effect) => !(effect is ElectroCharged));
-                    if (!contained)
-                        receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });//对范围内的敌人造成伤害，但不附加元素
+                    effects.ForEach((effect) =>
+                    {
+                        if (effect is ElectroCharged)
+                        {
+                            //刷新身上的不加元素的感电效果
+                            ElectroCharged electroCharged = effect as ElectroCharged;
+                            if (!electroCharged.canAddElement)
+                            {
+                                electroCharged.nowTimes = 0;
+                                havePrevious = true;
+                                return;
+                            }
+                        }
+                    });
                 }
-                else
-                {
-                    receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });//对范围内的敌人造成伤害，但不附加元
-                }
+                if(!havePrevious)
+                    //为其加上不加元素的感电效果
+                    receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });
             }
         }
     }
@@ -67,12 +97,13 @@ public class ElectroCharged : ElementsReaction, IEffect
     /// 造成持续伤害的协程
     /// </summary>
     private Coroutine damageCoroutine;
+    private int nowTimes = 0;
     private IEnumerator DamageCoroutine(IDamageReceiver target)
     {
-        for (int i = 0; i< damageTimes; i++)
+        for (;nowTimes < damageTimes; nowTimes++)
         {
             target.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Electric));
-            yield return new WaitForSecondsRealtime((float)damageSpaceTime / 1000);
+            yield return new WaitForSecondsRealtime(damageSpaceTime / 1000f);
         }
         State = EffectState.End;
     }

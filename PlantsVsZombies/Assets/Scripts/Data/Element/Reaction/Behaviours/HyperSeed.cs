@@ -77,7 +77,7 @@ public class HyperSeed : MonoBehaviour, IElementalDamage
     private void OnTriggerEnter2D(Collider2D collision)
     {
         IDamageable target = collision.GetComponent<IDamageable>();
-        if (target != null)
+        if (target != null && target is Monster )
         {
             isTriggered = true;
             GetComponent<Collider2D>().enabled = false;//取消碰撞盒，防止同时对多个目标触发

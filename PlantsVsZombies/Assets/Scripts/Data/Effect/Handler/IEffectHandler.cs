@@ -24,6 +24,9 @@ public interface IEffectHandler
     /// <summary>
     /// 自定义对一列效果进行分析（启用、更新还是移除）
     /// </summary>
-    /// <param name="effects"></param>
-    public void CheckEffect(List<IEffect> effects);
+    public void CheckEffect();
+    /// <summary>
+    /// 安全清除所有的效果
+    /// </summary>
+    public void DisableAll();
 }

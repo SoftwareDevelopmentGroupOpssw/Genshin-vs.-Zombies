@@ -29,6 +29,7 @@ public class LevelsPanel : BasePanel
             btn.onClick.AddListener(OnButtonClicked);
             levelButtons.Add(btn);
         }
+        GetControl<Button>("BackBtn").onClick.AddListener(BackTitle);
     }
     protected override void BeforeHide()
     {
@@ -38,6 +39,13 @@ public class LevelsPanel : BasePanel
             Destroy(btn.gameObject);
         }
         levelButtons.Clear();
+
+        GetControl<Button>("BackBtn").onClick.RemoveListener(BackTitle);
+    }
+    void BackTitle()
+    {
+        Hide();
+        UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
     }
     void OnButtonClicked()
     {

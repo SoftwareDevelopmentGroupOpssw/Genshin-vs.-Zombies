@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,4 +40,57 @@ public abstract class PlantData : IPlantData
     public void RemoveEffect(IEffect effect) => effects.Remove(effect);
     public List<IEffect> GetEffects() => effects;
 
+    public void AddElement(Elements element)
+    {
+
+    }
+
+    public void RemoveElement(Elements element)
+    {
+
+    }
+
+    public Elements[] GetAllElements()
+    {
+        return new Elements[0];
+    }
+
+    private System.Action<IElementalDamage> onReceiveDamage;
+
+    public bool ReceiveDamage(IElementalDamage damage)
+    {
+        onReceiveDamage?.Invoke(damage);
+        Health -= damage.AtkDmg;
+        return true;
+    }
+
+    public void AddOnReceiveDamageListener(Elements element, Action<IElementalDamage> action)
+    {
+        
+    }
+
+    public void RemoveOnReceiveDamageListener(Elements element, Action<IElementalDamage> action)
+    {
+
+    }
+
+    public void AddOnReceiveAllDamageListener(Action<IElementalDamage> action)
+    {
+        onReceiveDamage += action;
+    }
+
+    public void RemoveOnReceiveAllDamageListener(Action<IElementalDamage> action)
+    {
+        onReceiveDamage -= action;
+    }
+
+    public void AddOnElementReactedListener(Elements element, Action<ElementsReaction> action)
+    {
+        
+    }
+
+    public void RemoveOnElementReactedListener(Elements element, Action<ElementsReaction> action)
+    {
+        
+    }
 }

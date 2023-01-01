@@ -7,9 +7,9 @@ using UnityEngine;
 public class Overloaded : ElementsReaction
 {
     public const int OVERLOAD_DAMAGE = 30;
-    private static float radius = 0.9f;//Ӱ�췶Χ
+    private static float radius = 0.6f;//Ӱ�췶Χ
     private static int strengthChange = -60;
-    private static int changeTime = 2000;
+    private static int changeTime = 1500;
     public override string ReactionName => "Overloaded";
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
@@ -21,8 +21,9 @@ public class Overloaded : ElementsReaction
         foreach (var collider in colliders)
         {
             IDamageable damageable = collider.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (damageable != null && damageable is Monster)
             {
+                
                 IDamageReceiver receiver = damageable.GetReceiver();
                 receiver.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));
             }

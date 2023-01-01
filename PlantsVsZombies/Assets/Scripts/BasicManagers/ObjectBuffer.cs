@@ -64,8 +64,11 @@ public class ObjectBuffer
     /// <param name="obj">对象物体</param>
     public void Put(GameObject key, GameObject obj)
     {
-        objDic[key].Push(obj);
-        obj.SetActive(false);
+        if (!objDic[key].Contains(obj))
+        {
+            objDic[key].Push(obj);
+            obj.SetActive(false);
+        }
     }
 }
 

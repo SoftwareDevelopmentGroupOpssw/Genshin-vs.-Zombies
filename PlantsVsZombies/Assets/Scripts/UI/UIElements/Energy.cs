@@ -13,6 +13,7 @@ public class Energy : MonoBehaviour
     [Header("œ˚ ß ±º‰(∫¡√Î)")]
     public int disappearTime;
     private CountDown countDown;
+    public EnergyType EnerygyType { get; set; }
     // Start is called before the first frame update
     void Start()
     {

@@ -16,7 +16,7 @@ public class YanfeiData : PlantData
     public override int AtkPower { get; set; } = 18;
 
 
-    public override int CoolTime => 10000;
+    public override int CoolTime => 8000;
 
     public override string PlantName => "Yanfei";
 

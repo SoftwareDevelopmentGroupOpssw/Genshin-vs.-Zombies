@@ -9,10 +9,10 @@ public class CommonZombieData : MonsterData
 {
     public CommonZombieData(GameObject original) :base(original)
     {
-        strength = 100;
+        strength = 130;
         health = 100;
         speed = 35;
-        atkPower = 20;
+        atkPower = 3;
         //SetResistance(0.1f, Elements.None);
         //SetResistance(0.1f, Elements.Water);
         //SetResistance(0.1f, Elements.Fire);

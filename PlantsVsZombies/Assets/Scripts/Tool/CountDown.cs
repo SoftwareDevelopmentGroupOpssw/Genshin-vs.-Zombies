@@ -34,11 +34,17 @@ public class CountDown
         miliseconds = milisecondsCountDown;
         available = true;
     }
+    float nowTime = 0;
     Coroutine coroutine;
     IEnumerator CountCoroutine()
     {
+        nowTime = 0;
         available = false;
-        yield return new WaitForSecondsRealtime(MilisecondsCountDown / 1000f);
+        while(nowTime < miliseconds / 1000)
+        {
+            yield return 1;
+            nowTime += Time.unscaledDeltaTime;
+        }
         available = true;
         OnComplete?.Invoke();
         coroutine = null;
@@ -46,6 +52,6 @@ public class CountDown
     public void StartCountDown()
     {
         if (coroutine == null)
-            coroutine = MonoManager.Instance.StartCoroutine(CountCoroutine());
+            coroutine = GameController.Instance.StartCoroutine(CountCoroutine());//给GameController开协程
     }
 }

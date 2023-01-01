@@ -9,7 +9,7 @@ using UnityEngine.Events;
 /// </summary>
 public class PlantsController
 {
-    public GameObject PlantsFatherObject = new GameObject("Plants");
+    public static readonly GameObject PlantsFatherObject = new GameObject("Plants");
     private List<Plant>[,] plants;
     public PlantsController()
     {

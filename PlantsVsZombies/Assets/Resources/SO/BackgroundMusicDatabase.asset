@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268e2cab10ace9d4492e2078fb39cb3a, type: 3}
+  m_Name: BackgroundMusicDatabase
+  m_EditorClassIdentifier: 
+  audioSources:
+  - AudioSource: {fileID: 8300000, guid: 655b3ec1ce5cd8747b7d3e30f25bea01, type: 3}
+    Name: "\u8499\u5FB7\u7684\u4E00\u65E5"
+  - AudioSource: {fileID: 8300000, guid: 79e5569cf62cd76498e81f5d3aa33390, type: 3}
+    Name: "\u98CE\u66B4\uFF0C\u9AD8\u5854\u4E0E\u5723\u5730"
+  - AudioSource: {fileID: 8300000, guid: c3db63e6333edad45b947085b3834808, type: 3}
+    Name: "\u751C\u7F8E\u7684\u5FAE\u7B11"
+  - AudioSource: {fileID: 8300000, guid: 36eee1654cbfcfe459a9e5563f81b1db, type: 3}
+    Name: "\u7279\u74E6\u6797\u4E0E\u675C\u6797"
+  - AudioSource: {fileID: 8300000, guid: e8a7bdf95913b6d4d8e375a3c8d4b5c0, type: 3}
+    Name: "\u7EC8\u5929\u7684\u95ED\u5E55\u66F2"
+  - AudioSource: {fileID: 8300000, guid: e3c7e70ee4da08c48a4417c13095d3fd, type: 3}
+    Name: "\u6668\u66E6\u9152\u5E84"
+  - AudioSource: {fileID: 8300000, guid: c3028827c9ef1a84fa706db589f68341, type: 3}
+    Name: "\u68A6\u4E4B\u548F\u53F9"
+  - AudioSource: {fileID: 8300000, guid: 99458a24b83940746af80291d6e1d455, type: 3}
+    Name: "\u539F\u795E"
+  - AudioSource: {fileID: 8300000, guid: 903f737d6322c5f4094385e4f879abce, type: 3}
+    Name: "\u5FEB\u4E50\u7684\u65C5\u7A0B"
+  - AudioSource: {fileID: 8300000, guid: d5923b6d934404d43b3db388e90a8fc9, type: 3}
+    Name: "\u9A91\u58EB\u7684\u4E49\u4E3E"
+  - AudioSource: {fileID: 8300000, guid: 08b179a225814bd4587f7c6da1d1738e, type: 3}
+    Name: "\u5B64\u72EC\u7684\u65C5\u5C45"
+  - AudioSource: {fileID: 8300000, guid: 13df78e6ee72323499ac60a991bfe854, type: 3}
+    Name: "\u9752\u7A7A"
+  - AudioSource: {fileID: 8300000, guid: 788a3ba0f7dd96a4090bdf4d2d007c2b, type: 3}
+    Name: "\u6218\u6597\u7684\u79D8\u4EEA"
+  - AudioSource: {fileID: 8300000, guid: 7ed559f59203b2647b3471fe48780346, type: 3}
+    Name: "\u5E73\u539F\u7684\u8FB9\u9645"
+  - AudioSource: {fileID: 8300000, guid: f825e80ef081b5f4db6668c0a3f47b69, type: 3}
+    Name: "\u6355\u98CE\u7684\u5F02\u4E61\u4EBA"
