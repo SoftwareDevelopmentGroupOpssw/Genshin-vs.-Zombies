@@ -11,9 +11,9 @@ public class NahidaData : PlantData
     {
 
     }
-    public override int EnergyCost => 300;
+    public override int EnergyCost => 250;
 
-    public override int Health { get; set; } = 100;
+    public override int Health { get; set; } = 300;
     public override int AtkPower { get; set; } = 6;
 
     public override int CoolTime => 12000;

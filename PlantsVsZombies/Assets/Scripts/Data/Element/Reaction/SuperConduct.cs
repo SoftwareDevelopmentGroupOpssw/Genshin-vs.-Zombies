@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class SuperConduct : ElementsReaction
 {
-    private static int radius = 10;//超导效果触发的半径
+    private static float radius = 0.8f;//超导效果触发的半径
     private static int damage = 10;//超导效果的伤害
     
     public override string ReactionName => "SuperConduct";

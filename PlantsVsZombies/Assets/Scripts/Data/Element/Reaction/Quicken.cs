@@ -41,9 +41,9 @@ public class Quicken : ElementsReaction,IEffect
     void DamageChange(IElementalDamage damage)
     {
         if (damage.ElementType == Elements.Electric)
-            damage.AtkDmg += electicDamageChange;
+            damage.Damage += electicDamageChange;
         else if (damage.ElementType == Elements.Grass)
-            damage.AtkDmg += grassDamageChange;
+            damage.Damage += grassDamageChange;
     }
 
     public void DisableEffect(IGameobjectData target)

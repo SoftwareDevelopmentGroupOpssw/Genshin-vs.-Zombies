@@ -23,6 +23,10 @@ public class MonsterPrefabSerializer : Singleton<MonsterPrefabSerializer>, IEnum
         {
             case 0:
                 return new CommonZombieData(data.Prefab);
+            case 1:
+                return new RoadConeZombieData(data.Prefab);
+            case 2:
+                return new BucketHeadZombieData(data.Prefab);
         }
         return null;
     }

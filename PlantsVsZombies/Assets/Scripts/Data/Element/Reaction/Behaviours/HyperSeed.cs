@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class HyperSeed : MonoBehaviour, IElementalDamage
 {
-    public int AtkDmg { get; set; } = Bloom.HyperBloomDamage;
+    public int Damage { get; set; } = Bloom.HyperBloomDamage;
     public Elements ElementType { get; set; } = Elements.Grass;
     public bool CanAddElement { get; set; } = false;
 

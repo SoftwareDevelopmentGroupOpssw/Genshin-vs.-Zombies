@@ -82,7 +82,7 @@ public class PeashooterBehaviour : Plant
         {
             bullet.AvailableArea = new FrontLine();//子弹的范围为前一行  
             bullet.ElementType = element;//改变子弹的元素伤害
-            bullet.AtkDmg = Data.AtkPower;//子弹的伤害与攻击者的攻击力相同
+            bullet.Damage = Data.AtkPower;//子弹的伤害与攻击者的攻击力相同
             bullet.CanAddElement = true;//子弹一直可以附着元素
         });
     }

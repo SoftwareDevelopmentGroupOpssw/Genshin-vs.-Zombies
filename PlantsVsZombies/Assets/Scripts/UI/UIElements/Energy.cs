@@ -8,25 +8,43 @@ using UnityEngine.UI;
 /// </summary>
 public class Energy : MonoBehaviour
 {
+    private bool isClicked = false;//是否被点击
     [Header("能量值")]
     public int energyValue;
     [Header("消失时间(毫秒)")]
     public int disappearTime;
     private CountDown countDown;
+    private CountDown CountDown
+    {
+        get
+        {
+            if (countDown == null)
+                countDown = new CountDown(disappearTime);
+            return countDown;
+        }
+    }
     public EnergyType EnerygyType { get; set; }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (GameController.Instance.IsGameStarted)
         {
             GetComponent<Button>().onClick.AddListener(OnClicked);
-            countDown = new CountDown(disappearTime);
-            countDown.StartCountDown();
         }
         else
             Debug.LogError("The game is not started.");
     }
-    private IEnumerator DestroyCoroutine()
+    private void OnEnable()
+    {
+        GetComponent<Image>().color = Color.white;
+        isClicked = false;
+        CountDown.StartCountDown();
+    }
+    private void OnDisable()
+    {
+        CountDown.Reset();
+    }
+    private IEnumerator DestroyCoroutine()//缓慢摧毁的协程
     {
         //淡出效果逻辑
         int disappearSpeed = 2;
@@ -34,14 +52,27 @@ public class Energy : MonoBehaviour
         for (float alpha = 1; alpha > 0; alpha -= Time.deltaTime * disappearSpeed)
         {
             Color c = image.color;
-            if (isFlying)//正在飞行，因此不透明度调到最大
+            c.a = alpha;
+            image.color = c;
+            yield return 1;
+        }
+        //摧毁
+        EnergyMonitor.DestroyEnergy(this);
+    }
+    private IEnumerator DisappearCoroutine()//缓慢消失的协程
+    {
+        //淡出效果逻辑
+        int disappearSpeed = 2;
+        Image image = GetComponent<Image>();
+        for (float alpha = 1; alpha > 0; alpha -= Time.deltaTime * disappearSpeed)
+        {
+            if (isClicked)//正在飞行，因此不透明度调到最大
             {
-                c.a = 1;
-                image.color = c;
                 yield break;//结束，等到飞行到了再调用destroy
             }
             else
             {
+                Color c = image.color;
                 c.a = alpha;
                 image.color = c;
                 yield return 1;
@@ -56,7 +87,6 @@ public class Energy : MonoBehaviour
     /// <returns></returns>
     private IEnumerator FlyingCoroutine()
     {
-        isFlying = true;
         Transform rectEnd = UIManager.Instance
             .GetPanel<PlantsCardPanel>("PlantsCardPanel")
             .energyLocation
@@ -73,15 +103,14 @@ public class Energy : MonoBehaviour
         transform.position = pos;//直接传送到终点
         GameController.Instance.EnergyMonitor.AddEnergy(energyValue);
 
-        isFlying = false;
         StartCoroutine(DestroyCoroutine());
     }
-    private bool isFlying = false;//正在移动中
     private void OnClicked()
     {
-        //飞行中的能量点击后不触发逻辑
-        if (!isFlying)
+        //没有被点击过
+        if (!isClicked)
         {
+            isClicked = true;
             Image image = GetComponent<Image>();
             Color c = image.color;
             c.a = 1;
@@ -93,8 +122,8 @@ public class Energy : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
-        if (countDown.Available && !isFlying)//时间到了，也没有被点击飞行
-            StartCoroutine(DestroyCoroutine());
+    {
+        if (countDown.Available && !isClicked)//时间到了，也没有被点击飞行
+            StartCoroutine(DisappearCoroutine());
     }
 }

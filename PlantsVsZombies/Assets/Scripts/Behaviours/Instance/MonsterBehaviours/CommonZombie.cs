@@ -76,14 +76,14 @@ public class CommonZombie : Monster, IDamageable
     void Walk()
     {
         rigid.velocity = Vector2.left * Data.Speed / 100f;
-        animator.speed = Data.Speed / 50f;
+        animator.speed = Data.Speed / 15f;
     }
 
     Coroutine atkCoroutine;
     //攻击协程
     IEnumerator AtkCoroutine(IDamageReceiver receiver)
     {
-        float atkDistanceSeconds = 0.1f;
+        float atkDistanceSeconds = 0.04f;
         rigid.velocity = Vector2.zero;
 
         do
@@ -94,7 +94,7 @@ public class CommonZombie : Monster, IDamageable
                     animator.SetBool("IsAttack", true);
                 yield return 1;
             }
-  
+
             receiver.ReceiveDamage(new SystemDamage(Data.AtkPower, Elements.None));
             yield return new WaitForSecondsRealtime(atkDistanceSeconds);
 
@@ -112,6 +112,7 @@ public class CommonZombie : Monster, IDamageable
         rigid.velocity = Vector2.zero;
         animator.speed = 0;//动画停止
     }
+
     #region 颜色特效计算
     /// <summary>
     /// 计算受到元素附着时的身上的颜色值(改变颜色)
@@ -197,11 +198,6 @@ public class CommonZombie : Monster, IDamageable
 
     public void Update()
     {
-        //用普通效果分析器来对Data里的所有效果进行分析
-        handler.CheckEffect();
-        
-        CheckLocation();
-
         //计算颜色
         Color c = CalculateElementColor();
         if (damageCoroutine != null)//现在还在显示伤害特效的帧里
@@ -210,13 +206,30 @@ public class CommonZombie : Monster, IDamageable
         
         if (isAlive)
         {
+            //用普通效果分析器来对Data里的所有效果进行分析
+            handler.CheckEffect();
+
+            CheckLocation();
+
 
             //查找身上有没有眩晕效果
-            IEffect stunEffect = Data.GetEffects().Find((effect) => effect is StunEffect);
-            if (stunEffect != null || Data.Strength < 0)
+            IContainedStunEffect stunEffect = Data.GetEffects().Find((effect) => effect is IContainedStunEffect) as IContainedStunEffect;
+            if (stunEffect != null)
+            {
+                if (!stunEffect.IsStunEffectOver)
+                    TrySetState(State.Stun);
+                else
+                    state = State.Idle;
+            }
+            else if(stunEffect == null && state == State.Stun)
+            {
+                state = State.Idle;
+            }
+            if(Data.Strength < 0)
             {
                 TrySetState(State.Stun);
             }
+
             TrySetState(State.Walk);
             switch (state)
             {
@@ -244,18 +257,21 @@ public class CommonZombie : Monster, IDamageable
         isAlive = false;
         rigid.velocity = Vector2.zero;
         colliders.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
-        handler.DisableAll();
-        GameController.Instance.MonstersController.RemoveMonster(this);
-        float secondsBeforeBodyDisappear = 1;
-        Color elementColor = CalculateElementColor();//计算此时附着的颜色
-        sprite.color = elementColor;
-        FallingHead.GetComponent<SpriteRenderer>().color = elementColor ;//把掉的头设置成和自己一样的颜色
-        animator.speed = Data.Speed / 50f;
-        animator.Play("Die");
-        FallingHead.SetActive(true);
-        yield return new WaitForSecondsRealtime(secondsBeforeBodyDisappear);
 
         Data.RemoveOnReceiveAllDamageListener(OnDamage);//移除监听
+        handler.DisableAll();
+        GameController.Instance.MonstersController.RemoveMonster(this);//将Data数据清理
+
+        Color elementColor = CalculateElementColor();//计算此时附着的颜色
+        sprite.color = elementColor;
+        FallingHead.GetComponent<SpriteRenderer>().color = elementColor;//把掉的头设置成和自己一样的颜色
+        animator.speed = Data.Speed / 15f;
+        animator.Play("Die");
+        FallingHead.SetActive(true);
+
+
+        float secondsBeforeBodyDisappear = 1;
+        yield return new WaitForSecondsRealtime(secondsBeforeBodyDisappear);
         Destroy(gameObject);
     }
     private void OnTriggerStay2D(Collider2D collision)

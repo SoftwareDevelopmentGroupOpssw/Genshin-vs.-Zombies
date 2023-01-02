@@ -16,3 +16,9 @@ MonoBehaviour:
   - Prefab: {fileID: 2913795190395062148, guid: f41cbdeca8c5f924ca7c04273e9e5a60, type: 3}
     Name: CommonZombie
     Id: 0
+  - Prefab: {fileID: 7079144371390063556, guid: 0ec114c0da09fef41a8dbc642416b2fb, type: 3}
+    Name: RoadConeZombie
+    Id: 1
+  - Prefab: {fileID: 2341279017185872872, guid: 83aaf3484a9a5724f99f053a29e038fa, type: 3}
+    Name: BucketHeadZombie
+    Id: 2

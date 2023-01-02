@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 游戏物体接口
 /// </summary>
-public interface IGameobjectData
+public interface IGameobjectData : System.IDisposable
 {
     /// <summary>
     /// 向此对象身上添加效果

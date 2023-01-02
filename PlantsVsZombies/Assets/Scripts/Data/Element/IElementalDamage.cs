@@ -9,7 +9,7 @@ public interface IElementalDamage
     /// <summary>
     /// 伤害大小
     /// </summary>
-    public int AtkDmg { get; set; }
+    public int Damage { get; set; }
     /// <summary>
     /// 伤害类型
     /// </summary>

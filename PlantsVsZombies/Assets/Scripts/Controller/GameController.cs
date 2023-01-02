@@ -190,7 +190,9 @@ public sealed partial class GameController : MonoBehaviour
         AddSelectPlant("Nahida");
         AddSelectPlant("Sucrose");
         AddSelectPlant("Ningguang");
-        
+        AddSelectPlant("EnergyFlower");
+        AddSelectPlant("WallNut");
+
         //初始化模块
         plantsController = new PlantsController();
         flyerController = new FlyersController();
@@ -208,10 +210,6 @@ public sealed partial class GameController : MonoBehaviour
 
         //测试：直接添加能量
         EnergyMonitor.AddEnergy(10000);
-        for (int i = 200; i < 1600;i +=100)
-        {
-            EnergyMonitor.CreateEnergy(new Vector2Int(i, 540), EnergyType.Big);
-        }
     }
     /// <summary>
     /// 游戏是否被暂停

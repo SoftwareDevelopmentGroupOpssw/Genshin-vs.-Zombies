@@ -44,14 +44,34 @@ public class CountDown
         {
             yield return 1;
             nowTime += Time.unscaledDeltaTime;
+
+            if(available == true)//被手动暂停
+            {
+                coroutine = null;
+                yield break;
+            }
         }
         available = true;
-        OnComplete?.Invoke();
         coroutine = null;
+        OnComplete?.Invoke();
     }
+    /// <summary>
+    /// 开始倒计时
+    /// </summary>
     public void StartCountDown()
     {
         if (coroutine == null)
             coroutine = GameController.Instance.StartCoroutine(CountCoroutine());//给GameController开协程
+    }
+    /// <summary>
+    /// 停止计时并重置
+    /// </summary>
+    public void Reset()
+    {
+        if (coroutine != null)
+        {
+
+            available = true;
+        }
     }
 }

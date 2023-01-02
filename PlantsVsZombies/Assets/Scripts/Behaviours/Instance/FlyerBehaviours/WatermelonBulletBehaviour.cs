@@ -16,9 +16,6 @@ public class WatermelonBulletBehaviour : Bullet
     /// </summary>
     private Vector2Int[] area;
 
-    [Header("西瓜对主要目标的伤害")]
-    [SerializeField]
-    private int damage;
 
     [Header("西瓜溅射伤害")]
     [SerializeField]
@@ -35,10 +32,6 @@ public class WatermelonBulletBehaviour : Bullet
     private int velocity = 4;
     public int Velocity { get => velocity; set => velocity = value; }
 
-    [Header("西瓜的元素类型")]
-    [SerializeField]
-    private Elements element;
-
     [Header("西瓜打击触发时碎掉的图片")]
     [SerializeField]
     private Sprite brokenSprite;
@@ -46,8 +39,6 @@ public class WatermelonBulletBehaviour : Bullet
     [Header("西瓜飞行时的的图片")]
     [SerializeField]
     private Sprite flyingSprite;
-
-    protected override BulletDamage bulletDamage => new BulletDamage() { AtkDmg = damage, ElementType = element, CanAddElement = true };
 
     /// <summary>
     /// 移除自己
@@ -134,7 +125,7 @@ public class WatermelonBulletBehaviour : Bullet
                         IDamageable canbeDamaged = collider.GetComponent<IDamageable>();
                         if (canbeDamaged != null && !(target is Plant))
                         {
-                            canbeDamaged.GetReceiver().ReceiveDamage(new SputterDamage() { AtkDmg = sputterDmg });
+                            canbeDamaged.GetReceiver().ReceiveDamage(new SputterDamage() { Damage = sputterDmg });
                         }
                     }
                     catch (System.Exception e)
@@ -150,7 +141,7 @@ public class WatermelonBulletBehaviour : Bullet
 
     class SputterDamage : IElementalDamage
     {
-        public int AtkDmg { get; set; } = 0;
+        public int Damage { get; set; } = 0;
         public Elements ElementType { get; set; } = Elements.None;
         public bool CanAddElement { get; set; } = false;
     }

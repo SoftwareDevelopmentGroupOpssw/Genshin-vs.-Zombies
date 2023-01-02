@@ -60,7 +60,7 @@ public abstract class PlantData : IPlantData
     public bool ReceiveDamage(IElementalDamage damage)
     {
         onReceiveDamage?.Invoke(damage);
-        Health -= damage.AtkDmg;
+        Health -= damage.Damage;
         return true;
     }
 
@@ -92,5 +92,11 @@ public abstract class PlantData : IPlantData
     public void RemoveOnElementReactedListener(Elements element, Action<ElementsReaction> action)
     {
         
+    }
+    public void Dispose()
+    {
+        effects.Clear();
+        effects = null;
+        GameObject = null;
     }
 }

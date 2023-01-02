@@ -134,4 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 7
   bulletName: GrassSpike
-  timeDistance: 3000
+  timeDistance: 2000

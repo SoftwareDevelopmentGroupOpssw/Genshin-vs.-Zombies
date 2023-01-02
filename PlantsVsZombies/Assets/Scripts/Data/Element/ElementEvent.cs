@@ -12,6 +12,14 @@ public class ElementEvent
     
     private System.Action[] actions = new System.Action[ELEMENTS_COUNT];
     private System.Action all;
+    /// <summary>
+    /// 清除所有的监听
+    /// </summary>
+    public void Clear()
+    {
+        for(int i = 0; i< ELEMENTS_COUNT;i++)
+            actions[i] = null;
+    }
 
     /// <summary>
     /// 为所有的元素都添加监听
@@ -63,6 +71,15 @@ public class ElementEvent<T>
     public const int ELEMENTS_COUNT = 8;
     private System.Action<T>[] actions = new System.Action<T>[ELEMENTS_COUNT];
     private System.Action<T> all;
+
+    /// <summary>
+    /// 清除所有的监听
+    /// </summary>
+    public void Clear()
+    {
+        for (int i = 0; i < ELEMENTS_COUNT; i++)
+            actions[i] = null;
+    }
 
     /// <summary>
     /// 为所有的元素都添加监听

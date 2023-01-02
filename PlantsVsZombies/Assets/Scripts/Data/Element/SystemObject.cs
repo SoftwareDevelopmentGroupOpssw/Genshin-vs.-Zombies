@@ -19,6 +19,11 @@ public class SystemObject : Singleton<SystemObject>, IGameobjectData
         
     }
 
+    public void Dispose()
+    {
+        throw new System.InvalidOperationException("You are trying to dispose a system object. That is not allowed");
+    }
+
     public List<IEffect> GetEffects()
     {
         return null;

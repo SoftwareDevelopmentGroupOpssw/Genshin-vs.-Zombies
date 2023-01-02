@@ -134,4 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 1
   bulletName: WaterBullet
-  timeDistance: 1000
+  timeDistance: 1400

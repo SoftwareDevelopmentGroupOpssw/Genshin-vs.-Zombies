@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public class ElectroCharged : ElementsReaction, IEffect
 {
-    private static float radius = 1.2f;   //感电伤害的半径
+    private static float radius = 1.0f;   //感电伤害的半径
     private static int damageTimes = 4;    //感电造成伤害次数
-    private static int damageDealtPerTime = 5;//一次感电造成伤害值
+    private static int damageDealtPerTime = 6;//一次感电造成伤害值
     private static int damageSpaceTime = 500;//两次感电伤害之间的间隔时间（毫秒）
     private static int deltaStrength = -30;//对于怪物所造成的韧性衰减值
     private StrengthEffect strength;
@@ -36,28 +36,6 @@ public class ElectroCharged : ElementsReaction, IEffect
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        this.target = target;
-        List<IEffect> targetEffects = target.GetEffects();
-        bool targetHavePrevious = false;
-        if(targetEffects != null)
-        {
-            targetEffects.ForEach((effect) =>
-            {
-                if(effect is ElectroCharged)
-                {
-                    ElectroCharged electroCharged = effect as ElectroCharged;
-                    if(electroCharged.canAddElement == true)
-                    {
-                        electroCharged.nowTimes = 0; //刷新时间
-                        targetHavePrevious = true;//已经有一个能加元素的感电效果了
-                        return;
-                    }
-                }
-            });
-        }
-        if(!targetHavePrevious)
-            target.AddEffect(this);//为主要目标加一个能添加元素的感电效果
-
         //范围检测:范围内的施加感电效果
         Collider2D[] colliders = Physics2D.OverlapCircleAll(target.GameObject.transform.position, radius);
         foreach (var collider in colliders)
@@ -69,27 +47,32 @@ public class ElectroCharged : ElementsReaction, IEffect
                 //获取一个伤害接收器
                 IDamageReceiver receiver = damageable.GetReceiver();
                 List<IEffect> effects = receiver.GetEffects();
-                bool havePrevious = false;
-                if(effects != null)
+                bool hasCanAddElement = false; // 有没有能加元素反应的感电
+                bool hasCannotAddElement = false; //有没有不能加元素的感电
+                if (effects != null)
                 {
                     effects.ForEach((effect) =>
                     {
                         if (effect is ElectroCharged)
                         {
-                            //刷新身上的不加元素的感电效果
                             ElectroCharged electroCharged = effect as ElectroCharged;
-                            if (!electroCharged.canAddElement)
-                            {
-                                electroCharged.nowTimes = 0;
-                                havePrevious = true;
-                                return;
-                            }
+                            electroCharged.RefreshStatus();//刷新身上的感电效果
+                            if (electroCharged.canAddElement)
+                                hasCanAddElement = true;
+                            else
+                                hasCannotAddElement = true;
                         }
                     });
                 }
-                if(!havePrevious)
-                    //为其加上不加元素的感电效果
-                    receiver.AddEffect(new ElectroCharged() { target = receiver, canAddElement = false });
+                if (receiver.Equals(target) && !hasCanAddElement)
+                {
+                    this.target = receiver;
+                    receiver.AddEffect(this);
+                }
+                else if(!receiver.Equals(target) && !hasCannotAddElement)
+                {
+                    receiver.AddEffect(new ElectroCharged() { canAddElement = false , target = receiver });
+                }
             }
         }
     }
@@ -107,18 +90,30 @@ public class ElectroCharged : ElementsReaction, IEffect
         }
         State = EffectState.End;
     }
+
+    private void RefreshStatus()
+    {
+        nowTimes = 0;
+        if (canAddElement)
+        {
+            this.target.AddElement(Elements.Electric);
+            this.target.AddElement(Elements.Water);
+        }
+    }
+
     /// <summary>
-    /// 当水雷元素被反应掉时，无论新反应是感电还是其它反应，都将原来的感电反应和水雷元素移除
+    /// 当水雷元素被反应掉时，若为感电反应则刷新，否则都将原来的感电反应和水雷元素移除
     /// </summary>
     /// <param name="reaction"></param>
     void ElectroCharged_OnElementReacted(ElementsReaction reaction)
     {
-        State = EffectState.End;//感电效果结束
-        target.RemoveOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
-        target.RemoveOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
+        if(!(reaction is ElectroCharged))
+        {
+            State = EffectState.End;//感电效果结束
+        }
     }
     public void EnableEffect(IGameobjectData target)
-    {
+    { 
         //开启持续伤害的协程
         damageCoroutine = MonoManager.Instance.StartCoroutine(DamageCoroutine(this.target));
         State = EffectState.Processing;

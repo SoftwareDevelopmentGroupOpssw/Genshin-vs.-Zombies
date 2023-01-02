@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Crystallize : ElementsReaction
 {
-    public const int SHEILD_POWER = 20;
+    public const int SHEILD_POWER = 50;
     public const int SHEILD_MILISECONDS_DURATION = 5000;
 
     private const string CRYSTAL_PATH = "ElementReaction/Crystal";
@@ -97,7 +97,7 @@ public class Crystallize : ElementsReaction
         }
         #endregion
 
-        damage.AtkDmg += crystallizeDamage;
+        damage.Damage += crystallizeDamage;
 
         //在怪物的脚下生成一个结晶晶片
         GameObject obj = AddCrystal(target.GameObject.transform.position);

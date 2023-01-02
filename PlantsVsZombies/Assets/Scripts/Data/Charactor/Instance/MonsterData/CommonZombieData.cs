@@ -7,30 +7,21 @@ using UnityEngine;
 /// </summary>
 public class CommonZombieData : MonsterData
 {
-    public CommonZombieData(GameObject original) :base(original)
+    public CommonZombieData(GameObject original) : base(original)
     {
-        strength = 130;
-        health = 100;
-        speed = 35;
-        atkPower = 3;
-        //SetResistance(0.1f, Elements.None);
-        //SetResistance(0.1f, Elements.Water);
-        //SetResistance(0.1f, Elements.Fire);
-        //SetResistance(0.1f, Elements.Ice);
-        //SetResistance(0.1f, Elements.Electric);
-        //SetResistance(0.1f, Elements.Wind);
-        //SetResistance(0.1f, Elements.Stone);
-        //SetResistance(0.1f, Elements.Grass);
-    }
+        strength = 60;
+        health = 270;
+        speed = 16;
+        atkPower = 4;
 
-    public override string ToString()
-    {
-        string elementStr = "Elements:";
-        Elements[] elements = GetAllElements();
-        for(int i = 0;i < elements.Length; i++)
-        {
-            elementStr += System.Enum.GetName(typeof(Elements),elements[i]) + ",";
-        }
-        return $"Stength:{Strength},Health:{Health},Speed:{Speed},AttackPower{AtkPower},Resistance:{GetResistance(Elements.None)}" + elementStr  ;
+        //È«ÔªËØ¿¹ÐÔ0.1
+        SetResistance(0.1f, Elements.None);
+        SetResistance(0.1f, Elements.Water);
+        SetResistance(0.1f, Elements.Fire);
+        SetResistance(0.1f, Elements.Ice);
+        SetResistance(0.1f, Elements.Electric);
+        SetResistance(0.1f, Elements.Wind);
+        SetResistance(0.1f, Elements.Stone);
+        SetResistance(0.1f, Elements.Grass);
     }
 }

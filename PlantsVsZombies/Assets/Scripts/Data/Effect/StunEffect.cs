@@ -3,9 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// 效果中含有眩晕效果的接口
+/// </summary>
+public interface IContainedStunEffect : IEffect
+{
+    /// <summary>
+    /// 此效果中的部分眩晕效果是否结束
+    /// </summary>
+    /// <returns></returns>
+    public bool IsStunEffectOver { get; }
+}
+
+/// <summary>
 /// 眩晕效果
 /// </summary>
-public class StunEffect : CountDownEffect
+public class StunEffect : CountDownEffect, IContainedStunEffect
 {
     private IGameobjectData caster;
     private int duration;
@@ -26,4 +38,14 @@ public class StunEffect : CountDownEffect
 
     public override IGameobjectData Caster => caster;
 
+    public bool IsStunEffectOver { get => countDown.Available; }
+
+    public override void EnableEffect(IGameobjectData target)
+    {
+        Start();
+    }
+    public override void DisableEffect(IGameobjectData target)
+    {
+        countDown.Reset();
+    }
 }

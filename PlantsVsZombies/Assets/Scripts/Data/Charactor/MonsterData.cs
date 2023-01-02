@@ -106,7 +106,7 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
             OnReceivedDamage.TriggerAll(damage);//触发所有类型的监听
 
             float value = GetResistance(damage.ElementType);
-            health -= (int)(damage.AtkDmg * (1 - value));
+            health -= (int)(damage.Damage * (1 - value));
         }
         //为元素伤害而且能附着元素
         if (damage.ElementType != Elements.None && damage.CanAddElement)//物理伤害不能添加元素
@@ -124,11 +124,13 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
                     OnElementReacted.Trigger(element,reaction);//触发原来元素的反应逻辑
                     OnElementReacted.Trigger(causerElement, reaction);//触发新添加元素的反应逻辑
 
-                    reaction.Action(damage, this);
-
 
                     elements[element] = false;
                     damage.CanAddElement = false;//已经触发完反应，因此此次攻击不再附着元素
+
+                    reaction.Action(damage, this);
+
+
 
                     break;
                 }
@@ -151,5 +153,15 @@ public abstract class MonsterData : IMonsterData, IDamageReceiver
                 total.Add(item.Key);
         }
         return total.ToArray();
+    }
+
+    public void Dispose()
+    {
+        effects.Clear();
+        effects = null;
+        OnAddElement.Clear();
+        OnElementReacted.Clear();
+        OnReceivedDamage.Clear();
+        GameObject = null;
     }
 }

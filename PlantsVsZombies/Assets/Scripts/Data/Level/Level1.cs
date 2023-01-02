@@ -28,8 +28,8 @@ public class Level1 : GridLevel
     public override IEnumerator GenerateEnumerator()
     {
         int monsterTotalCount = 20;//怪物总数
-        float geneateSpaceTime = 5f;//生成间隔
-        int minGenerateCount = 2;//最小生成数量
+        float geneateSpaceTime = 10f;//生成间隔
+        int minGenerateCount = 3;//最小生成数量
         int maxGenerateCount = 8;//最大生成数量
 
         int nowGenerated = 0;
@@ -37,10 +37,23 @@ public class Level1 : GridLevel
         System.Random r = new System.Random();
         for(; nowGenerated < monsterTotalCount; nowGenerated += generateAmount)
         {
-            generateAmount = r.Next(minGenerateCount, maxGenerateCount);
+            generateAmount = r.Next(minGenerateCount, maxGenerateCount + 1);
             for(int i = 0; i < Mathf.Min(generateAmount, monsterTotalCount - nowGenerated); i++)
             {
-                yield return MonsterPrefabSerializer.Instance.GetMonsterData("CommonZombie");
+                int type = r.Next(0, 3);
+                switch (type)
+                {
+                    case 0:
+                        yield return MonsterPrefabSerializer.Instance.GetMonsterData("CommonZombie");
+                        break;
+                    case 1:
+                        yield return MonsterPrefabSerializer.Instance.GetMonsterData("RoadConeZombie");
+                        break;
+                    case 2:
+                        yield return MonsterPrefabSerializer.Instance.GetMonsterData("BucketHeadZombie");
+                        break;
+                }
+
             }
             yield return new WaitForSecondsRealtime(geneateSpaceTime);
         }

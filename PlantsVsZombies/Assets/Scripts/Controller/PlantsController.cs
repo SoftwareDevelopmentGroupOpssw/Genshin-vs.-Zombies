@@ -53,7 +53,7 @@ public class PlantsController
             int count = plants[gridPos.x, gridPos.y].Count;
             List<Plant> plantList = plants[gridPos.x, gridPos.y];
             Plant plant = plantList[count - 1];//获取最后一个
-            plant.Data.GameObject = null;
+            plant.Data.Dispose();
             plantList.Remove(plant);
             GameObject.Destroy(plant.gameObject);
         }
@@ -69,8 +69,8 @@ public class PlantsController
         foreach(var item in plants[gridPos.x - 1,gridPos.y - 1])
         {
             if (item.Equals(plant)) 
-            { 
-                plant.Data.GameObject = null;
+            {
+                plant.Data.Dispose();
                 GameObject.Destroy(plant.gameObject);
                 plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
                 return;

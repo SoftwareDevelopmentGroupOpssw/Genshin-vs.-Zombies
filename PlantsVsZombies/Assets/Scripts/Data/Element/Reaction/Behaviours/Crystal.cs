@@ -33,6 +33,7 @@ public class Crystal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Plant plant = collision.GetComponent<Plant>();
+        
         if(plant != null && !isTriggered)
         {
             isTriggered = true;

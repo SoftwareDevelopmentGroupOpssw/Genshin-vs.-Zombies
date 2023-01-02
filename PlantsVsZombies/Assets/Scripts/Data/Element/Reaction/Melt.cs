@@ -10,6 +10,6 @@ public class Melt : ElementsReaction
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
-        damage.AtkDmg = (int)(DAMAGE_INCREASE * damage.AtkDmg);
+        damage.Damage = (int)(DAMAGE_INCREASE * damage.Damage);
     }
 }

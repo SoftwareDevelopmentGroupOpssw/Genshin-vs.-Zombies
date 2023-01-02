@@ -11,11 +11,11 @@ public class SucroseData : PlantData
     {
 
     }
-    public override int EnergyCost => 175;
-    public override int Health { get; set; } = 100;
-    public override int AtkPower { get; set; } = 8;
+    public override int EnergyCost => 100;
+    public override int Health { get; set; } = 300;
+    public override int AtkPower { get; set; } = 20;
 
-    public override int CoolTime => 5000;
+    public override int CoolTime => 7500;
 
     public override string PlantName => "Sucrose";
 }

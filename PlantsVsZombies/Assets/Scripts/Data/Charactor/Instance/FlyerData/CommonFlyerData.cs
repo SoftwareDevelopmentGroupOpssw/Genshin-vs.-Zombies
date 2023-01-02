@@ -41,4 +41,8 @@ public class CommonFlyerData : IFlyerData
     {
         
     }
+    public void Dispose()
+    {
+
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class Overloaded : ElementsReaction
 {
-    public const int OVERLOAD_DAMAGE = 30;
+    public const int OVERLOAD_DAMAGE = 50;
     private static float radius = 0.6f;//Ӱ�췶Χ
     private static int strengthChange = -60;
     private static int changeTime = 1500;

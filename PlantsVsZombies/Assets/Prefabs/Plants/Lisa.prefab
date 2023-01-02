@@ -134,4 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 4
   bulletName: ElectricBullet
-  timeDistance: 1000
+  timeDistance: 1400

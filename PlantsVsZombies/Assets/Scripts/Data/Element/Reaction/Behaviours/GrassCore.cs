@@ -149,6 +149,11 @@ public class GrassCore : MonoBehaviour, IDamageable
             onReceiveDamage.AddListener(element, action);
         }
 
+        public void Dispose()
+        {
+            onReceiveDamage = null;
+        }
+
         public Elements[] GetAllElements()
         {
             return null;

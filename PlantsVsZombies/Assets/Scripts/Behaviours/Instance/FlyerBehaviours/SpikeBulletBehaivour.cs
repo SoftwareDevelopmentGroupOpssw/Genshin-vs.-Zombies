@@ -16,24 +16,14 @@ public class SpikeBulletBehaivour : Bullet
     /// </summary>
     private Vector2Int[] area;
 
-    [Header("尖刺伤害")]
-    [SerializeField]
-    private int damage;
-
     [Header("尖刺运动速度")]
     [SerializeField]
     private int velocity = 5;
     public int Velocity { get => velocity; set => velocity = value; }
 
-    [Header("尖刺的元素类型")]
-    [SerializeField]
-    private Elements element;
-
-    [Header("豌豆飞行时的的图片")]
+    [Header("尖刺飞行时的的图片")]
     [SerializeField]
     private Sprite flyingSprite;
-
-    protected override BulletDamage bulletDamage => new BulletDamage() { AtkDmg = damage, ElementType = element, CanAddElement = true };
 
     /// <summary>
     /// 移除自己

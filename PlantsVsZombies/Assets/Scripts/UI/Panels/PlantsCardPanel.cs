@@ -133,13 +133,17 @@ public class PlantsCardPanel : BasePanel
             //生成实像和虚像
             if (real == null)//不存在实像则创建
             {
-                real = Instantiate(selectPlant.Data.OriginalReference);
-                real.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
+                real = new GameObject("RealImage");
+                real.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;    
+                //Instantiate(selectPlant.Data.OriginalReference);
+                //real.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             if (unreal == null)//不存在虚像则创建
             {
-                unreal = Instantiate(selectPlant.Data.OriginalReference);
-                unreal.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
+                unreal = new GameObject("UnrealImage");
+                unreal.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;
+                //unreal = Instantiate(selectPlant.Data.OriginalReference);
+                //unreal.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             //调整虚像透明度
             SpriteRenderer sprite = unreal.GetComponent<SpriteRenderer>();

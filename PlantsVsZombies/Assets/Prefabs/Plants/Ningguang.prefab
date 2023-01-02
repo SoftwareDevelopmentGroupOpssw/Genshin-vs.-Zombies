@@ -134,4 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 6
   bulletName: StoneBombBullet
-  timeDistance: 2500
+  timeDistance: 2000

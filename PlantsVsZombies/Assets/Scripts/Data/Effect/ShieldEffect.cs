@@ -30,8 +30,8 @@ public class ShieldEffect : CountDownEffect
     
     private void OnReceiveDamageListener(IElementalDamage damage)
     {
-        shieldPower -= damage.AtkDmg;
-        damage.AtkDmg = 0;
+        shieldPower -= damage.Damage;
+        damage.Damage = 0;
     }
 
     public override IGameobjectData Caster => caster;

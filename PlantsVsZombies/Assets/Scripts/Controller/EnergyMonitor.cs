@@ -71,7 +71,7 @@ public class EnergyMonitor
     /// </summary>
     /// <param name="pixelPos">能量在屏幕中出现的位置，以左下角为原点，向右为x正，向上为y正</param>
     /// <param name="type">能量类型</param>
-    public static void CreateEnergy(Vector2Int pixelPos, EnergyType type)
+    public static GameObject CreateEnergy(Vector2Int pixelPos, EnergyType type)
     {
         //添加托管
         EntitiesController controller = GameController.Instance.EntitiesController;
@@ -93,6 +93,7 @@ public class EnergyMonitor
         Vector2 location = new Vector2(pixelPos.x - Screen.width / 2, pixelPos.y - Screen.height / 2);
         rect.anchoredPosition = location;
 
+        return energy;
     }
 
     public static void DestroyEnergy(Energy energy)

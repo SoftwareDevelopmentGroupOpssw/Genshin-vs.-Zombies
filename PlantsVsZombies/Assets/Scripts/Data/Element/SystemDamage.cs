@@ -10,12 +10,12 @@ public class SystemDamage : IElementalDamage
     
     public SystemDamage(int dmgValue, Elements type, bool canAddElement = false)
     {
-        AtkDmg = dmgValue;
+        Damage = dmgValue;
         ElementType = type;
         CanAddElement = canAddElement;
     }
 
-    public int AtkDmg {get; set;}
+    public int Damage {get; set;}
 
     public Elements ElementType { get; set; }
 

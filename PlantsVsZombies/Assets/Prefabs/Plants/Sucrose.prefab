@@ -134,4 +134,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 5
   bulletName: WindBullet
-  timeDistance: 1500
+  timeDistance: 1400

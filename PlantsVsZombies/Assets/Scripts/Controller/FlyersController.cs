@@ -27,7 +27,7 @@ public class FlyersController
     /// <param name="worldPos">飞行物出现的世界坐标</param>
     /// <param name="callBack">飞行物在激活前调用的函数</param>
     /// <returns>飞行物对象的脚本</returns>
-    public void AddFlyer(IFlyerData data, Vector3 worldPos, UnityAction<Flyer> callback) => AddFlyer<Flyer>(data,worldPos, callback);
+    public void AddFlyer(IFlyerData data, Vector3 worldPos, UnityAction<Flyer> callback = null) => AddFlyer<Flyer>(data,worldPos, callback);
     /// <summary>
     /// 添加飞行物对象
     /// </summary>
@@ -62,7 +62,7 @@ public class FlyersController
         flyerPool.Put(flyer.Data.OriginalReference, flyer.gameObject);
 
         //取消关联链表
-        flyer.Data.GameObject = null;
+        flyer.Data.Dispose();
         flyer.Data = null;
 
     }
