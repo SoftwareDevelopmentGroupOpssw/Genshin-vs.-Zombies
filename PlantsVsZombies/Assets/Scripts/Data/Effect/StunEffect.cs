@@ -38,7 +38,7 @@ public class StunEffect : CountDownEffect, IContainedStunEffect
 
     public override IGameobjectData Caster => caster;
 
-    public bool IsStunEffectOver { get => countDown.Available; }
+    public bool IsStunEffectOver { get => CountDown.Available; }
 
     public override void EnableEffect(IGameobjectData target)
     {
@@ -46,6 +46,13 @@ public class StunEffect : CountDownEffect, IContainedStunEffect
     }
     public override void DisableEffect(IGameobjectData target)
     {
-        countDown.Reset();
+        try
+        {
+            CountDown.Reset();
+        }
+        catch
+        {
+            Debug.Log(CountDown is null);
+        }
     }
 }

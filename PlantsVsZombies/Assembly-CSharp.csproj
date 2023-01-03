@@ -182,6 +182,8 @@
     <Compile Include="Assets\Scripts\Data\Element\IElementalDamage.cs" />
     <Compile Include="Assets\Scripts\ScriptableObject\MonsterDatabase.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\LisaData.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\StateMachine.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\States\MonsterState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

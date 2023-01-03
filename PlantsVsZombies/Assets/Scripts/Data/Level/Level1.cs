@@ -29,8 +29,8 @@ public class Level1 : GridLevel
     {
         int monsterTotalCount = 20;//怪物总数
         float geneateSpaceTime = 10f;//生成间隔
-        int minGenerateCount = 3;//最小生成数量
-        int maxGenerateCount = 8;//最大生成数量
+        int minGenerateCount = 2;//最小生成数量
+        int maxGenerateCount = 6;//最大生成数量
 
         int nowGenerated = 0;
         int generateAmount = 0;

@@ -8,8 +8,9 @@ public class Overloaded : ElementsReaction
 {
     public const int OVERLOAD_DAMAGE = 50;
     private static float radius = 0.6f;//影响范围
+    private static float sputterDamagePercent = 0.65f;//范围伤害比主要伤害的百分比
     private static int strengthChange = -60;
-    private static int changeTime = 1500;
+    private static int changeTime = 500;
     public override string ReactionName => "Overloaded";
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
@@ -23,9 +24,12 @@ public class Overloaded : ElementsReaction
             IDamageable damageable = collider.GetComponent<IDamageable>();
             if (damageable != null && damageable is Monster)
             {
-                
                 IDamageReceiver receiver = damageable.GetReceiver();
-                receiver.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));
+                if(receiver.Equals(target))
+                    receiver.ReceiveDamage(new SystemDamage(OVERLOAD_DAMAGE, Elements.Fire));
+                else
+
+                    receiver.ReceiveDamage(new SystemDamage((int)(OVERLOAD_DAMAGE * sputterDamagePercent), Elements.Fire));
             }
         }
     }

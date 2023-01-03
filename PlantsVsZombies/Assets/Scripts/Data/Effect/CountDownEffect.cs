@@ -8,8 +8,20 @@ using UnityEngine;
 /// </summary>
 public abstract class CountDownEffect: IEffect
 {
-    protected CountDown countDown;
-
+    private CountDown countDown;
+    protected CountDown CountDown
+    {
+        get
+        {
+            if (countDown == null)
+            {
+                countDown = new CountDown(MilisecondsDuration);
+                countDown.OnComplete += End;
+            }
+            return countDown;
+        }
+    }
+    
     protected CountDownEffect()
     {
         State = EffectState.Initialized;
@@ -35,12 +47,7 @@ public abstract class CountDownEffect: IEffect
     /// </summary>
     protected void Start()
     {
-        if (countDown == null)
-        {
-            countDown = new CountDown(MilisecondsDuration);
-            countDown.OnComplete += End;
-        }
-        countDown.StartCountDown();
+        CountDown.StartCountDown();
         State = EffectState.Processing;
     }
     /// <summary>
@@ -50,6 +57,7 @@ public abstract class CountDownEffect: IEffect
     {
         if(State != EffectState.Error)//不出错，才能够结束
             State = EffectState.End;
+        CountDown.OnComplete -= End;
     }
     /// <summary>
     /// 中途出错，标识为出错

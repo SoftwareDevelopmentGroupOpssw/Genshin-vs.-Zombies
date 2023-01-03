@@ -145,7 +145,8 @@ public class ElectroCharged : ElementsReaction, IEffect
             this.target.RemoveOnElementReactedListener(Elements.Water, ElectroCharged_OnElementReacted);
             this.target.RemoveOnElementReactedListener(Elements.Electric, ElectroCharged_OnElementReacted);
         }
-        MonoManager.Instance.StopCoroutine(damageCoroutine);//被移除时停止伤害协程
+        if(damageCoroutine != null)
+            MonoManager.Instance.StopCoroutine(damageCoroutine);//被移除时停止伤害协程
     }
 
     public void UpdateEffect(IGameobjectData target)

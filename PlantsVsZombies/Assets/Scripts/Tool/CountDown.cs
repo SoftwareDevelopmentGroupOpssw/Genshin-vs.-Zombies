@@ -40,17 +40,17 @@ public class CountDown
     {
         nowTime = 0;
         available = false;
-        while(nowTime < miliseconds / 1000)
+        while (nowTime < miliseconds / 1000f)
         {
             yield return 1;
             nowTime += Time.unscaledDeltaTime;
-
             if(available == true)//±»ÊÖ¶¯ÔÝÍ£
             {
                 coroutine = null;
                 yield break;
             }
         }
+
         available = true;
         coroutine = null;
         OnComplete?.Invoke();
@@ -70,7 +70,6 @@ public class CountDown
     {
         if (coroutine != null)
         {
-
             available = true;
         }
     }

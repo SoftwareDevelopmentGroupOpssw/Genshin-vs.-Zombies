@@ -52,11 +52,11 @@ public partial class GameController
             enumerator.MoveNext();//移动到第一个元素
             do
             {
-                //是一个整数，直接生成怪物
+                //是一个怪物信息，直接生成怪物
                 if (enumerator.Current is IMonsterData)
                 {
                     GenerateNewMonster(enumerator.Current as IMonsterData);//帧更新结束时尝试生成魔物
-                    yield return new WaitForSecondsRealtime(0.5f);//魔物生成不会连续，总有半秒的延迟
+                    yield return new WaitForSecondsRealtime(0.8f);//魔物生成不会连续，总有一定的延迟
                 }
                 else //在生成策略中，仍然可以用unity协程中的yield instructions来延迟时间
                     yield return enumerator.Current;
