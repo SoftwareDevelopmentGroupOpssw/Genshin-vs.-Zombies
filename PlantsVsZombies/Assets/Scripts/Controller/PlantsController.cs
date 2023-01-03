@@ -23,6 +23,29 @@ public class PlantsController
             }
         }
     }
+
+    /// <summary>
+    /// 格子上是否已经有植物
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <returns></returns>
+    public bool HasPlant(Vector2Int gridPos)
+    {
+        if (plants[gridPos.x - 1, gridPos.y - 1].Count > 0)
+            return true;
+        else
+            return false;
+    }
+    /// <summary>
+    /// 获取一个格子上的所有植物
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <returns></returns>
+    public List<Plant> GetAllPlant(Vector2Int gridPos)
+    {
+        return plants[gridPos.x - 1, gridPos.y - 1];
+    }
+
     /// <summary>
     /// 添加植物
     /// </summary>

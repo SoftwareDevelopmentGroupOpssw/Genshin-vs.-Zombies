@@ -46,9 +46,6 @@ public class RoadConeZombie : Monster, IDamageable
         sprite = GetComponent<SpriteRenderer>();
         colliders = GetComponent<Collider2D>();
 
-        //随机产生一个走路姿势
-        System.Random walkStyle = new System.Random();
-        animator.SetInteger("WalkStyle", walkStyle.Next(1, 4));
         state = State.Walk;
 
         Data.AddOnReceiveAllDamageListener(OnDamage);

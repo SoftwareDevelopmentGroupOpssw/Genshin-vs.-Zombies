@@ -43,7 +43,7 @@ MonoBehaviour:
     Id: 6
   - CardSprite: {fileID: 21300000, guid: 045256a3c99cd96479c11b68fae3399e, type: 3}
     Prefab: {fileID: 8659259966111936952, guid: 3e906c92971e93d48aeb3ee0ed8cfbc9, type: 3}
-    Name: EnergyFlower
+    Name: RaidenShogun
     Id: 7
   - CardSprite: {fileID: 21300000, guid: d429b3f4bf3ad174997e80afada60eb3, type: 3}
     Prefab: {fileID: 6377242919036350260, guid: 47795c45c7039ac44bdc533f11e405b7, type: 3}

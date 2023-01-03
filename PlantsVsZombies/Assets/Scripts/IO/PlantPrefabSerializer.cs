@@ -40,7 +40,7 @@ public class PlantPrefabSerializer : Singleton<PlantPrefabSerializer>, IEnumerab
             case 6:
                 return null;
             case 7:
-                return new EnergyFlowerData(data.Prefab, data.CardSprite);
+                return new RaidenShogunData(data.Prefab, data.CardSprite);
             case 8:
                 return new WallNutData(data.Prefab, data.CardSprite);
         }

@@ -56,7 +56,7 @@
     <Compile Include="Assets\Scripts\Behaviours\Instance\FlyerBehaviours\WatermelonBulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\BasicManagers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\Element\ElementEvent.cs" />
-    <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\EnergyFlower.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\RaidenShogun.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\ICharactorData.cs" />
     <Compile Include="Assets\Scripts\Behaviours\Instance\FlyerBehaviours\SpikeBulletBehaivour.cs" />
     <Compile Include="Assets\Scripts\UI\UIElements\ReactInformation.cs" />
@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\ScriptableObject\AudioDatabase.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\IMonsterData.cs" />
     <Compile Include="Assets\Scripts\Data\Effect\CountDownEffect.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\RoadConeZombie.cs" />
     <Compile Include="Assets\Scripts\BasicManagers\MonoController.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\NahidaData.cs" />
     <Compile Include="Assets\Scripts\Data\Level\Area.cs" />
@@ -147,10 +148,13 @@
     <Compile Include="Assets\Scripts\Behaviours\Instance\FlyerBehaviours\PeaBulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\Behaviours\GrassCore.cs" />
     <Compile Include="Assets\Scripts\itemcontrol\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonsterData\BucketHeadZombieData.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\BucketHeadZombie.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\YanfeiData.cs" />
     <Compile Include="Assets\Scripts\Tool\DelayDestroy.cs" />
     <Compile Include="Assets\Scripts\ScriptableObject\LevelDatabase.cs" />
-    <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\EnergyFlowerData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonsterData\RoadConeZombieData.cs" />
+    <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\RaidenShogunData.cs" />
     <Compile Include="Assets\Scripts\Data\Element\Reaction\SuperConduct.cs" />
     <Compile Include="Assets\Scripts\UI\Panels\LevelsPanel.cs" />
     <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Plant.cs" />
@@ -178,10 +182,6 @@
     <Compile Include="Assets\Scripts\Data\Element\IElementalDamage.cs" />
     <Compile Include="Assets\Scripts\ScriptableObject\MonsterDatabase.cs" />
     <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\LisaData.cs" />
-    <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\RoadConeZombie.cs" />
-    <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonsterData\RoadConeZombieData.cs" />
-    <Compile Include="Assets\Scripts\Data\Charactor\Instance\MonsterData\BucketHeadZombieData.cs" />
-    <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\BucketHeadZombie.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

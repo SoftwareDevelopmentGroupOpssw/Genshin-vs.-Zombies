@@ -83,13 +83,13 @@ public sealed partial class GameController : MonoBehaviour
     /// </summary>
     public EnergyMonitor EnergyMonitor { get; private set; } = new EnergyMonitor();
 
-
-
+    #region UI面板接口
     /// <summary>
-    /// 能否放置这个下标的植物
+    /// 能否选择这个下标的植物
     /// </summary>
     /// <param name="index">植物下标</param>
-    /// <returns>是否出现异常</returns>
+    /// <param name="worldPos">试图放置的世界坐标</param>
+    /// <returns>出现异常则返回异常，没有异常则返回null</returns>
     public PlantAddException CanPlacePlant(int index)
     {
         PlantsSelected plant = selected[index];
@@ -98,25 +98,43 @@ public sealed partial class GameController : MonoBehaviour
         else if (plant.Data.EnergyCost > EnergyMonitor.Energy)
             return new PlantAddException.NotEnoughEnergy("能量不足！");
         return null;
-
+    }
+    /// <summary>
+    /// 能否在世界坐标处放置这个下标的植物
+    /// </summary>
+    /// <param name="index">植物下标</param>
+    /// <param name="worldPos">试图放置的世界坐标</param>
+    /// <returns>出现异常则返回异常，没有异常则返回null</returns>
+    public PlantAddException CanPlacePlant(int index, Vector3 worldPos)
+    {
+        PlantsSelected plant = selected[index];
+        Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
+        if (plant.CooltimePercent > 0)
+            return new PlantAddException.NotCooledDownYet("植物还在冷却！");
+        else if (plant.Data.EnergyCost > EnergyMonitor.Energy)
+            return new PlantAddException.NotEnoughEnergy("能量不足！");
+        else if (gridPos == new Vector2(-1, -1))
+            return new PlantAddException.OutOfBorder("目标点在地图之外");
+        else if (plantsController.HasPlant(gridPos)) //格点上已经有植物 则不能放置
+            return new PlantAddException.SpaceOccupied("植物不能重叠！");
+        return null;
     }
     /// <summary>
     /// （给UI系统使用）
     /// 在指定位置处放置一个植物
     /// </summary>
     /// <param name="selectIndex">选择的植物编号</param>
-    /// <param name="worldPos">指定位置的像素坐标</param>
+    /// <param name="worldPos">指定位置的世界坐标</param>
     /// <exception cref="PlantAddException.NotEnoughEnergy">能量不足</exception>
     /// <exception cref="PlantAddException.NotCooledDownYet">尚未冷却</exception>
-    /// <exception cref="System.IndexOutOfRangeException">位置不合法</exception>
+    /// <exception cref="PlantAddException.SpaceOccupied">格子上已经有植物</exception>
+    /// <exception cref="PlantAddException.OutOfBorder">位置不在地图格点内</exception>
     public void PlacePlant(int selectIndex,Vector3 worldPos)
     {
-        PlantAddException exception = CanPlacePlant(selectIndex);
-        if (exception == null)//没有出错
+        PlantAddException exception = CanPlacePlant(selectIndex,worldPos);
+        if (exception == null)//植物检查没有出错
         {
             Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
-            if (gridPos == new Vector2(-1, -1))
-                throw new System.IndexOutOfRangeException("Not available location");
             IPlantData selectedData = selected[selectIndex].Data;
             IPlantData newPlantData = PlantPrefabSerializer.Instance.GetPlantData(selectedData.PlantName);
             plantsController.AddPlant(ref newPlantData, gridPos);
@@ -137,7 +155,8 @@ public sealed partial class GameController : MonoBehaviour
     {
         plantsController.RemoveOnePlant(WorldToGrid(worldPos));
     }
-
+    #endregion
+    #region 坐标转换
     /// <summary>
     /// 将世界坐标转换为格子坐标
     /// </summary>
@@ -151,7 +170,7 @@ public sealed partial class GameController : MonoBehaviour
     /// <param name="offset"></param>
     /// <returns></returns>
     public Vector3 GridToWorld(Vector2Int gridPos, GridPosition offset) => LevelData.GridToWorld(gridPos, offset, level.transform.position);
-
+    #endregion
 
     void Awake()
     {
@@ -165,6 +184,8 @@ public sealed partial class GameController : MonoBehaviour
         if(!IsPaused)
             updater.Update();
     }
+
+    #region 游戏控制
     /// <summary>
     /// 游戏是否正在运行
     /// </summary>
@@ -190,7 +211,7 @@ public sealed partial class GameController : MonoBehaviour
         AddSelectPlant("Nahida");
         AddSelectPlant("Sucrose");
         AddSelectPlant("Ningguang");
-        AddSelectPlant("EnergyFlower");
+        AddSelectPlant("RaidenShogun");
         AddSelectPlant("WallNut");
 
         //初始化模块
@@ -343,7 +364,12 @@ public sealed partial class GameController : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-
+    #endregion
+    /// <summary>
+    /// 在GameController启动的协程会受到游戏是否暂停的控制
+    /// </summary>
+    /// <param name="enumerator"></param>
+    /// <returns></returns>
     public new Coroutine StartCoroutine(IEnumerator enumerator)
     {
         IEnumerator RealCoroutine(IEnumerator arg)

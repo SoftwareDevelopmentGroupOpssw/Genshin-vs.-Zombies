@@ -9,6 +9,7 @@ public interface IPlantData:ICharactorData , IDamageReceiver
 {
     /// <summary>
     /// 植物的名字
+    /// 在放置一个新的植物的时候，会用到这个名字去寻找数据库中的新实例
     /// </summary>
     public string PlantName { get; }
     /// <summary>

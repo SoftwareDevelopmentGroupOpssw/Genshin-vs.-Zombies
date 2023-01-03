@@ -23,4 +23,18 @@ public abstract class PlantAddException : System.Exception
     {
         public NotEnoughEnergy(string msg) : base(msg) { }
     }
+    /// <summary>
+    /// 放置植物时格点已经被占用的异常
+    /// </summary>
+    public class SpaceOccupied : PlantAddException
+    {
+        public SpaceOccupied(string msg) : base(msg) { }
+    }
+    /// <summary>
+    /// 放置植物的坐标在地图之外的异常
+    /// </summary>
+    public class OutOfBorder : PlantAddException
+    {
+        public OutOfBorder(string msg) : base(msg) { }
+    }
 }

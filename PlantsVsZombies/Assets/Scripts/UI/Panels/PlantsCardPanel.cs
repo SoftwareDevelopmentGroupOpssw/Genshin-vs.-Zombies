@@ -148,18 +148,16 @@ public class PlantsCardPanel : BasePanel
             //调整虚像透明度
             SpriteRenderer sprite = unreal.GetComponent<SpriteRenderer>();
             Color c = sprite.color; c.a = 0.5f; sprite.color = c;
-            //获取游戏内现在加载的关卡对象位置和关卡数据
-            ILevelData levelData = GameController.Instance.LevelData;
-            Vector3 levelPos = GameController.Instance.Level.transform.position;
+
             //开始计算实像、虚像显示坐标
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             real.transform.position = new Vector3(worldPos.x, worldPos.y, 0);//实像坐标
 
-            Vector2Int gridPos = levelData.WorldToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition), levelPos);
-            if (gridPos != new Vector2Int(-1, -1))//在格子里才能显示虚像
+            Vector2Int gridPos = GameController.Instance.WorldToGrid(worldPos);
+            if (controller.CanPlacePlant(selected,worldPos) == null)//能放置植物
             {
                 unreal.SetActive(true);
-                unreal.transform.position = levelData.GridToWorld(gridPos, GridPosition.Middle, levelPos);
+                unreal.transform.position = GameController.Instance.GridToWorld(gridPos, GridPosition.Middle);
             }
             else
                 unreal.SetActive(false);
@@ -249,7 +247,10 @@ public class PlantsCardPanel : BasePanel
                     controller.PlacePlant(selected, worldPos);
                     selected = -1;
                 }
-                catch (System.IndexOutOfRangeException) { }
+                catch (PlantAddException)
+                {
+                    //播放错误音效
+                }
             }
             else
             {
@@ -258,7 +259,10 @@ public class PlantsCardPanel : BasePanel
                     controller.RemovePlant(worldPos);
                     selected = -1;
                 }
-                catch (System.IndexOutOfRangeException) { }
+                catch (PlantAddException)
+                {
+                    //播放错误音效
+                }
             }
         }
         else if(selected != -1 && Input.GetMouseButtonDown(1))//有选择物体时，按右键清除选择
