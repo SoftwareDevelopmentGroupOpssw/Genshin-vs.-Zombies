@@ -116,7 +116,7 @@ public class WatermelonBulletBehaviour : Bullet
             if (targetReceiver != null && targetReceiver.ReceiveDamage(bulletDamage))
             {
                 StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
-
+                AudioManager.Instance.PlayRandomEffectAudio("melonimpact1", "melonimpact2");
                 //溅射伤害
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(collision.gameObject.transform.position, radius);
                 foreach(var collider in colliders)

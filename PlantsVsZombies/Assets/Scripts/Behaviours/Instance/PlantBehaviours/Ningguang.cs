@@ -10,8 +10,9 @@ public class Ningguang : PeashooterBehaviour
     private Animator animator;//¶¯»­×´Ì¬»ú
     // Start is called before the first frame update
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         animator = GetComponent<Animator>();
     }
     /// <summary>

@@ -27,6 +27,8 @@ public class MonsterPrefabSerializer : Singleton<MonsterPrefabSerializer>, IEnum
                 return new RoadConeZombieData(data.Prefab);
             case 2:
                 return new BucketHeadZombieData(data.Prefab);
+            case 3:
+                return new CommonZombieData(data.Prefab); //摇旗僵尸使用同样的数据
         }
         return null;
     }

@@ -70,12 +70,15 @@ public class PlantsController
     /// <param name="gridPos"></param>
     public void RemoveOnePlant(Vector2Int gridPos)
     {
+        if (gridPos == new Vector2Int(-1, -1))
+            return;
         gridPos -= Vector2Int.one;
         if (plants[gridPos.x, gridPos.y].Count > 0)
         {
             int count = plants[gridPos.x, gridPos.y].Count;
             List<Plant> plantList = plants[gridPos.x, gridPos.y];
             Plant plant = plantList[count - 1];//获取最后一个
+            plant.Handler.DisableAll();
             plant.Data.Dispose();
             plantList.Remove(plant);
             GameObject.Destroy(plant.gameObject);
@@ -89,16 +92,12 @@ public class PlantsController
     public void RemovePlant(Plant plant)
     {
         Vector2Int gridPos = GameController.Instance.WorldToGrid(plant.transform.position);
-        foreach(var item in plants[gridPos.x - 1,gridPos.y - 1])
-        {
-            if (item.Equals(plant)) 
-            {
-                plant.Data.Dispose();
-                GameObject.Destroy(plant.gameObject);
-                plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
-                return;
-            }
-        }
+
+        plant.Handler.DisableAll();
+        plant.Data.Dispose();
+        GameObject.Destroy(plant.gameObject);
+        plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
+
     }
     /// <summary>
     /// 寻找植物

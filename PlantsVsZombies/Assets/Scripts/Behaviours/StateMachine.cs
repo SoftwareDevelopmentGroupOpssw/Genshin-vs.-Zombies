@@ -147,7 +147,7 @@ public class StateMachine<TState,TStateKey,TActionKey>
             }
             if (action.Equals(default(Action)))
             {
-                throw new StateMachineException.InvalidTriggerException($"No suitable action with key {actionKey} can be triggered.");
+                Debug.LogWarning(new StateMachineException.InvalidTriggerException($"No suitable action with key {actionKey} can be triggered."));
             }
             else
             {
@@ -166,7 +166,6 @@ public class StateMachine<TState,TStateKey,TActionKey>
         current = defaultStateKey;
         nodes[defaultStateKey].onEnter?.Invoke();
     }
-
     public TState this[TStateKey stateKey]
     {
         get

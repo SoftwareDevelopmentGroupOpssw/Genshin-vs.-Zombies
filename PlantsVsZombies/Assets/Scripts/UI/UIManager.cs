@@ -87,7 +87,7 @@ public class UIManager:Singleton<UIManager>
         if (panelDic.ContainsKey(panelName))
         {
             panelDic[panelName].Show();
-
+            panelDic[panelName].transform.SetParent(GetUILayer(layer));
             if (callback != null)
                 callback(panelDic[panelName] as T);
 
@@ -100,10 +100,12 @@ public class UIManager:Singleton<UIManager>
 
             //得到预设体身上的面板脚本
             T panel = instantiated.GetComponent<T>();
+
+            panel.Show();
+
             // 处理面板创建完成后的逻辑
             callback?.Invoke(panel);
 
-            panel.Show();
 
             //把面板存起来
             panelDic.Add(panelName, panel);

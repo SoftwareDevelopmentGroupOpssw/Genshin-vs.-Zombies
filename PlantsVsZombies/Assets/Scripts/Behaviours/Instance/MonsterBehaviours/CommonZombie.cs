@@ -12,14 +12,21 @@ using UnityEngine;
 public class CommonZombie : Monster, IDamageable
 {
     /// <summary>
+    /// 将僵尸自身的速度值转化成刚体速度时 的缩放大小
+    /// </summary>
+    private const float RIGID_VELOCITY_SCALE = 1 / 100f;
+    /// <summary>
+    /// 将僵尸自身的速度值转换成动画播放速度时的缩放大小
+    /// </summary>
+    private const float ANIMATOR_SPEED_SCALE = 1 / 15f;
+
+    /// <summary>
     /// 一个对应普通魔物的效应处理器
     /// </summary>
     private DefaultHandler handler;
     public override IEffectHandler Handler => handler;
 
     private SpriteRenderer sprite;
-    private Rigidbody2D rigid;
-    private Collider2D colliders;
     private Animator animator;
 
     /// <summary>
@@ -38,10 +45,8 @@ public class CommonZombie : Monster, IDamageable
     {
         handler = new DefaultHandler(Data);
 
-        rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        colliders = GetComponent<Collider2D>();
 
         //随机产生一个走路姿势
         System.Random walkStyle = new System.Random();
@@ -50,11 +55,12 @@ public class CommonZombie : Monster, IDamageable
         stateMachine = new StateMachine<MonsterState, StateKey, string>(StateKey.Walk, new Walk(this));
         Attack attack = new Attack(this);
         stateMachine.AddState(StateKey.Attack, attack, attack.OnEnterState, attack.OnExitState);
-        stateMachine.AddState(StateKey.Stun, new Stun(this));
+        Stun stun = new Stun(this);
+        stateMachine.AddState(StateKey.Stun, stun, stun.OnEnterState, null);
         Die die = new Die(this);
-        stateMachine.AddState(StateKey.Die, die, die.OnEnterState, die.OnExitState);
+        stateMachine.AddState(StateKey.Die, die,die.OnEnterState,null);
         //可以攻击
-        stateMachine.AddAction("CanAttack", 
+        stateMachine.AddAction("CanAttack",
             new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Walk, StateKey.Attack),
             new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Attack, StateKey.Attack) //更换目标攻击
             );
@@ -67,7 +73,9 @@ public class CommonZombie : Monster, IDamageable
             new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Stun, StateKey.Stun)
             );
         //从眩晕中回复
-        stateMachine.AddAction("Recover", new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Stun, StateKey.Walk));
+        stateMachine.AddAction("RecoverToWalk", new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Stun, StateKey.Walk));
+        stateMachine.AddAction("RecoverToAttack", new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Stun, StateKey.Attack));
+        //死亡
         stateMachine.AddAction("Die",
             new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Walk, StateKey.Die),
             new StateMachine<MonsterState, StateKey, string>.Action(StateKey.Attack, StateKey.Die),
@@ -139,6 +147,7 @@ public class CommonZombie : Monster, IDamageable
     }
     #endregion
 
+    AudioSource lastSource; //受到伤害时播放的音效
     /// <summary>
     /// 受到伤害时
     /// </summary>
@@ -147,8 +156,12 @@ public class CommonZombie : Monster, IDamageable
     {
         if(damageCoroutine == null)
             damageCoroutine = StartCoroutine(DamageAnimate());
+
+        float replayPercent = 0.2f;//当播放进度达到总时长的一定百分比就开始重新播放
+        if (lastSource == null || !lastSource.gameObject.activeSelf || lastSource.time > lastSource.clip.length * replayPercent)//被塞到池子里去了，播放停止了
+            lastSource = AudioManager.Instance.PlayRandomEffectAudio("splat1", "splat2","splat3");
     }
-    
+
     /// <summary>
     /// 超出地图直接游戏结束
     /// </summary>
@@ -192,18 +205,29 @@ public class CommonZombie : Monster, IDamageable
                     else
                         return false;
                 }) as IContainedStunEffect;
+
                 if (stunEffect != null || Data.Strength <= 0)
                 {
+                    //当前所处的状态不是眩晕 就把目前的状态存起来 从眩晕状态恢复时就恢复到之前的状态
+                    if (stateMachine.CurrentKey != StateKey.Stun)
+                        (stateMachine[StateKey.Stun] as Stun).BeforeState = stateMachine.CurrentKey;
                     stateMachine.TriggerAction("Stunned");
                 }
-                else if (stateMachine.CurrentKey == StateKey.Stun)
+                else if (stateMachine.CurrentKey == StateKey.Stun) //以上两种眩晕条件均不满足却仍在眩晕状态时，取消眩晕效果
                 {
-                    stateMachine.TriggerAction("Recover");
+                    switch ((stateMachine.Current as Stun).BeforeState)
+                    {
+                        case StateKey.Walk:
+                            stateMachine.TriggerAction("RecoverToWalk"); break;
+                        case StateKey.Attack:
+                            stateMachine.TriggerAction("RecoverToAttack"); break;
+                    }
                 }
             }
             stateMachine.Current.Update();
         }
     }
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -214,7 +238,7 @@ public class CommonZombie : Monster, IDamageable
             //这个函数是在物理帧调用，而Data的赋值是在渲染帧调用，
             //刚放下一个植物的时候容易出现 触发器已经触发但是Data还未赋值的情况
             //receiver不为null且与正在攻击的目标不一样
-            if (receiver != null && !receiver.Equals((stateMachine[StateKey.Attack] as Attack).ReceiverUnderAttack))
+            if (receiver != null && !receiver.Equals((stateMachine[StateKey.Attack] as Attack).ReceiverUnderAttack) && stateMachine.CurrentKey != StateKey.Stun)
             {
                 (stateMachine[StateKey.Attack] as Attack).ReceiverUnderAttack = receiver;
                 stateMachine.TriggerAction("CanAttack");//触发攻击
@@ -228,7 +252,7 @@ public class CommonZombie : Monster, IDamageable
         {
             IDamageReceiver receiver = damageable.GetReceiver();
             //现在存活且离开的目标与正在攻击的目标相同
-            if (receiver != null && stateMachine.CurrentKey != StateKey.Die && 
+            if (receiver != null && stateMachine.CurrentKey != StateKey.Die &&
                 receiver.Equals((stateMachine[StateKey.Attack] as Attack).ReceiverUnderAttack))
             {
                 stateMachine.TriggerAction("PlantAte");//植物被吃掉，回到走路状态
@@ -261,8 +285,8 @@ public class CommonZombie : Monster, IDamageable
         }
         public override void Update()
         {
-            rigid.velocity = Vector2.left * data.Speed / 100f;
-            animator.speed = data.Speed / 15f;
+            rigid.velocity = Vector2.left * data.Speed * RIGID_VELOCITY_SCALE;
+            animator.speed = data.Speed * ANIMATOR_SPEED_SCALE;
         }
     }
     class Attack : MonsterState //魔物的攻击状态
@@ -284,7 +308,7 @@ public class CommonZombie : Monster, IDamageable
         IEnumerator AttackCoroutine()
         {
             float atkDistanceSeconds = 0.04f;
-            while(true)//处于攻击状态，则一直尝试进行攻击
+            while (true)//处于攻击状态，则一直尝试进行攻击
             {
                 while (target.enabled == false) //脚本被失活了
                     yield return 1;
@@ -298,6 +322,7 @@ public class CommonZombie : Monster, IDamageable
         {
             attackCoroutine = target.StartCoroutine(AttackCoroutine());
             rigid.velocity = Vector2.zero;
+            animator.speed = target.Data.Speed * ANIMATOR_SPEED_SCALE;
             animator.SetBool("IsAttack", true);
         }
         public override void OnExitState()
@@ -310,10 +335,27 @@ public class CommonZombie : Monster, IDamageable
     {
         private Rigidbody2D rigid;
         private Animator animator;
+
+        /// <summary>
+        /// 进入眩晕状态之前所处的状态
+        /// </summary>
+        public StateKey BeforeState { get; set; }
         public Stun(CommonZombie target)
         {
             rigid = target.GetComponent<Rigidbody2D>();
             animator = target.GetComponent<Animator>();
+        }
+        public override void OnEnterState()
+        {
+            switch (BeforeState)
+            {
+                case StateKey.Walk:
+                    animator.SetBool("IsAttack", false);
+                    break;
+                case StateKey.Attack:
+                    animator.SetBool("IsAttack", true);
+                    break;
+            }
         }
         public override void Update()
         {
@@ -335,7 +377,7 @@ public class CommonZombie : Monster, IDamageable
                 float secondsBeforeBodyDisappear = 1;
                 yield return new WaitForSecondsRealtime(secondsBeforeBodyDisappear);
                 GameController.Instance.MonstersController.RemoveMonster(target);//将Data数据清理
-                Destroy(target.gameObject);
+                target.stateMachine = null;
             }
             Rigidbody2D rigid = target.GetComponent<Rigidbody2D>();
             Collider2D colliders = target.GetComponent<Collider2D>();
@@ -345,15 +387,15 @@ public class CommonZombie : Monster, IDamageable
             rigid.velocity = Vector2.zero;
             colliders.enabled = false;//关闭碰撞盒，这样就不会阻挡子弹
 
-            target.Data.RemoveOnReceiveAllDamageListener(target.OnDamage);//移除监听
-            target.handler.DisableAll();
-
             Color elementColor = target.CalculateElementColor();//计算此时附着的颜色
             sprite.color = elementColor;
             target.FallingHead.GetComponent<SpriteRenderer>().color = elementColor;//把掉的头设置成和自己一样的颜色
-            animator.speed = target.Data.Speed / 15f;
+            animator.speed = target.Data.Speed * ANIMATOR_SPEED_SCALE;
             animator.Play("Die");
             target.FallingHead.SetActive(true);
+
+            target.Data.RemoveOnReceiveAllDamageListener(target.OnDamage);//移除监听
+
             target.StartCoroutine(DelayDestroy());
         }
     }

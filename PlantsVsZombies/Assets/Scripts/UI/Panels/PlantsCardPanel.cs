@@ -46,6 +46,7 @@ public class PlantsCardPanel : BasePanel
     protected override void BeforeHide()
     {
         controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;//移除监听
+
         GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();//移除铲子按钮监听
 
         GetControl<Button>("SettingBtn").onClick.RemoveAllListeners();
@@ -100,7 +101,10 @@ public class PlantsCardPanel : BasePanel
             if (selected != -1)
                 DestroyImages();//摧毁之前产生的实像虚像
             selected = num;
+            AudioManager.Instance.PlayEffectAudio("seedlift");
         }
+        else
+            AudioManager.Instance.PlayEffectAudio("buzzer");//错误音效
     }
     /// <summary>
     /// 铲子被点击时调用
@@ -108,14 +112,13 @@ public class PlantsCardPanel : BasePanel
     private void OnShovelClicked()
     {
         selected = plotList.Count;//如果有8个plot，则选中plot时范围为0-7，此时设置为8来表示为铲子
+        AudioManager.Instance.PlayEffectAudio("shovel");
     }
     private void OnSettingClicked()
     {
-
-
+        AudioManager.Instance.PlayEffectAudio("pause");
         GameController.Instance.Pause();
         UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel", UIManager.UILayer.Bot);
-
     }
 
 
@@ -135,15 +138,11 @@ public class PlantsCardPanel : BasePanel
             {
                 real = new GameObject("RealImage");
                 real.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;    
-                //Instantiate(selectPlant.Data.OriginalReference);
-                //real.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             if (unreal == null)//不存在虚像则创建
             {
                 unreal = new GameObject("UnrealImage");
                 unreal.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;
-                //unreal = Instantiate(selectPlant.Data.OriginalReference);
-                //unreal.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             //调整虚像透明度
             SpriteRenderer sprite = unreal.GetComponent<SpriteRenderer>();
@@ -246,28 +245,26 @@ public class PlantsCardPanel : BasePanel
                 {
                     controller.PlacePlant(selected, worldPos);
                     selected = -1;
+                    AudioManager.Instance.PlayRandomEffectAudio("plant1", "plant2");
                 }
-                catch (PlantAddException)
+                catch (PlantAddException e)
                 {
-                    //播放错误音效
+                    if(!(e is PlantAddException.OutOfBorder))
+                        //播放错误音效
+                        AudioManager.Instance.PlayEffectAudio("buzzer");
                 }
             }
             else
             {
-                try
-                {
-                    controller.RemovePlant(worldPos);
-                    selected = -1;
-                }
-                catch (PlantAddException)
-                {
-                    //播放错误音效
-                }
+                controller.RemovePlant(worldPos);
+                selected = -1;
+                AudioManager.Instance.PlayRandomEffectAudio("plant1", "plant2");
             }
         }
         else if(selected != -1 && Input.GetMouseButtonDown(1))//有选择物体时，按右键清除选择
         {
             selected = -1;
+            AudioManager.Instance.PlayRandomEffectAudio("tap1", "tap2");
         }
     }
     

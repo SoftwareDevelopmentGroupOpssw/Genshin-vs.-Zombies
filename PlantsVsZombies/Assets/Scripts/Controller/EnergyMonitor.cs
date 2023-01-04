@@ -114,6 +114,7 @@ public class EnergyMonitor
         {
             if (value >= 0)
                 energyValue = value;
+            OnValueChanged?.Invoke(energyValue);
         } 
     }
     

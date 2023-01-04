@@ -37,7 +37,11 @@ public interface ILevelData : IGenerateStrategy
     /// 地图的Sprite
     /// </summary>
     public Sprite Sprite { get; }
-
+    /// <summary>
+    /// 地图中所有出现的魔物类型
+    /// （在关卡预览中会显示)
+    /// </summary>
+    public IMonsterData[] MonsterTypes { get; }
     /// <summary>
     /// 将一个世界坐标转换为地图的格子坐标
     /// 格子坐标以左上角为原点，向右为x轴，向下为y轴

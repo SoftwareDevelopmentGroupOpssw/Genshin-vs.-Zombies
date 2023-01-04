@@ -17,9 +17,17 @@ public class RaidenShogun : Plant
             return handler;
         }
     }
-
+    AudioSource lastSource;
+    private void PlayDamageingEffect()
+    {
+        float replayPercent = 0.5f;//当播放进度达到总时长的一定百分比就开始重新播放
+        if (lastSource == null || !lastSource.gameObject.activeSelf || lastSource.time > lastSource.clip.length * replayPercent)//被塞到池子里去了，播放停止了
+            lastSource = AudioManager.Instance.PlayRandomEffectAudio("chomp1", "chomp2");
+    }
     private void Start()
     {
+        Data.AddOnReceiveAllDamageListener((damage) => PlayDamageingEffect());
+
         animator = GetComponent<Animator>();
         countDown = new CountDown(EnergyFlowerData.ProduceDistance);
         countDown.OnComplete += PlayAnimate;
@@ -59,7 +67,7 @@ public class RaidenShogun : Plant
         GameObject obj = EnergyMonitor.CreateEnergy(new Vector2Int((int)pixelPos.x, (int)pixelPos.y), EnergyFlowerData.ProduceType);
 
         StartCoroutine(EnergyFlyingCoroutine(obj));
-
+        AudioManager.Instance.PlayRandomEffectAudio("throw1", "throw2");
         countDown.StartCountDown();
     }
     private void OnDestroy()

@@ -22,3 +22,6 @@ MonoBehaviour:
   - Prefab: {fileID: 2341279017185872872, guid: 83aaf3484a9a5724f99f053a29e038fa, type: 3}
     Name: BucketHeadZombie
     Id: 2
+  - Prefab: {fileID: 1145120830570421652, guid: 731be8b73612cdb419b6355c40168ee0, type: 3}
+    Name: FlagZombie
+    Id: 3

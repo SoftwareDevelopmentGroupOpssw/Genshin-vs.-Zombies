@@ -181,28 +181,87 @@ public sealed partial class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!IsPaused)
+        if(!IsPaused && IsGameStarted)
             updater.Update();
     }
 
     #region 游戏控制
     /// <summary>
-    /// 游戏是否正在运行
+    /// 查看怪物预览信息
     /// </summary>
-    public bool IsGameStarted { get; private set; } = false;
-    /// <summary>
-    /// 启动游戏
-    /// </summary>
-    public void StartGame()
+    private IEnumerator Preview()
     {
-        if(LevelData == null)
+        level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
+
+        float waitSecondsToPreview = 1.5f;//在镜头移动过去之前观察地图等待的秒数
+        float duration = 2f;//观察的时间
+        float movingSpeed = 1;//镜头移动的速度
+        float pixelPerUnit = LevelData.Sprite.pixelsPerUnit;
+        Vector3 rightUp = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        Vector3 leftBot = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
+        float moveDistance = LevelData.Sprite.rect.width / pixelPerUnit - (rightUp.x - leftBot.x) - 0.2f; //-0.2f是防止精度问题移动过多而导致露出蓝色背景
+        //产生预览僵尸图像的区域宽为movedistance 高为rightup.y - leftbot.y
+        //以下两个offset限制产生预览图像的位置，和边界保持一定距离
+        float borderOffsetX = 0.2f * moveDistance;
+        float borderOffsetY = 0.2f * (rightUp.y - leftBot.y);
+        //生成怪物预览
+        IMonsterData[] monsters = LevelData.MonsterTypes;
+        List<GameObject> list = new List<GameObject>();
+        foreach (var data in monsters)
         {
-            Debug.LogError("Level not selected. The game cannot be started");
+            GameObject obj = new GameObject("TmpMonsterView");
+            obj.transform.SetParent(level.transform);
+            obj.AddComponent<SpriteRenderer>().sprite = data.OriginalReference.GetComponent<SpriteRenderer>().sprite;
+            list.Add(obj);
+            float xPos = rightUp.x + Random.Range(borderOffsetX, moveDistance - borderOffsetX);
+            float yPos = Random.Range(leftBot.y + borderOffsetY, rightUp.y - borderOffsetY);
+            obj.transform.position = new Vector2(xPos, yPos);
+        }
+
+        Vector3 startTransform = level.transform.position;
+        yield return new WaitForSecondsRealtime(waitSecondsToPreview);
+        //过去
+        for(float i = 0; i < 1; i+= Time.deltaTime * movingSpeed)
+        {
+            level.transform.position = startTransform + Vector3.left * Mathf.Lerp(0, moveDistance, i); //关卡物体向左，摄像机相对向右
+            yield return 1;
+        }
+
+        yield return new WaitForSecondsRealtime(duration);//预览时间
+
+        //返回
+        for (float i = 0; i < 1; i += Time.deltaTime * movingSpeed)
+        {
+            level.transform.position = startTransform + Vector3.left * Mathf.Lerp(0, moveDistance, 1-i);//关卡物体向左，摄像机相对向右
+            yield return 1;
+        }
+        //摧毁预览的图像
+        foreach(var obj in list)
+        {
+            Destroy(obj);
+        }
+
+        GameObject levelStartLabel = ResourceManager.Instance.Load<GameObject>("Prefabs/UI/UIElements/LVStartLabel");
+        GameObject instance = Instantiate(levelStartLabel, Camera.main.transform);
+        while(instance != null)
+        {
+            yield return 1;
+        }
+        
+        RealStart();
+    }
+    /// <summary>
+    /// 真正对游戏资源初始化
+    /// </summary>
+    private void RealStart()
+    {
+        if (LevelData == null)
+        {
+            Debug.LogError("Level not selected. The game cannot be started.");
             return;
         }
 
         System.GC.Collect();
-        gameObject.SetActive(true);
 
         //添加植物
         AddSelectPlant("Mona");
@@ -222,15 +281,29 @@ public sealed partial class GameController : MonoBehaviour
 
         updater = new Updater();
 
-        level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
-
         //展示卡槽图片
-        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
+        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel", UIManager.UILayer.Mid, (panel) =>
+        {
+            panel.SetPlotCount(selected.Count);
+            //能量设为50
+            EnergyMonitor.Energy = 50;
+        });
 
         IsGameStarted = true;
 
-        //测试：直接添加能量
-        EnergyMonitor.AddEnergy(10000);
+
+    }
+    /// <summary>
+    /// 游戏是否正在运行
+    /// </summary>
+    public bool IsGameStarted { get; private set; } = false;
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
+    public void StartGame()
+    {
+        gameObject.SetActive(true);
+        base.StartCoroutine(Preview());
     }
     /// <summary>
     /// 游戏是否被暂停

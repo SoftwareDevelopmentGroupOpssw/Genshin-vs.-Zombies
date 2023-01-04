@@ -44,11 +44,13 @@ public class LevelsPanel : BasePanel
     }
     void BackTitle()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
         UIManager.Instance.ShowPanel<TitlePanel>("TitlePanel");
     }
     void OnButtonClicked()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
         string levelName = EventSystem.current.currentSelectedGameObject.name;
         GameController.Instance.LevelData = LevelSpriteSerializer.Instance.GetLevel(levelName);//…Ë÷√πÿø®

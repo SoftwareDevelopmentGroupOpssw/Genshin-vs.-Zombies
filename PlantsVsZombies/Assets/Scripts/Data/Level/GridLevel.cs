@@ -34,6 +34,7 @@ public abstract class GridLevel : ILevelData
     public abstract int Col { get; }
 
     public abstract Sprite Sprite { get; }
+    public abstract IMonsterData[] MonsterTypes { get; }
 
     public abstract IEnumerator GenerateEnumerator();
 

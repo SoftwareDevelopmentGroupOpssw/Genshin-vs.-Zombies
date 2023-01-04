@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268e2cab10ace9d4492e2078fb39cb3a, type: 3}
+  m_Name: EffectAudioDatabase
+  m_EditorClassIdentifier: 
+  audioSources:
+  - AudioSource: {fileID: 8300000, guid: 4b4c32c123d635f40a79f385f29973ac, type: 3}
+    Name: awooga
+  - AudioSource: {fileID: 8300000, guid: 73ef67e7142011c4e87ff4b9014fff22, type: 3}
+    Name: buttonclick
+  - AudioSource: {fileID: 8300000, guid: 39bebb17ee8cc8349a32b265580292ba, type: 3}
+    Name: buzzer
+  - AudioSource: {fileID: 8300000, guid: 2ec50f87b2ccc734f81c9e907ab99405, type: 3}
+    Name: cherrybomb
+  - AudioSource: {fileID: 8300000, guid: e80690603e572ff4191db7d131376a75, type: 3}
+    Name: chomp1
+  - AudioSource: {fileID: 8300000, guid: 9ff3477143fb36b4080d8e2d27fddb0d, type: 3}
+    Name: chomp2
+  - AudioSource: {fileID: 8300000, guid: 7e26fd09a6515c744831b8d6ed96f8a1, type: 3}
+    Name: chompsoft
+  - AudioSource: {fileID: 8300000, guid: 52bfa0d275142a348b7412a6e7cc8e98, type: 3}
+    Name: explosion
+  - AudioSource: {fileID: 8300000, guid: f189a3fce1b60d44599a3337d2cc38a2, type: 3}
+    Name: finalwave
+  - AudioSource: {fileID: 8300000, guid: cdab4881e4d0e37469737fa88e26e49a, type: 3}
+    Name: hugewave
+  - AudioSource: {fileID: 8300000, guid: cb1c3fd42a6fb9542bf8e372ca54e3c7, type: 3}
+    Name: jalapeno
+  - AudioSource: {fileID: 8300000, guid: c688644b2fcb9fb4d801b7d471aa8a9a, type: 3}
+    Name: losemusic
+  - AudioSource: {fileID: 8300000, guid: 7801df4df61b05443ac7cede5093ebaa, type: 3}
+    Name: melonimpact1
+  - AudioSource: {fileID: 8300000, guid: 6d9cc28e93426b74da9d5fcdcd1c1cb2, type: 3}
+    Name: melonimpact2
+  - AudioSource: {fileID: 8300000, guid: 4d989d9c1bbc49b49981afcda020190e, type: 3}
+    Name: moneyfalls
+  - AudioSource: {fileID: 8300000, guid: 2efa818cf5e0d9e4db9f404ec342d15b, type: 3}
+    Name: pause
+  - AudioSource: {fileID: 8300000, guid: 352a24906ca56544d8d2cdef33dc14f6, type: 3}
+    Name: plant1
+  - AudioSource: {fileID: 8300000, guid: 7c171e9bbc27e7c42a97e74c7de66f7b, type: 3}
+    Name: plant2
+  - AudioSource: {fileID: 8300000, guid: 1183ef095450aba489f4d108581f1665, type: 3}
+    Name: plantgrow
+  - AudioSource: {fileID: 8300000, guid: aa535d567748c1049b9ed8f5207e7c82, type: 3}
+    Name: plastichit1
+  - AudioSource: {fileID: 8300000, guid: bfdea4fdc3a8c8843b9d4476acb83b53, type: 3}
+    Name: plastichit2
+  - AudioSource: {fileID: 8300000, guid: 6c683d69b37f44e4a8e7d617ecbb6662, type: 3}
+    Name: points
+  - AudioSource: {fileID: 8300000, guid: 38e7dd717378e0a47991c4f2fbb79834, type: 3}
+    Name: prize
+  - AudioSource: {fileID: 8300000, guid: 23cb5f282a6af4441a48ff6afcfa70e0, type: 3}
+    Name: readysetplant
+  - AudioSource: {fileID: 8300000, guid: c27e1235ca96d554f8156c9b66330e30, type: 3}
+    Name: seedlift
+  - AudioSource: {fileID: 8300000, guid: 0f467324d04d1e2448b36a56156bfe43, type: 3}
+    Name: shieldhit1
+  - AudioSource: {fileID: 8300000, guid: 5bbc75b2a1ca35747bce8bbc1b543cd5, type: 3}
+    Name: shieldhit2
+  - AudioSource: {fileID: 8300000, guid: 98f96f510cecd294f9aa58db9949cf36, type: 3}
+    Name: shovel
+  - AudioSource: {fileID: 8300000, guid: 34836f1e9d59c5046b1e0425d81376e3, type: 3}
+    Name: siren
+  - AudioSource: {fileID: 8300000, guid: f1de7b95fe6c95f46b00204a64e1c7b8, type: 3}
+    Name: splat1
+  - AudioSource: {fileID: 8300000, guid: fbae5efbf53ba2142bfd02c22b722240, type: 3}
+    Name: splat2
+  - AudioSource: {fileID: 8300000, guid: 362f06b1d3a612540a73a590d5abc0de, type: 3}
+    Name: splat3
+  - AudioSource: {fileID: 8300000, guid: b9769b3f7e92828439e8a93652d32379, type: 3}
+    Name: tap1
+  - AudioSource: {fileID: 8300000, guid: a00f9803a5414de4986a124002b37ae3, type: 3}
+    Name: tap2
+  - AudioSource: {fileID: 8300000, guid: 9156bd830ba104e42901c3f186a9e809, type: 3}
+    Name: throw1
+  - AudioSource: {fileID: 8300000, guid: 7861bc53380699f4685e8ddf64940bf0, type: 3}
+    Name: throw2
+  - AudioSource: {fileID: 8300000, guid: 9c723b77888efe84693ed85201fd1f51, type: 3}
+    Name: winmusic

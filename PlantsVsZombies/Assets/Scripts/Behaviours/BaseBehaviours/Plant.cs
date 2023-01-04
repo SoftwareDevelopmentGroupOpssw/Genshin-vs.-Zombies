@@ -25,7 +25,6 @@ public abstract class Plant : BaseGameobject, IDamageable
         Handler.CheckEffect();
         if (Data.Health <= 0)
         {
-            Handler.DisableAll();
             GameController.Instance.PlantsController.RemovePlant(this);
             return;
         }
