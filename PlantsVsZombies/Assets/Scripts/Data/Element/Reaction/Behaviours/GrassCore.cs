@@ -21,6 +21,7 @@ public class GrassCore : MonoBehaviour, IDamageable
     /// </summary>
     void Animator_Bloom()
     {
+        AudioManager.Instance.PlayEffectAudio("moneyfalls");
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, Bloom.SeedExplodeRadius);
         foreach (var collider in colliders)
         {
@@ -34,6 +35,7 @@ public class GrassCore : MonoBehaviour, IDamageable
     /// </summary>
     void Animator_Hyper()
     {
+        AudioManager.Instance.PlayEffectAudio("plantgrow");
         Bloom.TriggerHyperBloom(transform.position);
     }
     /// <summary>
@@ -41,6 +43,7 @@ public class GrassCore : MonoBehaviour, IDamageable
     /// </summary>
     void Animator_Pyro()
     {
+        AudioManager.Instance.PlayEffectAudio("jalapeno");
         Bloom.TriggerPyroBloom(transform.position);
     }
     /// <summary>

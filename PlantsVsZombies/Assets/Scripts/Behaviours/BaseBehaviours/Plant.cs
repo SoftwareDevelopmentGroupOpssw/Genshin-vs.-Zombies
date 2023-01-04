@@ -25,18 +25,9 @@ public abstract class Plant : BaseGameobject, IDamageable
         Handler.CheckEffect();
         if (Data.Health <= 0)
         {
-            OnDead();
             GameController.Instance.PlantsController.RemovePlant(this);
-            Handler.DisableAll();
             return;
         }
-    }
-    /// <summary>
-    /// 在死亡被移除前调用
-    /// </summary>
-    protected virtual void OnDead()
-    {
-
     }
 
     public ICharactorData GetData()

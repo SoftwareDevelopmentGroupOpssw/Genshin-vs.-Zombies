@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5496167508399575930, guid: bb3ea50fe23ef3e48a2b486d128471b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6374559052982750741, guid: bb3ea50fe23ef3e48a2b486d128471b3, type: 3}
       propertyPath: m_Name
       value: GameController

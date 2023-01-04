@@ -104,5 +104,6 @@ public class Crystallize : ElementsReaction
         Crystal crystal = obj.GetComponent<Crystal>();
         crystal.StartCoroutine(CrystalFlyingCoroutine(crystal));
 
+        AudioManager.Instance.PlayRandomEffectAudio("throw1", "throw2");
     }
 }

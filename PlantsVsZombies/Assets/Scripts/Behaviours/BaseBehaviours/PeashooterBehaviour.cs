@@ -60,6 +60,17 @@ public class PeashooterBehaviour : Plant
             return handler;
         }
     }
+    protected virtual void Start()
+    {
+        Data.AddOnReceiveAllDamageListener((damage) => PlayDamageingEffect());
+    }
+    AudioSource lastSource;
+    private void PlayDamageingEffect()
+    {
+        float replayPercent = 0.5f;//当播放进度达到总时长的一定百分比就开始重新播放
+        if (lastSource == null || !lastSource.gameObject.activeSelf || lastSource.time > lastSource.clip.length * replayPercent)//被塞到池子里去了，播放停止了
+             lastSource = AudioManager.Instance.PlayRandomEffectAudio("chomp1", "chomp2");
+    }
     /// <summary>
     /// 是否有怪物在攻击距离中
     /// </summary>
@@ -85,5 +96,6 @@ public class PeashooterBehaviour : Plant
             bullet.Damage = Data.AtkPower;//子弹的伤害与攻击者的攻击力相同
             bullet.CanAddElement = true;//子弹一直可以附着元素
         });
+        AudioManager.Instance.PlayRandomEffectAudio("throw1", "throw2");
     }
 }

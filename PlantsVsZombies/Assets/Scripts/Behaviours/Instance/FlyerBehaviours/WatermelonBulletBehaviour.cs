@@ -112,29 +112,23 @@ public class WatermelonBulletBehaviour : Bullet
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
         if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            if (target.GetReceiver().ReceiveDamage(bulletDamage))
+            IDamageReceiver targetReceiver = target.GetReceiver();
+            if (targetReceiver != null && targetReceiver.ReceiveDamage(bulletDamage))
             {
                 StartCoroutine(BrokenCoroutine());//在碎掉的样子停留一会儿
-
+                AudioManager.Instance.PlayRandomEffectAudio("melonimpact1", "melonimpact2");
                 //溅射伤害
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(collision.gameObject.transform.position, radius);
                 foreach(var collider in colliders)
                 {
-                    try
+                    IDamageable canbeDamaged = collider.GetComponent<IDamageable>();
+                    if (canbeDamaged != null && !(target is Plant))
                     {
-                        IDamageable canbeDamaged = collider.GetComponent<IDamageable>();
-                        if (canbeDamaged != null && !(target is Plant))
-                        {
-                            canbeDamaged.GetReceiver().ReceiveDamage(new SputterDamage() { Damage = sputterDmg });
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogException(e);
-                        Debug.Log(collider.name + collider.transform.position);
+                        IDamageReceiver receiver = canbeDamaged.GetReceiver();
+                        if(receiver != null)
+                            receiver.ReceiveDamage(new SputterDamage() { Damage = sputterDmg });
                     }
                 }
-
             }
         }
     }

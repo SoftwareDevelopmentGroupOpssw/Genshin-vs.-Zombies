@@ -105,6 +105,18 @@ public class Energy : MonoBehaviour
 
         StartCoroutine(DestroyCoroutine());
     }
+    public IEnumerator FallingCoroutine(GameObject obj, Vector3 endPos)
+    {
+        Vector3 startPos = obj.transform.position;
+        float fallingSpeed = 0.5f;
+        for (float i = 0; i < 1; i += Time.deltaTime * fallingSpeed)
+        {
+            obj.transform.position = Vector3.Lerp(startPos, endPos, i);
+            if (isClicked)
+                yield break;
+            yield return 1;
+        }
+    }
     private void OnClicked()
     {
         //没有被点击过
@@ -117,6 +129,8 @@ public class Energy : MonoBehaviour
             image.color = c;
 
             StartCoroutine(FlyingCoroutine());
+
+            AudioManager.Instance.PlayEffectAudio("points");
         }
     }
 

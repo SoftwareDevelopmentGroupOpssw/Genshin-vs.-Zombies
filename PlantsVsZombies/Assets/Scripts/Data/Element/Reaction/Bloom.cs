@@ -158,5 +158,7 @@ public class Bloom : ElementsReaction
         //在怪物的脚下生成一个草种子,草种子的具体位置有扰动
         GameObject seed =  AddSeed(target.GameObject.transform.position);
         seed.GetComponent<GrassCore>().StartCoroutine(SeedFlyingCoroutine(seed));
+
+        AudioManager.Instance.PlayRandomEffectAudio("throw1", "throw2");
     }
 } 

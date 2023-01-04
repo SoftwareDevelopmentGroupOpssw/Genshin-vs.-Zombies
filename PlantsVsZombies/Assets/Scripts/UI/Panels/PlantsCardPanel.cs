@@ -46,6 +46,7 @@ public class PlantsCardPanel : BasePanel
     protected override void BeforeHide()
     {
         controller.EnergyMonitor.OnValueChanged -= OnEnergyChanged;//移除监听
+
         GetControl<Button>("ShovelBtn").onClick.RemoveAllListeners();//移除铲子按钮监听
 
         GetControl<Button>("SettingBtn").onClick.RemoveAllListeners();
@@ -100,7 +101,10 @@ public class PlantsCardPanel : BasePanel
             if (selected != -1)
                 DestroyImages();//摧毁之前产生的实像虚像
             selected = num;
+            AudioManager.Instance.PlayEffectAudio("seedlift");
         }
+        else
+            AudioManager.Instance.PlayEffectAudio("buzzer");//错误音效
     }
     /// <summary>
     /// 铲子被点击时调用
@@ -108,14 +112,13 @@ public class PlantsCardPanel : BasePanel
     private void OnShovelClicked()
     {
         selected = plotList.Count;//如果有8个plot，则选中plot时范围为0-7，此时设置为8来表示为铲子
+        AudioManager.Instance.PlayEffectAudio("shovel");
     }
     private void OnSettingClicked()
     {
-
-
+        AudioManager.Instance.PlayEffectAudio("pause");
         GameController.Instance.Pause();
         UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel", UIManager.UILayer.Bot);
-
     }
 
 
@@ -135,31 +138,25 @@ public class PlantsCardPanel : BasePanel
             {
                 real = new GameObject("RealImage");
                 real.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;    
-                //Instantiate(selectPlant.Data.OriginalReference);
-                //real.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             if (unreal == null)//不存在虚像则创建
             {
                 unreal = new GameObject("UnrealImage");
                 unreal.AddComponent<SpriteRenderer>().sprite = selectPlant.Data.OriginalReference.GetComponent<SpriteRenderer>().sprite;
-                //unreal = Instantiate(selectPlant.Data.OriginalReference);
-                //unreal.GetComponent<Plant>().enabled = false;//只是一个像，不需要启动逻辑功能
             }
             //调整虚像透明度
             SpriteRenderer sprite = unreal.GetComponent<SpriteRenderer>();
             Color c = sprite.color; c.a = 0.5f; sprite.color = c;
-            //获取游戏内现在加载的关卡对象位置和关卡数据
-            ILevelData levelData = GameController.Instance.LevelData;
-            Vector3 levelPos = GameController.Instance.Level.transform.position;
+
             //开始计算实像、虚像显示坐标
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             real.transform.position = new Vector3(worldPos.x, worldPos.y, 0);//实像坐标
 
-            Vector2Int gridPos = levelData.WorldToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition), levelPos);
-            if (gridPos != new Vector2Int(-1, -1))//在格子里才能显示虚像
+            Vector2Int gridPos = GameController.Instance.WorldToGrid(worldPos);
+            if (controller.CanPlacePlant(selected,worldPos) == null)//能放置植物
             {
                 unreal.SetActive(true);
-                unreal.transform.position = levelData.GridToWorld(gridPos, GridPosition.Middle, levelPos);
+                unreal.transform.position = GameController.Instance.GridToWorld(gridPos, GridPosition.Middle);
             }
             else
                 unreal.SetActive(false);
@@ -248,22 +245,26 @@ public class PlantsCardPanel : BasePanel
                 {
                     controller.PlacePlant(selected, worldPos);
                     selected = -1;
+                    AudioManager.Instance.PlayRandomEffectAudio("plant1", "plant2");
                 }
-                catch (System.IndexOutOfRangeException) { }
+                catch (PlantAddException e)
+                {
+                    if(!(e is PlantAddException.OutOfBorder))
+                        //播放错误音效
+                        AudioManager.Instance.PlayEffectAudio("buzzer");
+                }
             }
             else
             {
-                try
-                {
-                    controller.RemovePlant(worldPos);
-                    selected = -1;
-                }
-                catch (System.IndexOutOfRangeException) { }
+                controller.RemovePlant(worldPos);
+                selected = -1;
+                AudioManager.Instance.PlayRandomEffectAudio("plant1", "plant2");
             }
         }
         else if(selected != -1 && Input.GetMouseButtonDown(1))//有选择物体时，按右键清除选择
         {
             selected = -1;
+            AudioManager.Instance.PlayRandomEffectAudio("tap1", "tap2");
         }
     }
     

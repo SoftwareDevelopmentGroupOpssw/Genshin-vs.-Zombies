@@ -97,6 +97,7 @@ public abstract class PlantData : IPlantData
     {
         effects.Clear();
         effects = null;
+        onReceiveDamage = null;
         GameObject = null;
     }
 }

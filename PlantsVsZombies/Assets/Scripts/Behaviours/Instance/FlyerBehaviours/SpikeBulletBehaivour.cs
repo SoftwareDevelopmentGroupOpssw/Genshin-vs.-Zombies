@@ -86,7 +86,9 @@ public class SpikeBulletBehaivour : Bullet
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();//接触的目标身上有一个IDamageable的脚本
         if (target != null && !(target is Plant))//目标不能是一个植物
         {
-            target.GetReceiver().ReceiveDamage(bulletDamage);
+            IDamageReceiver receiver = target.GetReceiver();
+            if(receiver != null)
+                receiver.ReceiveDamage(bulletDamage);
         }
     }
 }

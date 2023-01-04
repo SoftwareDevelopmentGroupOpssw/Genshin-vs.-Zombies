@@ -40,7 +40,9 @@ public class MonstersController
     public void RemoveMonster(Monster monster)
     {
         monsters.Remove(monster);
+        monster.Handler.DisableAll();
         monster.Data.Dispose();
+        GameObject.Destroy (monster.gameObject);
     }
     /// <summary>
     /// 当前区域是否有怪物

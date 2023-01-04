@@ -20,18 +20,20 @@ public class TitlePanel : BasePanel
     }
     void StartGame()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
         UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
 
     }
     void OpenSetting()
     {
-
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
-        UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel");
+        UIManager.Instance.ShowPanel<SettingPanel>("SettingPanel",UIManager.UILayer.Bot);
     }
     void Exit()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Application.Quit(0);
     }
 }

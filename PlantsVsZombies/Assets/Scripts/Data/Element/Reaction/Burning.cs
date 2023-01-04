@@ -68,7 +68,8 @@ public class Burning : ElementsReaction,IEffect
 
     public void DisableEffect(IGameobjectData target)
     {
-        MonoManager.Instance.StopCoroutine(damageCoroutine);
+        if(damageCoroutine != null)
+            MonoManager.Instance.StopCoroutine(damageCoroutine);
     }
 
 

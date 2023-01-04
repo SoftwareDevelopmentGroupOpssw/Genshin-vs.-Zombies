@@ -40,11 +40,13 @@ public class SettingPanel : BasePanel
 
     void Resume()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
         GameController.Instance.Resume();
     }
     void Title()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         Hide();
         if(GameController.Instance.IsGameStarted)
             GameController.Instance.EndGame();
@@ -52,6 +54,7 @@ public class SettingPanel : BasePanel
     }
     void Restart()
     {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
         GameController.Instance.EndGame();
         Hide();
         GameController.Instance.StartGame();

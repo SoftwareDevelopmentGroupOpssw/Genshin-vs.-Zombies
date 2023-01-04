@@ -83,13 +83,13 @@ public sealed partial class GameController : MonoBehaviour
     /// </summary>
     public EnergyMonitor EnergyMonitor { get; private set; } = new EnergyMonitor();
 
-
-
+    #region UI面板接口
     /// <summary>
-    /// 能否放置这个下标的植物
+    /// 能否选择这个下标的植物
     /// </summary>
     /// <param name="index">植物下标</param>
-    /// <returns>是否出现异常</returns>
+    /// <param name="worldPos">试图放置的世界坐标</param>
+    /// <returns>出现异常则返回异常，没有异常则返回null</returns>
     public PlantAddException CanPlacePlant(int index)
     {
         PlantsSelected plant = selected[index];
@@ -98,25 +98,43 @@ public sealed partial class GameController : MonoBehaviour
         else if (plant.Data.EnergyCost > EnergyMonitor.Energy)
             return new PlantAddException.NotEnoughEnergy("能量不足！");
         return null;
-
+    }
+    /// <summary>
+    /// 能否在世界坐标处放置这个下标的植物
+    /// </summary>
+    /// <param name="index">植物下标</param>
+    /// <param name="worldPos">试图放置的世界坐标</param>
+    /// <returns>出现异常则返回异常，没有异常则返回null</returns>
+    public PlantAddException CanPlacePlant(int index, Vector3 worldPos)
+    {
+        PlantsSelected plant = selected[index];
+        Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
+        if (plant.CooltimePercent > 0)
+            return new PlantAddException.NotCooledDownYet("植物还在冷却！");
+        else if (plant.Data.EnergyCost > EnergyMonitor.Energy)
+            return new PlantAddException.NotEnoughEnergy("能量不足！");
+        else if (gridPos == new Vector2(-1, -1))
+            return new PlantAddException.OutOfBorder("目标点在地图之外");
+        else if (plantsController.HasPlant(gridPos)) //格点上已经有植物 则不能放置
+            return new PlantAddException.SpaceOccupied("植物不能重叠！");
+        return null;
     }
     /// <summary>
     /// （给UI系统使用）
     /// 在指定位置处放置一个植物
     /// </summary>
     /// <param name="selectIndex">选择的植物编号</param>
-    /// <param name="worldPos">指定位置的像素坐标</param>
+    /// <param name="worldPos">指定位置的世界坐标</param>
     /// <exception cref="PlantAddException.NotEnoughEnergy">能量不足</exception>
     /// <exception cref="PlantAddException.NotCooledDownYet">尚未冷却</exception>
-    /// <exception cref="System.IndexOutOfRangeException">位置不合法</exception>
+    /// <exception cref="PlantAddException.SpaceOccupied">格子上已经有植物</exception>
+    /// <exception cref="PlantAddException.OutOfBorder">位置不在地图格点内</exception>
     public void PlacePlant(int selectIndex,Vector3 worldPos)
     {
-        PlantAddException exception = CanPlacePlant(selectIndex);
-        if (exception == null)//没有出错
+        PlantAddException exception = CanPlacePlant(selectIndex,worldPos);
+        if (exception == null)//植物检查没有出错
         {
             Vector2Int gridPos = LevelData.WorldToGrid(worldPos, Level.transform.position);
-            if (gridPos == new Vector2(-1, -1))
-                throw new System.IndexOutOfRangeException("Not available location");
             IPlantData selectedData = selected[selectIndex].Data;
             IPlantData newPlantData = PlantPrefabSerializer.Instance.GetPlantData(selectedData.PlantName);
             plantsController.AddPlant(ref newPlantData, gridPos);
@@ -137,7 +155,8 @@ public sealed partial class GameController : MonoBehaviour
     {
         plantsController.RemoveOnePlant(WorldToGrid(worldPos));
     }
-
+    #endregion
+    #region 坐标转换
     /// <summary>
     /// 将世界坐标转换为格子坐标
     /// </summary>
@@ -151,7 +170,7 @@ public sealed partial class GameController : MonoBehaviour
     /// <param name="offset"></param>
     /// <returns></returns>
     public Vector3 GridToWorld(Vector2Int gridPos, GridPosition offset) => LevelData.GridToWorld(gridPos, offset, level.transform.position);
-
+    #endregion
 
     void Awake()
     {
@@ -162,26 +181,87 @@ public sealed partial class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!IsPaused)
+        if(!IsPaused && IsGameStarted)
             updater.Update();
     }
+
+    #region 游戏控制
     /// <summary>
-    /// 游戏是否正在运行
+    /// 查看怪物预览信息
     /// </summary>
-    public bool IsGameStarted { get; private set; } = false;
-    /// <summary>
-    /// 启动游戏
-    /// </summary>
-    public void StartGame()
+    private IEnumerator Preview()
     {
-        if(LevelData == null)
+        level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
+
+        float waitSecondsToPreview = 1.5f;//在镜头移动过去之前观察地图等待的秒数
+        float duration = 2f;//观察的时间
+        float movingSpeed = 1;//镜头移动的速度
+        float pixelPerUnit = LevelData.Sprite.pixelsPerUnit;
+        Vector3 rightUp = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        Vector3 leftBot = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
+        float moveDistance = LevelData.Sprite.rect.width / pixelPerUnit - (rightUp.x - leftBot.x) - 0.2f; //-0.2f是防止精度问题移动过多而导致露出蓝色背景
+        //产生预览僵尸图像的区域宽为movedistance 高为rightup.y - leftbot.y
+        //以下两个offset限制产生预览图像的位置，和边界保持一定距离
+        float borderOffsetX = 0.2f * moveDistance;
+        float borderOffsetY = 0.2f * (rightUp.y - leftBot.y);
+        //生成怪物预览
+        IMonsterData[] monsters = LevelData.MonsterTypes;
+        List<GameObject> list = new List<GameObject>();
+        foreach (var data in monsters)
         {
-            Debug.LogError("Level not selected. The game cannot be started");
+            GameObject obj = new GameObject("TmpMonsterView");
+            obj.transform.SetParent(level.transform);
+            obj.AddComponent<SpriteRenderer>().sprite = data.OriginalReference.GetComponent<SpriteRenderer>().sprite;
+            list.Add(obj);
+            float xPos = rightUp.x + Random.Range(borderOffsetX, moveDistance - borderOffsetX);
+            float yPos = Random.Range(leftBot.y + borderOffsetY, rightUp.y - borderOffsetY);
+            obj.transform.position = new Vector2(xPos, yPos);
+        }
+
+        Vector3 startTransform = level.transform.position;
+        yield return new WaitForSecondsRealtime(waitSecondsToPreview);
+        //过去
+        for(float i = 0; i < 1; i+= Time.deltaTime * movingSpeed)
+        {
+            level.transform.position = startTransform + Vector3.left * Mathf.Lerp(0, moveDistance, i); //关卡物体向左，摄像机相对向右
+            yield return 1;
+        }
+
+        yield return new WaitForSecondsRealtime(duration);//预览时间
+
+        //返回
+        for (float i = 0; i < 1; i += Time.deltaTime * movingSpeed)
+        {
+            level.transform.position = startTransform + Vector3.left * Mathf.Lerp(0, moveDistance, 1-i);//关卡物体向左，摄像机相对向右
+            yield return 1;
+        }
+        //摧毁预览的图像
+        foreach(var obj in list)
+        {
+            Destroy(obj);
+        }
+
+        GameObject levelStartLabel = ResourceManager.Instance.Load<GameObject>("Prefabs/UI/UIElements/LVStartLabel");
+        GameObject instance = Instantiate(levelStartLabel, Camera.main.transform);
+        while(instance != null)
+        {
+            yield return 1;
+        }
+        
+        RealStart();
+    }
+    /// <summary>
+    /// 真正对游戏资源初始化
+    /// </summary>
+    private void RealStart()
+    {
+        if (LevelData == null)
+        {
+            Debug.LogError("Level not selected. The game cannot be started.");
             return;
         }
 
         System.GC.Collect();
-        gameObject.SetActive(true);
 
         //添加植物
         AddSelectPlant("Mona");
@@ -190,7 +270,7 @@ public sealed partial class GameController : MonoBehaviour
         AddSelectPlant("Nahida");
         AddSelectPlant("Sucrose");
         AddSelectPlant("Ningguang");
-        AddSelectPlant("EnergyFlower");
+        AddSelectPlant("RaidenShogun");
         AddSelectPlant("WallNut");
 
         //初始化模块
@@ -201,15 +281,29 @@ public sealed partial class GameController : MonoBehaviour
 
         updater = new Updater();
 
-        level.GetComponent<SpriteRenderer>().sprite = LevelData.Sprite;//设置关卡图片
-
         //展示卡槽图片
-        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel",UIManager.UILayer.Mid,(panel)=>panel.SetPlotCount(selected.Count));
+        UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel", UIManager.UILayer.Mid, (panel) =>
+        {
+            panel.SetPlotCount(selected.Count);
+            //能量设为50
+            EnergyMonitor.Energy = 50;
+        });
 
         IsGameStarted = true;
 
-        //测试：直接添加能量
-        EnergyMonitor.AddEnergy(10000);
+
+    }
+    /// <summary>
+    /// 游戏是否正在运行
+    /// </summary>
+    public bool IsGameStarted { get; private set; } = false;
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
+    public void StartGame()
+    {
+        gameObject.SetActive(true);
+        base.StartCoroutine(Preview());
     }
     /// <summary>
     /// 游戏是否被暂停
@@ -343,7 +437,12 @@ public sealed partial class GameController : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-
+    #endregion
+    /// <summary>
+    /// 在GameController启动的协程会受到游戏是否暂停的控制
+    /// </summary>
+    /// <param name="enumerator"></param>
+    /// <returns></returns>
     public new Coroutine StartCoroutine(IEnumerator enumerator)
     {
         IEnumerator RealCoroutine(IEnumerator arg)

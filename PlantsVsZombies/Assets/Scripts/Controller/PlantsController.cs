@@ -23,6 +23,29 @@ public class PlantsController
             }
         }
     }
+
+    /// <summary>
+    /// 格子上是否已经有植物
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <returns></returns>
+    public bool HasPlant(Vector2Int gridPos)
+    {
+        if (plants[gridPos.x - 1, gridPos.y - 1].Count > 0)
+            return true;
+        else
+            return false;
+    }
+    /// <summary>
+    /// 获取一个格子上的所有植物
+    /// </summary>
+    /// <param name="gridPos"></param>
+    /// <returns></returns>
+    public List<Plant> GetAllPlant(Vector2Int gridPos)
+    {
+        return plants[gridPos.x - 1, gridPos.y - 1];
+    }
+
     /// <summary>
     /// 添加植物
     /// </summary>
@@ -47,12 +70,15 @@ public class PlantsController
     /// <param name="gridPos"></param>
     public void RemoveOnePlant(Vector2Int gridPos)
     {
+        if (gridPos == new Vector2Int(-1, -1))
+            return;
         gridPos -= Vector2Int.one;
         if (plants[gridPos.x, gridPos.y].Count > 0)
         {
             int count = plants[gridPos.x, gridPos.y].Count;
             List<Plant> plantList = plants[gridPos.x, gridPos.y];
             Plant plant = plantList[count - 1];//获取最后一个
+            plant.Handler.DisableAll();
             plant.Data.Dispose();
             plantList.Remove(plant);
             GameObject.Destroy(plant.gameObject);
@@ -66,16 +92,12 @@ public class PlantsController
     public void RemovePlant(Plant plant)
     {
         Vector2Int gridPos = GameController.Instance.WorldToGrid(plant.transform.position);
-        foreach(var item in plants[gridPos.x - 1,gridPos.y - 1])
-        {
-            if (item.Equals(plant)) 
-            {
-                plant.Data.Dispose();
-                GameObject.Destroy(plant.gameObject);
-                plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
-                return;
-            }
-        }
+
+        plant.Handler.DisableAll();
+        plant.Data.Dispose();
+        GameObject.Destroy(plant.gameObject);
+        plants[gridPos.x - 1, gridPos.y - 1].Remove(plant);
+
     }
     /// <summary>
     /// 寻找植物
