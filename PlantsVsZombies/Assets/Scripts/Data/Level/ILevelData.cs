@@ -38,6 +38,10 @@ public interface ILevelData : IGenerateStrategy
     /// </summary>
     public Sprite Sprite { get; }
     /// <summary>
+    /// 游戏开始时的能量值
+    /// </summary>
+    public int StartEnergy { get; }
+    /// <summary>
     /// 地图中所有出现的魔物类型
     /// （在关卡预览中会显示)
     /// </summary>

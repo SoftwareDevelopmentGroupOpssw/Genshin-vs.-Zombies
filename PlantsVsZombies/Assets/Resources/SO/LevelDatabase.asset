@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelDatabase
   m_EditorClassIdentifier: 
   levels:
-  - Sprite: {fileID: 21300000, guid: 2fee004bdcac8a240abc833d01012be4, type: 3}
+  - Sprite: {fileID: 21300000, guid: 63eb70dfcf224a14da5ffc007bb70f15, type: 3}
     Name: Turtorial
     Id: 0
   - Sprite: {fileID: 21300000, guid: 2fee004bdcac8a240abc833d01012be4, type: 3}

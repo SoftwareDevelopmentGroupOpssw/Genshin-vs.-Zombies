@@ -286,8 +286,8 @@ public sealed partial class GameController : MonoBehaviour
         UIManager.Instance.ShowPanel<PlantsCardPanel>("PlantsCardPanel", UIManager.UILayer.Mid, (panel) =>
         {
             panel.SetPlotCount(selected.Count);
-            //能量设为50
-            EnergyMonitor.Energy = 50;
+            //能量设为关卡的初始能量值
+            EnergyMonitor.Energy = LevelData.StartEnergy;
         });
 
         IsGameStarted = true;

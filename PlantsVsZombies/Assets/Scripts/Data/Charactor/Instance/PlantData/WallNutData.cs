@@ -16,5 +16,5 @@ public class WallNutData : PlantData
 
     public override string PlantName => "WallNut";
 
-    public override string Description => "坚果墙：PVZ的穿越者！可以阻挡僵尸前进。";
+    public override string Description => "坚果墙：\"我虽无意逐鹿，却知苍生苦楚。\"是PVZ的穿越者！可以阻挡僵尸前进。";
 }

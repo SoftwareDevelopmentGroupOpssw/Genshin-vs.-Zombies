@@ -34,6 +34,33 @@ public class Level3 : GridLevel
 
     public override Sprite Sprite => sprite;
 
+    public override int StartEnergy { get; } = 50;
+
+    protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(128, 128);
+
+    protected override int GridWidth => 137;
+
+    protected override int GridHeight => 134;
+
+    private List<string> monsterNames = new List<string>()
+    {
+        "CommonZombie","CommonZombie","CommonZombie","RoadConeZombie","RoadConeZombie","BucketHeadZombie","BucketHeadZombie","BucketHeadZombie"
+    };
+
+    public override IMonsterData[] MonsterTypes
+    {
+        get
+        {
+            int index = 0;
+            IMonsterData[] array = new IMonsterData[monsterNames.Count];
+            foreach (string monsterName in monsterNames)
+            {
+                array[index++] = MonsterPrefabSerializer.Instance.GetMonsterData(monsterName);
+            }
+            return array;
+        }
+    }
+
     IEnumerator GenerateEnergy()
     {
 
@@ -176,28 +203,4 @@ public class Level3 : GridLevel
         return triedGenerated;
     }
 
-    protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(128, 128);
-
-    protected override int GridWidth => 137;
-
-    protected override int GridHeight => 134;
-
-    private List<string> monsterNames = new List<string>()
-    {
-        "CommonZombie","CommonZombie","CommonZombie","RoadConeZombie","RoadConeZombie","BucketHeadZombie","BucketHeadZombie","BucketHeadZombie"
-    };
-
-    public override IMonsterData[] MonsterTypes
-    {
-        get
-        {
-            int index = 0;
-            IMonsterData[] array = new IMonsterData[monsterNames.Count];
-            foreach (string monsterName in monsterNames)
-            {
-                array[index++] = MonsterPrefabSerializer.Instance.GetMonsterData(monsterName);
-            }
-            return array;
-        }
-    }
 }

@@ -34,6 +34,34 @@ public class Turtorial : GridLevel
 
     public override Sprite Sprite => sprite;
 
+    public override int StartEnergy => 10000;
+
+    protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(196, 176);
+
+    protected override int GridWidth => 141;
+
+    protected override int GridHeight => 142;
+
+    private List<string> monsterNames = new List<string>()
+    {
+        "CommonZombie","CommonZombie","RoadConeZombie","BucketHeadZombie"
+    };
+
+    public override IMonsterData[] MonsterTypes
+    {
+        get
+        {
+            int index = 0;
+            IMonsterData[] array = new IMonsterData[monsterNames.Count];
+            foreach (string monsterName in monsterNames)
+            {
+                array[index++] = MonsterPrefabSerializer.Instance.GetMonsterData(monsterName);
+            }
+            return array;
+        }
+    }
+
+
     IEnumerator GenerateEnergy()
     {
 
@@ -58,8 +86,6 @@ public class Turtorial : GridLevel
     public override IEnumerator GenerateEnumerator()
     {
         nowWave = 0;
-        //教学关卡：设置能量为10000
-        GameController.Instance.EnergyMonitor.Energy = 10000;
         GameController.Instance.StartCoroutine(GenerateEnergy());
         //第一只怪物出现时间
         yield return new WaitForSeconds(5f);
@@ -82,7 +108,6 @@ public class Turtorial : GridLevel
             int maxGenerateCount = realMaxGenerateCount + nowGenerated * fixedCount / monsterTotalCount; //根据关卡进度修正后的最大生成数量
             int totalWeight = nowGenerated * 1000 + 1000; //随着生成数量的增加 权值数也会越来越高
             bool isBigWave = false;
-            Debug.Log(nowGenerated + "generated. now wave" + nowWave);
             if (waveCount * nowGenerated / monsterTotalCount != nowWave) // 当生成的怪物数量与总数相比达到1/waveCount时，会生成一次大规模僵尸，权值数变高，生成数量增加
             {
                 isBigWave = true;
@@ -176,30 +201,5 @@ public class Turtorial : GridLevel
 
         } while (i < generateAmount);
         return triedGenerated;
-    }
-
-    protected override Vector2Int GridsLeftTopCornorPos => new Vector2Int(128, 128);
-
-    protected override int GridWidth => 137;
-
-    protected override int GridHeight => 134;
-
-    private List<string> monsterNames = new List<string>()
-    {
-        "CommonZombie","CommonZombie","RoadConeZombie","BucketHeadZombie"
-    };
-
-    public override IMonsterData[] MonsterTypes
-    {
-        get
-        {
-            int index = 0;
-            IMonsterData[] array = new IMonsterData[monsterNames.Count];
-            foreach (string monsterName in monsterNames)
-            {
-                array[index++] = MonsterPrefabSerializer.Instance.GetMonsterData(monsterName);
-            }
-            return array;
-        }
     }
 }
