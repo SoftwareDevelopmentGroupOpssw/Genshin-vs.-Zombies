@@ -64,16 +64,19 @@
      <Compile Include="Assets\Scripts\Data\Element\Elements.cs" />
      <Compile Include="Assets\Scripts\Behaviours\Instance\FlyerBehaviours\Bullet.cs" />
      <Compile Include="Assets\Scripts\LogicUpdater\Updater.cs" />
+     <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\Ganyu.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\ShieldEffect.cs" />
      <Compile Include="Assets\Scripts\ScriptableObject\FlyerDatabase.cs" />
      <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\States\MonsterState.cs" />
      <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\Mona.cs" />
      <Compile Include="Assets\Scripts\IO\FlyerPrefabSerializer.cs" />
+     <Compile Include="Assets\Scripts\UI\Panels\DescriptionPanel.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\Handler\IEffectHandler.cs" />
      <Compile Include="Assets\Scripts\Data\Level\ILevelData.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\ObjectBuffer.cs" />
      <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\PeashooterBehaviour.cs" />
      <Compile Include="Assets\Scripts\IO\PlantPrefabSerializer.cs" />
+     <Compile Include="Assets\Scripts\Behaviours\Instance\MonsterBehaviours\FlagZombie.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Reaction\Overloaded.cs" />
      <Compile Include="Assets\Scripts\Data\Element\IDamageReceiver.cs" />
      <Compile Include="Assets\Scripts\Tool\CountDown.cs" />
@@ -91,6 +94,7 @@
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\WallNutData.cs" />
      <Compile Include="Assets\Scripts\Data\Element\SystemDamage.cs" />
      <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+     <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\GanyuData.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\IPlantData.cs" />
      <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\WallNut.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\ResistanceEffect.cs" />
@@ -110,6 +114,7 @@
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\MonaData.cs" />
      <Compile Include="Assets\Scripts\Data\Effect\SpeedEffect.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Reaction\Melt.cs" />
+     <Compile Include="Assets\Scripts\UI\UIElements\LevelPlot.cs" />
      <Compile Include="Assets\Scripts\Controller\FlyersController.cs" />
      <Compile Include="Assets\Scripts\BasicManagers\MonoManager.cs" />
      <Compile Include="Assets\Scripts\Controller\GameController.cs" />
@@ -120,6 +125,7 @@
      <Compile Include="Assets\Scripts\Behaviours\Instance\PlantBehaviours\Ningguang.cs" />
      <Compile Include="Assets\Scripts\Data\Element\IDamageable.cs" />
      <Compile Include="Assets\Scripts\Data\Element\Reaction\Swirl.cs" />
+     <Compile Include="Assets\Scripts\Data\Level\Level3.cs" />
      <Compile Include="Assets\Scripts\UI\Panels\PlantsCardPanel.cs" />
      <Compile Include="Assets\Scripts\Controller\PlantsSelected.cs" />
      <Compile Include="Assets\Scripts\UI\UIElements\Energy.cs" />
@@ -133,6 +139,7 @@
      <Compile Include="Assets\Scripts\BasicManagers\MonoController.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\NahidaData.cs" />
      <Compile Include="Assets\Scripts\Data\Level\Area.cs" />
+     <Compile Include="Assets\Scripts\Data\Level\Level2.cs" />
      <Compile Include="Assets\Scripts\Controller\MonstersController.cs" />
      <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\BaseGameobject.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\IGameobjectData.cs" />
@@ -168,6 +175,7 @@
      <Compile Include="Assets\Scripts\UI\Panels\VictoryPanel.cs" />
      <Compile Include="Assets\Scripts\Behaviours\BaseBehaviours\Monster.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\SucroseData.cs" />
+     <Compile Include="Assets\Scripts\UI\Panels\HelpPanel.cs" />
      <Compile Include="Assets\Scripts\Data\Element\IElementalDamage.cs" />
      <Compile Include="Assets\Scripts\ScriptableObject\MonsterDatabase.cs" />
      <Compile Include="Assets\Scripts\Data\Charactor\Instance\PlantData\LisaData.cs" />
