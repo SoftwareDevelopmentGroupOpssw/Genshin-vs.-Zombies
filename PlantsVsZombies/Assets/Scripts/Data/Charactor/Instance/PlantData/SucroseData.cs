@@ -18,5 +18,7 @@ public class SucroseData : PlantData
     public override int CoolTime => 7500;
 
     public override string PlantName => "Sucrose";
+
+    public override string Description => "砂糖：能隔一段时间向前方扔一个风眼，对接触到的第一个魔物造成风元素伤害。";
 }
 

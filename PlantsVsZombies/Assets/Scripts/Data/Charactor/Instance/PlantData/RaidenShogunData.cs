@@ -20,4 +20,6 @@ public class RaidenShogunData : PlantData
     public EnergyType ProduceType => EnergyType.Big;
 
     public int ProduceDistance => 22000;
+
+    public override string Description => "雷电将军：隔一段时间能够产出能量。";
 }

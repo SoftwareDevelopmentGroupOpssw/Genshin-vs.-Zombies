@@ -11,7 +11,7 @@ public class NahidaData : PlantData
     {
 
     }
-    public override int EnergyCost => 250;
+    public override int EnergyCost => 225;
 
     public override int Health { get; set; } = 300;
     public override int AtkPower { get; set; } = 6;
@@ -19,4 +19,6 @@ public class NahidaData : PlantData
     public override int CoolTime => 12000;
 
     public override string PlantName => "Nahida";
+
+    public override string Description => "纳西妲：能隔一段时间向前方扔一个草刺，对一行的敌人造成草元素伤害。";
 }

@@ -38,7 +38,7 @@ public class PlantPrefabSerializer : Singleton<PlantPrefabSerializer>, IEnumerab
             case 5:
                 return new NingguangData(data.Prefab, data.CardSprite);
             case 6:
-                return null;
+                return new GanyuData(data.Prefab,data.CardSprite);
             case 7:
                 return new RaidenShogunData(data.Prefab, data.CardSprite);
             case 8:

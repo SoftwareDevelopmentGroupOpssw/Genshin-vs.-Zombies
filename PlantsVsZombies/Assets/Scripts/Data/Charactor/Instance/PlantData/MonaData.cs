@@ -31,4 +31,5 @@ public class MonaData : PlantData
 
     public override string PlantName => "Mona";
 
+    public override string Description => "莫娜：能隔一段时间向前方扔一个水球，对接触到的第一个魔物造成水元素伤害。";
 }

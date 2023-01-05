@@ -77,15 +77,22 @@ public class PlantsCardPanel : BasePanel
             //生成卡槽
             GameObject obj = Instantiate(plot, area.transform);
             CardPlot plotObj = obj.GetComponent<CardPlot>();
+            //设置卡槽图片
             IPlantData data = GameController.Instance.GetSelectPlant(i).Data;//植物数据
             plotObj.Sprite = (data.CardSprite);//设置卡槽图片
             plotObj.SetEnergyCost(data.EnergyCost);
             obj.name = i.ToString();
-            obj.GetComponent<Button>().onClick.AddListener(OnPlotClicked);
+            //获取按钮脚本
+            Button btn = obj.GetComponent<Button>();
+            btn.onClick.AddListener(OnPlotClicked);
+            //添加显示监听
+            UIManager.AddCustomEventListener(btn, EventTriggerType.PointerEnter, OnPlotFocused);
             //生成卡槽遮罩
             GameObject maskObj = Instantiate(mask, obj.transform);
             Image maskImage = maskObj.GetComponent<Image>();
             (maskImage.transform as RectTransform).sizeDelta = area.cellSize;//将遮罩的大小设置成与卡牌大小一致
+            //生成说明文本监听
+            
             //添加储存
             plotList.Add(new Plot() { PlotObj = plotObj, Mask = maskImage});
         }
@@ -105,6 +112,55 @@ public class PlantsCardPanel : BasePanel
         }
         else
             AudioManager.Instance.PlayEffectAudio("buzzer");//错误音效
+    }
+    /// <summary>
+    /// 当鼠标进入按钮时调用
+    /// </summary>
+    private void OnPlotFocused(BaseEventData data)
+    {
+        GameObject GetStayedUI()
+        {
+            PointerEventData data = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+            GraphicRaycaster raycaster = UIManager.Instance.Canvas.GetComponent<GraphicRaycaster>();
+            var list = new List<RaycastResult>();
+            raycaster.Raycast(data, list);
+            return list.Count > 0 ?list[0].gameObject:null;
+        }
+        IEnumerator WaitCoroutine(GameObject obj)
+        {
+            float waitTime = 1f;
+            for(float i = 0; i < waitTime; i+= Time.deltaTime)
+            {
+                if (GetStayedUI() == obj) //长时间停留 显示详细信息
+                    yield return 1;
+                else //离开了 等待终止
+                    yield break;
+            }
+            int num = System.Convert.ToInt32(obj.name);
+            UIManager.Instance.ShowPanel<DescriptionPanel>("DescriptionPanel", UIManager.UILayer.Bot, (panel) =>
+            {
+                //将详细信息的显示地点放在鼠标处
+                RectTransform rect = panel.transform as RectTransform;
+                RectTransformUtility.ScreenPointToWorldPointInRectangle
+                    (
+                        UIManager.Instance.Canvas.transform as RectTransform,
+                        Input.mousePosition + new Vector3(0,20,20), //与鼠标位置稍微偏移一点
+                        null,
+                        out Vector3 worldPos
+                    );
+                rect.position = worldPos;
+                //修改显示的信息
+                IPlantData plant = GameController.Instance.GetSelectPlant(num).Data;
+                panel.SetPlantName(plant.PlantName);
+                panel.SetDescription(plant.Description);
+            });
+            while (GetStayedUI() == obj)//鼠标悬停期间一直显示
+            {
+                yield return 1;
+            }
+            UIManager.Instance.HidePanel("DescriptionPanel"); //收起信息
+        }
+        StartCoroutine(WaitCoroutine(GetStayedUI()));
     }
     /// <summary>
     /// 铲子被点击时调用

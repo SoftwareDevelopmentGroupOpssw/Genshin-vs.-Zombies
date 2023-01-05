@@ -10,6 +10,8 @@ public class Crystallize : ElementsReaction
     public const int SHEILD_POWER = 50;
     public const int SHEILD_MILISECONDS_DURATION = 5000;
 
+    private const int CRYSTALLIZE_DAMAGE = 10;
+
     private const string CRYSTAL_PATH = "ElementReaction/Crystal";
     private const string SHIELD_PATH = "ElementReaction/Shield";
     private static GameObject crystal;//结晶生成的晶片，触发时生成一个
@@ -63,7 +65,6 @@ public class Crystallize : ElementsReaction
         CrystalBuffer.Put(CrystalPrefab, crystal.gameObject);
     }
 
-    private static int crystallizeDamage = 5;
 
     public override string ReactionName => "Crystallize";
 
@@ -97,7 +98,7 @@ public class Crystallize : ElementsReaction
         }
         #endregion
 
-        damage.Damage += crystallizeDamage;
+        damage.Damage += CRYSTALLIZE_DAMAGE;
 
         //在怪物的脚下生成一个结晶晶片
         GameObject obj = AddCrystal(target.GameObject.transform.position);

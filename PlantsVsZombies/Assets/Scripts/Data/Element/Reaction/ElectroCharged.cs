@@ -9,7 +9,7 @@ public class ElectroCharged : ElementsReaction, IEffect
 {
     private static float radius = 1.0f;   //感电伤害的半径
     private static int damageTimes = 4;    //感电造成伤害次数
-    private static int damageDealtPerTime = 6;//一次感电造成伤害值
+    private static int damageDealtPerTime = 10;//一次感电造成伤害值
     private static int damageSpaceTime = 500;//两次感电伤害之间的间隔时间（毫秒）
     private static int deltaStrength = -30;//对于怪物所造成的韧性衰减值
     private StrengthEffect strength;

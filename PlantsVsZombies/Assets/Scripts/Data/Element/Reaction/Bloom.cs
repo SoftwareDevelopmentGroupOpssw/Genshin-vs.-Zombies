@@ -18,11 +18,11 @@ public class Bloom : ElementsReaction
     /// <summary>
     /// 种子爆炸前的延迟
     /// </summary>
-    public const int MilisecondsBeforeSeedExplode = 5000;
+    public const int MilisecondsBeforeSeedExplode = 6000;
     /// <summary>
     /// 超绽放触发的种子伤害
     /// </summary>
-    public const int HyperBloomDamage = 6;
+    public const int HyperBloomDamage = 7;
     /// <summary>
     /// 超绽放触发的追踪种子数量
     /// </summary>
@@ -30,7 +30,7 @@ public class Bloom : ElementsReaction
     /// <summary>
     /// 烈绽放触发时的伤害
     /// </summary>
-    public const int PyroBloomDamage = 75;
+    public const int PyroBloomDamage = 85;
     /// <summary>
     /// 烈绽放触发时的半径
     /// </summary>

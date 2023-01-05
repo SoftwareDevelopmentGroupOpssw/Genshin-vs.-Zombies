@@ -15,4 +15,6 @@ public class WallNutData : PlantData
     public override int CoolTime => 30000;
 
     public override string PlantName => "WallNut";
+
+    public override string Description => "坚果墙：PVZ的穿越者！可以阻挡僵尸前进。";
 }

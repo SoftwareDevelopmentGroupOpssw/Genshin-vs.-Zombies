@@ -105,18 +105,39 @@ public class Energy : MonoBehaviour
 
         StartCoroutine(DestroyCoroutine());
     }
-    public IEnumerator FallingCoroutine(GameObject obj, Vector3 endPos)
+    /// <summary>
+    /// 给外部使用 让生成出来的能量往下掉落一段距离
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="startScreenPos"></param>
+    /// <param name="endScreenPos"></param>
+    /// <returns></returns>
+    public IEnumerator FallingCoroutine(GameObject obj, Vector2 startScreenPos,Vector2 endScreenPos)
     {
-        Vector3 startPos = obj.transform.position;
+        void RealSetPosition(Vector2 screenPoint)
+        {
+            RectTransform rect = transform as RectTransform;
+            Vector3 worldPos;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle
+                (
+                    UIManager.Instance.Canvas.transform as RectTransform,
+                    screenPoint,
+                    null,
+                    out worldPos
+                );
+            rect.position = worldPos;
+        }
+        
         float fallingSpeed = 0.5f;
         for (float i = 0; i < 1; i += Time.deltaTime * fallingSpeed)
         {
-            obj.transform.position = Vector3.Lerp(startPos, endPos, i);
+            RealSetPosition(Vector3.Lerp(startScreenPos, endScreenPos, i));
             if (isClicked)
                 yield break;
             yield return 1;
         }
-    }
+
+}
     private void OnClicked()
     {
         //没有被点击过

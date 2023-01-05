@@ -10,12 +10,14 @@ public class TitlePanel : BasePanel
     {
         System.GC.Collect();
         GetControl<Button>("Start").onClick.AddListener(StartGame);
+        GetControl<Button>("Help").onClick.AddListener(OpenHelp);
         GetControl<Button>("Setting").onClick.AddListener(OpenSetting);
         GetControl<Button>("Exit").onClick.AddListener(Exit);
     }
     protected override void BeforeHide()
     {
         GetControl<Button>("Start").onClick.RemoveAllListeners();
+        GetControl<Button>("Help").onClick.RemoveListener(OpenHelp);
         GetControl<Button>("Setting").onClick.RemoveAllListeners();
     }
     void StartGame()
@@ -24,6 +26,11 @@ public class TitlePanel : BasePanel
         Hide();
         UIManager.Instance.ShowPanel<LevelsPanel>("LevelsPanel");
 
+    }
+    void OpenHelp()
+    {
+        AudioManager.Instance.PlayEffectAudio("buttonclick");
+        UIManager.Instance.ShowPanel<HelpPanel>("HelpPanel",UIManager.UILayer.Bot);
     }
     void OpenSetting()
     {
