@@ -20,7 +20,7 @@ public class LVStartLabel : MonoBehaviour
     }
     private void Start()
     {
-        AudioManager.Instance.PlayEffectAudio("readysetplant");
+       // AudioManager.Instance.PlayEffectAudio("readysetplant");
         StartCoroutine(ShowCoroutine());
     }
 }
