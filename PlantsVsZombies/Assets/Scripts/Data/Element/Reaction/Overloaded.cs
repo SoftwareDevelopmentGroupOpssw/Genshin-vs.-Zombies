@@ -10,7 +10,7 @@ public class Overloaded : ElementsReaction
     private static float radius = 0.6f;//影响范围
     private static float sputterDamagePercent = 0.65f;//范围伤害比主要伤害的百分比
     private static int strengthChange = -60;
-    private static int changeTime = 500;
+    private static int changeTime = 1000;
     public override string ReactionName => "Overloaded";
 
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)

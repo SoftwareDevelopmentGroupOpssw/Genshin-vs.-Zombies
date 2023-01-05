@@ -20,4 +20,6 @@ public class LisaData : PlantData
     public override int CoolTime => 7500;
 
     public override string PlantName => "Lisa";
+
+    public override string Description => "丽莎：能隔一段时间向前方扔一个雷球，对接触到的第一个魔物造成雷元素伤害。";
 }

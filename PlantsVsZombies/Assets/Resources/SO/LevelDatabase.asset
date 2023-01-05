@@ -14,5 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - Sprite: {fileID: 21300000, guid: 2fee004bdcac8a240abc833d01012be4, type: 3}
-    Name: Level1
+    Name: Level 1
     Id: 0
+  - Sprite: {fileID: 21300000, guid: 2fee004bdcac8a240abc833d01012be4, type: 3}
+    Name: Level 2
+    Id: 1
+  - Sprite: {fileID: 21300000, guid: 2fee004bdcac8a240abc833d01012be4, type: 3}
+    Name: Level 3
+    Id: 2

@@ -8,7 +8,7 @@ using UnityEngine;
 public class Swirl : ElementsReaction
 {
     private static float radius = 1.1f;//¿©…¢∑∂Œß
-    private static int SWIRL_DAMAGE = 10;//¿©…¢…À∫¶
+    private static int SWIRL_DAMAGE = 15;//¿©…¢…À∫¶
 
     private Elements swirledElement;
     public Swirl(Elements element)

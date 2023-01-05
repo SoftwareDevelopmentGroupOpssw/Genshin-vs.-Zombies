@@ -19,7 +19,7 @@ public class Frozen : ElementsReaction, IEffect, IContainedStunEffect
     /// <summary>
     /// 移速衰减时间（毫秒）
     /// </summary>
-    private int speedTime = 3000;
+    private int speedTime = 2000;
     /// <summary>
     /// 移速衰减百分比
     /// </summary>

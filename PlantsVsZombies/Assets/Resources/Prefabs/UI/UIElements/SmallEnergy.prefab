@@ -134,4 +134,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyValue: 15
-  disappearTime: 5000
+  disappearTime: 8000

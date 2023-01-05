@@ -270,6 +270,7 @@ public sealed partial class GameController : MonoBehaviour
         AddSelectPlant("Nahida");
         AddSelectPlant("Sucrose");
         AddSelectPlant("Ningguang");
+        AddSelectPlant("Ganyu");
         AddSelectPlant("RaidenShogun");
         AddSelectPlant("WallNut");
 

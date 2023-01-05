@@ -24,8 +24,9 @@ public class LevelsPanel : BasePanel
         {
             GameObject plot = Instantiate(levelPlot, content.transform);
             plot.GetComponent<Image>().sprite = item.Value.Sprite;
-            plot.name = item.Key;
-            Button btn = plot.GetComponent<Button>();
+            plot.name = item.Key; //改名
+            plot.GetComponent<LevelPlot>().SetLevelName(item.Key); //显示关卡的名字
+            Button btn = plot.GetComponent<Button>(); //为按钮添加监听
             btn.onClick.AddListener(OnButtonClicked);
             levelButtons.Add(btn);
         }

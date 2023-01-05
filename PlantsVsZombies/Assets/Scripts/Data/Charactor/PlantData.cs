@@ -35,6 +35,7 @@ public abstract class PlantData : IPlantData
 
     public abstract int CoolTime { get; }
     public abstract string PlantName { get; }
+    public abstract string Description { get; }
 
     public void AddEffect(IEffect effect) => effects.Add(effect);
     public void RemoveEffect(IEffect effect) => effects.Remove(effect);

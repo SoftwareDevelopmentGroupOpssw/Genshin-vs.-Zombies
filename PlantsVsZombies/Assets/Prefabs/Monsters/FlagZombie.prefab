@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1145120830570421654}
   - component: {fileID: 1145120830570421650}
   - component: {fileID: 1145120830570421649}
-  - component: {fileID: 1145120830570421648}
+  - component: {fileID: 7004004985855192177}
   m_Layer: 0
   m_Name: FlagZombie
   m_TagString: Monster
@@ -143,7 +143,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.13922596, y: 0.0768497}
   m_Size: {x: 0.6544132, y: 1.1542244}
   m_Direction: 0
---- !u!114 &1145120830570421648
+--- !u!114 &7004004985855192177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1145120830570421652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394eb4295d78488489b4f0e87d98c2e5, type: 3}
+  m_Script: {fileID: 11500000, guid: ee825e1b25c24554c97ef9013eff008d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   FallingHead: {fileID: 1145120832369078280}

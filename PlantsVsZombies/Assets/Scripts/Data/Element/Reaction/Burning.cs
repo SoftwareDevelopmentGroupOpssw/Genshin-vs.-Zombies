@@ -8,7 +8,7 @@ using UnityEngine;
 public class Burning : ElementsReaction,IEffect
 {
     private static int damageTimes = 8;    //燃烧造成伤害次数
-    private static int damageDealtPerTime = 3;//一次燃烧造成伤害值
+    private static int damageDealtPerTime = 4;//一次燃烧造成伤害值
     private static int damageSpaceTime = 300;//两次燃烧伤害之间的间隔时间（毫秒）
 
     private IDamageReceiver target;//魔物对象

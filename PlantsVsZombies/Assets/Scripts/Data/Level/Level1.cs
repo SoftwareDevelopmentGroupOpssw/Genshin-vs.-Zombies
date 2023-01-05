@@ -43,9 +43,11 @@ public class Level1 : GridLevel
         do //游戏进行中时一直有阳光掉落
         {
             yield return new WaitForSecondsRealtime(secondsBetweenFallingEnergy);
-            Vector2Int endPoint = new Vector2Int(r.Next(offsetX, Screen.width - offsetX), r.Next(offsetY, Screen.height - offsetY));
-            GameObject obj = EnergyMonitor.CreateEnergy(new Vector2Int(endPoint.x, Screen.height), EnergyType.Big); //从屏幕之外落下
-            GameController.Instance.StartCoroutine(obj.GetComponent<Energy>().FallingCoroutine(obj, new Vector3(endPoint.x, endPoint.y, 0)));
+
+            Vector2 endPoint = new Vector2(r.Next(offsetX, Screen.width - offsetX), r.Next(offsetY, Screen.height - offsetY));
+            Vector2 startPoint = new Vector2(endPoint.x, Screen.height);
+            GameObject obj = EnergyMonitor.CreateEnergy(new Vector2Int((int)startPoint.x, (int)startPoint.y), EnergyType.Big); //从屏幕之外落下
+            GameController.Instance.StartCoroutine(obj.GetComponent<Energy>().FallingCoroutine(obj, startPoint ,endPoint));
         } while (GameController.Instance.IsGameStarted);
     }
 
@@ -55,6 +57,7 @@ public class Level1 : GridLevel
     /// <returns></returns>
     public override IEnumerator GenerateEnumerator()
     {
+        nowWave = 0;
         GameController.Instance.StartCoroutine(GenerateEnergy());
         //第一只怪物出现在60秒处
         yield return new WaitForSecondsRealtime(60f);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Melt : ElementsReaction
 {
-    public const float DAMAGE_INCREASE = 1.75f;
+    public const float DAMAGE_INCREASE = 2.15f;
     public override string ReactionName => Name;
     public static string Name => "Melt";
 

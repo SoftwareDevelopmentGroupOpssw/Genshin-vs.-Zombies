@@ -13,14 +13,16 @@ public class LevelSpriteSerializer:Singleton<LevelSpriteSerializer>,IEnumerable<
     private Dictionary<string, ILevelData> levelDic = new Dictionary<string, ILevelData>();
     ILevelData GetLevelData(int levelId,Sprite sprite)
     {
-        ILevelData data = null;
         switch (levelId)
         {
             case 0:
-                data = new Level1(sprite);
-                break;
+                return new Level1(sprite);
+            case 1:
+                return new Level2(sprite);
+            case 2:
+                return new Level3(sprite);
         }
-        return data;
+        return null;
     }
     void Initialize()
     {

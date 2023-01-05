@@ -32,7 +32,10 @@ public class Quicken : ElementsReaction,IEffect
     protected override void RealAction(IElementalDamage damage, IDamageReceiver target)
     {
         this.target = target;
-        target.AddEffect(this);
+        //先前是否已经被添加激化效果
+        IEffect effect = target.GetEffects().Find((effect) => effect is Quicken);
+        if(effect == null) //没有激化效果才再次添加激化效果
+            target.AddEffect(this);
     }
     /// <summary>
     /// 受到伤害时增加伤害

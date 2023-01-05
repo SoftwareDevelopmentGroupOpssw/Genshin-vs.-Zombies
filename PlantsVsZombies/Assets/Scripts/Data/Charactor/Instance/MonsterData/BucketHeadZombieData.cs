@@ -10,7 +10,7 @@ public class BucketHeadZombieData : MonsterData
 {
     public BucketHeadZombieData(GameObject original) : base(original)
     {
-        strength = 180;
+        strength = 150;
         health = 1100;
         speed = 16;
         atkPower = 4;

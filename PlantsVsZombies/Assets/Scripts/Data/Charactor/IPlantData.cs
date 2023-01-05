@@ -13,6 +13,11 @@ public interface IPlantData:ICharactorData , IDamageReceiver
     /// </summary>
     public string PlantName { get; }
     /// <summary>
+    /// 植物的说明 当鼠标悬停在植物上时会弹出说明窗口
+    /// </summary>
+    public string Description { get; }
+
+    /// <summary>
     /// 植物的能量花费
     /// </summary>
     public int EnergyCost { get; }

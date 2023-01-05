@@ -122,7 +122,7 @@ public class WatermelonBulletBehaviour : Bullet
                 foreach(var collider in colliders)
                 {
                     IDamageable canbeDamaged = collider.GetComponent<IDamageable>();
-                    if (canbeDamaged != null && !(target is Plant))
+                    if (collider != collision && canbeDamaged != null && !(target is Plant)) //溅射伤害不会作用于主要目标
                     {
                         IDamageReceiver receiver = canbeDamaged.GetReceiver();
                         if(receiver != null)

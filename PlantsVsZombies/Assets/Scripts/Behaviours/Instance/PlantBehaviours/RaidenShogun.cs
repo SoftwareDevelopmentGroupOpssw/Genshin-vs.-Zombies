@@ -42,8 +42,22 @@ public class RaidenShogun : Plant
     private void ProduceEnergy()
     {
         //让能量蹦出来
-        IEnumerator EnergyFlyingCoroutine(GameObject energy)
+        IEnumerator EnergyFlyingCoroutine(GameObject energy , Vector2 startPos)
         {
+            void RealSetPosition(GameObject energyObj, Vector2 screenPoint)
+            {
+                RectTransform rect = energyObj.transform as RectTransform;
+                Vector3 worldPos;
+                RectTransformUtility.ScreenPointToWorldPointInRectangle
+                    (
+                        UIManager.Instance.Canvas.transform as RectTransform,
+                        screenPoint,
+                        null,
+                        out worldPos
+                    );
+                rect.position = worldPos;
+            }
+
             //能量蹦出来的距离
             float offset = 0.5f;
             float farestLocation = 50f;
@@ -51,14 +65,13 @@ public class RaidenShogun : Plant
             int sign = Random.value - offset > 0 ? 1 : -1;
             float now = Random.Range(sign * nearestLocation, sign * farestLocation);
 
-            Vector3 startPos = energy.transform.position;
             float flySpeed = 80;
             float polonomialArg = 0.05f;
 
             for (float x = 0; Mathf.Abs(x) < Mathf.Abs(now); x += sign * flySpeed * Time.deltaTime)
             {
                 float y = -polonomialArg * x * (x - now);
-                energy.transform.position = startPos + new Vector3(x, y, 0);
+                RealSetPosition(energy,startPos + new Vector2(x, y));
                 yield return 1;
             }
         }
@@ -66,7 +79,7 @@ public class RaidenShogun : Plant
         Vector2 pixelPos = Camera.main.WorldToScreenPoint(transform.position);
         GameObject obj = EnergyMonitor.CreateEnergy(new Vector2Int((int)pixelPos.x, (int)pixelPos.y), EnergyFlowerData.ProduceType);
 
-        StartCoroutine(EnergyFlyingCoroutine(obj));
+        StartCoroutine(EnergyFlyingCoroutine(obj,pixelPos));
         AudioManager.Instance.PlayRandomEffectAudio("throw1", "throw2");
         countDown.StartCountDown();
     }
