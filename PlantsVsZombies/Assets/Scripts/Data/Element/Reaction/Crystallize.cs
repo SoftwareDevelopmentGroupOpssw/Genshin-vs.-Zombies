@@ -92,7 +92,7 @@ public class Crystallize : ElementsReaction
             }
 
             //蹦出来了 稍等一会儿
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
             crystal.StartTracking();//开始追踪
         }

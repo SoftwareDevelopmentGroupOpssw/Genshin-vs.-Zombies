@@ -16,10 +16,12 @@ public class LevelSpriteSerializer:Singleton<LevelSpriteSerializer>,IEnumerable<
         switch (levelId)
         {
             case 0:
-                return new Level1(sprite);
+                return new Turtorial(sprite);
             case 1:
-                return new Level2(sprite);
+                return new Level1(sprite);
             case 2:
+                return new Level2(sprite);
+            case 3:
                 return new Level3(sprite);
         }
         return null;

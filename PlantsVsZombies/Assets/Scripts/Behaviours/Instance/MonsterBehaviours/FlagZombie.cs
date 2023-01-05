@@ -139,7 +139,7 @@ public class FlagZombie : Monster, IDamageable
     IEnumerator DamageAnimate()
     {
         float second = 0.1f;//变红持续的秒数
-        yield return new WaitForSecondsRealtime(second);
+        yield return new WaitForSeconds(second);
         damageCoroutine = null;
     }
     #endregion
@@ -324,7 +324,7 @@ public class FlagZombie : Monster, IDamageable
                 while (ReceiverUnderAttack == null)//被攻击的对象为空，等待物理帧传入一个新的对象来攻击
                     yield return 1;
                 ReceiverUnderAttack.ReceiveDamage(new SystemDamage(target.Data.AtkPower, Elements.None));
-                yield return new WaitForSecondsRealtime(atkDistanceSeconds);
+                yield return new WaitForSeconds(atkDistanceSeconds);
             }
         }
         public override void OnEnterState()
@@ -384,10 +384,10 @@ public class FlagZombie : Monster, IDamageable
             IEnumerator DelayDestroy()
             {
                 float secondsBeforeHeadDisappear = 1;
-                yield return new WaitForSecondsRealtime(secondsBeforeHeadDisappear);
+                yield return new WaitForSeconds(secondsBeforeHeadDisappear);
                 Destroy(target.FallingHead);
                 float secondsBeforeBodyDisappear = 1;
-                yield return new WaitForSecondsRealtime(secondsBeforeBodyDisappear);
+                yield return new WaitForSeconds(secondsBeforeBodyDisappear);
                 GameController.Instance.MonstersController.RemoveMonster(target);//将Data数据清理
                 target.stateMachine = null;
             }

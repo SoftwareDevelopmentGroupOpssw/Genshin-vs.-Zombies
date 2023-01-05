@@ -86,7 +86,7 @@ public class ElectroCharged : ElementsReaction, IEffect
         for (;nowTimes < damageTimes; nowTimes++)
         {
             target.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Electric));
-            yield return new WaitForSecondsRealtime(damageSpaceTime / 1000f);
+            yield return new WaitForSeconds(damageSpaceTime / 1000f);
         }
         State = EffectState.End;
     }

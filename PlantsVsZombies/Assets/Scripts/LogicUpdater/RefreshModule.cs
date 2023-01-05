@@ -56,7 +56,7 @@ public partial class GameController
                 if (enumerator.Current is IMonsterData)
                 {
                     GenerateNewMonster(enumerator.Current as IMonsterData);//帧更新结束时尝试生成魔物
-                    yield return new WaitForSecondsRealtime(0.8f);//魔物生成不会连续，总有一定的延迟
+                    yield return new WaitForSeconds(0.8f);//魔物生成不会连续，总有一定的延迟
                 }
                 else //在生成策略中，仍然可以用unity协程中的yield instructions来延迟时间
                     yield return enumerator.Current;

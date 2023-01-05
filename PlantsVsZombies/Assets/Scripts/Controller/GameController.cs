@@ -219,7 +219,7 @@ public sealed partial class GameController : MonoBehaviour
         }
 
         Vector3 startTransform = level.transform.position;
-        yield return new WaitForSecondsRealtime(waitSecondsToPreview);
+        yield return new WaitForSeconds(waitSecondsToPreview);
         //过去
         for(float i = 0; i < 1; i+= Time.deltaTime * movingSpeed)
         {
@@ -227,7 +227,7 @@ public sealed partial class GameController : MonoBehaviour
             yield return 1;
         }
 
-        yield return new WaitForSecondsRealtime(duration);//预览时间
+        yield return new WaitForSeconds(duration);//预览时间
 
         //返回
         for (float i = 0; i < 1; i += Time.deltaTime * movingSpeed)

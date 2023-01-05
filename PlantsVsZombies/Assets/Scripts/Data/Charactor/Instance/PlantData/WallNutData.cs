@@ -12,7 +12,7 @@ public class WallNutData : PlantData
 
     public override int Health { get; set; } = 4000;
     public override int AtkPower { get; set; } = 0;
-    public override int CoolTime => 30000;
+    public override int CoolTime => 25000;
 
     public override string PlantName => "WallNut";
 

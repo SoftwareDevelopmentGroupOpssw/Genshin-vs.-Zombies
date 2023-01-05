@@ -11,16 +11,16 @@ public class LVStartLabel : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = label1;
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSeconds(0.3f);
         spriteRenderer.sprite = label2;
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSeconds(0.3f);
         spriteRenderer.sprite = label3;
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
     private void Start()
     {
-       // AudioManager.Instance.PlayEffectAudio("readysetplant");
+        AudioManager.Instance.PlayEffectAudio("readysetplant");
         StartCoroutine(ShowCoroutine());
     }
 }

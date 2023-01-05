@@ -163,7 +163,7 @@ public class AudioManager:Singleton<AudioManager>
     {
         IEnumerator CollectCouroutine(AudioSource source, float time)
         {
-            yield return new WaitForSecondsRealtime(time);
+            yield return new WaitForSeconds(time);
             effectSourceList.Remove(source);
             effectSourceBuffer.Put(effectSource, source.gameObject);
         }
@@ -179,7 +179,7 @@ public class AudioManager:Singleton<AudioManager>
     {
         IEnumerator CollectCouroutine(AudioSource source, float time)
         {
-            yield return new WaitForSecondsRealtime(time);
+            yield return new WaitForSeconds(time);
             effectSourceList.Remove(source);
             effectSourceBuffer.Put(effectSource, source.gameObject);
         }

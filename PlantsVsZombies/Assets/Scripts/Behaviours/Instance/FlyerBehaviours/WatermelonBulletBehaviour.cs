@@ -94,7 +94,7 @@ public class WatermelonBulletBehaviour : Bullet
         rigid.velocity = Vector2.zero;//停止移动
 
         float waitSecondsBeforeDestroy = 0.1f;//在Destroy前显示broken的时间
-        yield return new WaitForSecondsRealtime(waitSecondsBeforeDestroy);
+        yield return new WaitForSeconds(waitSecondsBeforeDestroy);
         RemoveThis();
     }
     void Update()

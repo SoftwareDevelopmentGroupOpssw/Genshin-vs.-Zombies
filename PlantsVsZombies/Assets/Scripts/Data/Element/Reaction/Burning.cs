@@ -61,7 +61,7 @@ public class Burning : ElementsReaction,IEffect
         for (; nowTimes < damageTimes; nowTimes++)
         {
             monster.ReceiveDamage(new SystemDamage(damageDealtPerTime, Elements.Fire, true));
-            yield return new WaitForSecondsRealtime((float)damageSpaceTime / 1000);
+            yield return new WaitForSeconds((float)damageSpaceTime / 1000);
         }
         State = EffectState.End;
     }

@@ -12,7 +12,7 @@ public class ReactInformation : MonoBehaviour
         spriteRenderer.color = Color.white;
         spriteRenderer.sprite = text;
         float displayTime = 0.25f;
-        yield return new WaitForSecondsRealtime(displayTime);
+        yield return new WaitForSeconds(displayTime);
         float startY = transform.position.y;
         float speed = 2;//字移动的速度
         float upOffset = 0.5f;//字向上移动的距离

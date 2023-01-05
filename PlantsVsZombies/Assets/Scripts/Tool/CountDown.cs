@@ -43,7 +43,7 @@ public class CountDown
         while (nowTime < miliseconds / 1000f)
         {
             yield return 1;
-            nowTime += Time.unscaledDeltaTime;
+            nowTime += Time.deltaTime;
             if(available == true)//±»ÊÖ¶¯ÔÝÍ£
             {
                 coroutine = null;

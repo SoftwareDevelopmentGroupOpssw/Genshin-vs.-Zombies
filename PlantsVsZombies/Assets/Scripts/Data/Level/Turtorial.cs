@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
-/// Level1:默认关卡
+/// 教学关卡
 /// </summary>
-public class Level1 : GridLevel
+public class Turtorial : GridLevel
 {
     private int row = 5;
     private int col = 10;
@@ -24,7 +24,7 @@ public class Level1 : GridLevel
     private const int waveCount = 3; // 僵尸波数
     private static int nowWave = 0; //已经生成的波数
 
-    public Level1(Sprite sprite)
+    public Turtorial(Sprite sprite)
     {
         this.sprite = sprite;
     }
@@ -47,7 +47,7 @@ public class Level1 : GridLevel
             Vector2 endPoint = new Vector2(r.Next(offsetX, Screen.width - offsetX), r.Next(offsetY, Screen.height - offsetY));
             Vector2 startPoint = new Vector2(endPoint.x, Screen.height);
             GameObject obj = EnergyMonitor.CreateEnergy(new Vector2Int((int)startPoint.x, (int)startPoint.y), EnergyType.Big); //从屏幕之外落下
-            GameController.Instance.StartCoroutine(obj.GetComponent<Energy>().FallingCoroutine(obj, startPoint ,endPoint));
+            GameController.Instance.StartCoroutine(obj.GetComponent<Energy>().FallingCoroutine(obj, startPoint, endPoint));
         } while (GameController.Instance.IsGameStarted);
     }
 
@@ -58,9 +58,11 @@ public class Level1 : GridLevel
     public override IEnumerator GenerateEnumerator()
     {
         nowWave = 0;
+        //教学关卡：设置能量为10000
+        GameController.Instance.EnergyMonitor.Energy = 10000;
         GameController.Instance.StartCoroutine(GenerateEnergy());
         //第一只怪物出现时间
-        yield return new WaitForSeconds(25f);
+        yield return new WaitForSeconds(5f);
         AudioManager.Instance.PlayEffectAudio("awooga");
 
         int monsterTotalCount = 60;//怪物总数
@@ -74,9 +76,9 @@ public class Level1 : GridLevel
         int generateAmount = 0;
 
         System.Random r = new System.Random();
-        while(nowWave < waveCount)
+        while (nowWave < waveCount)
         {
-            int minGenerateCount = realMinGenerateCount + nowGenerated * fixedCount / monsterTotalCount ; //根据关卡进度修正后的最小生成数量
+            int minGenerateCount = realMinGenerateCount + nowGenerated * fixedCount / monsterTotalCount; //根据关卡进度修正后的最小生成数量
             int maxGenerateCount = realMaxGenerateCount + nowGenerated * fixedCount / monsterTotalCount; //根据关卡进度修正后的最大生成数量
             int totalWeight = nowGenerated * 1000 + 1000; //随着生成数量的增加 权值数也会越来越高
             bool isBigWave = false;
@@ -101,12 +103,12 @@ public class Level1 : GridLevel
                 generateAmount = Mathf.Min(generateAmount, monsterTotalCount - nowGenerated);
             }
 
-            var task = Task.Run<List<IMonsterData>>(() => CalculateFunction(totalWeight,generateAmount));
+            var task = Task.Run<List<IMonsterData>>(() => CalculateFunction(totalWeight, generateAmount));
             while (!task.IsCompleted)
                 yield return 1;
             if (isBigWave)
             {
-                while(GameController.Instance.MonstersController.MonsterCount > 0)//大规模怪等到所有僵尸都死亡时才发动
+                while (GameController.Instance.MonstersController.MonsterCount > 0)//大规模怪等到所有僵尸都死亡时才发动
                     yield return 1;
                 AudioManager.Instance.PlayEffectAudio("hugewave"); //提示大规模怪
                 yield return new WaitForSeconds(5f);//等候一段时间
@@ -133,7 +135,7 @@ public class Level1 : GridLevel
     /// </summary>
     /// <param name="totalWeight"></param>
     /// <returns></returns>
-    private List<IMonsterData> CalculateFunction(int totalWeight,int generateAmount)
+    private List<IMonsterData> CalculateFunction(int totalWeight, int generateAmount)
     {
         int i = 0;
         List<IMonsterData> triedGenerated = new List<IMonsterData>();
@@ -145,7 +147,7 @@ public class Level1 : GridLevel
         {
             if (totalWeight - nowWeight < bucketWeight && totalWeight - nowWeight < roadWeight)
             {
-                while (totalWeight - nowWeight >= commonWeight && i < generateAmount)
+                while(totalWeight - nowWeight >= commonWeight  && i < generateAmount)
                 {
                     triedGenerated.Add(MonsterPrefabSerializer.Instance.GetMonsterData("CommonZombie"));
                     nowWeight += commonWeight;
@@ -193,7 +195,7 @@ public class Level1 : GridLevel
         {
             int index = 0;
             IMonsterData[] array = new IMonsterData[monsterNames.Count];
-            foreach(string monsterName in monsterNames)
+            foreach (string monsterName in monsterNames)
             {
                 array[index++] = MonsterPrefabSerializer.Instance.GetMonsterData(monsterName);
             }
