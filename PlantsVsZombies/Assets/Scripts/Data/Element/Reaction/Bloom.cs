@@ -74,34 +74,31 @@ public class Bloom : ElementsReaction
             return hyperExplosion;
         }
     }
-
+    /// <summary>
+    /// 对象池子的名字
+    /// </summary>
     private static readonly string bufferName = "Bloom";
-    public static ObjectBuffer Pool
-    {
-        get
-        {
-            EntitiesController controller = GameController.Instance.EntitiesController;
-            if (!controller.ContainsBuffer(bufferName))
-            {
-                controller.AddBufferToManagement(bufferName, new ObjectBuffer(FlyersController.FlyersFatherObject.transform));
-                controller.AddBehaviourManagement<GrassCore>(bufferName, Seed); //将种子和GrassCore脚本纳入管理
-            }
-            return controller[bufferName];
-        }
-    }
+
     /// <summary>
     /// 产生一个种子对象
     /// </summary>
     /// <param name="worldPos"></param>
     public static GameObject AddSeed(Vector3 worldPos)
     {
-        GameObject newSeed = Pool.Get(Seed);
+        EntitiesController controller = GameController.Instance.EntitiesController;
+        if (!controller.ContainsBuffer(bufferName))
+        {
+            controller.AddBufferToManagement(bufferName, new ObjectBuffer(FlyersController.FlyersFatherObject.transform));
+            controller.AddBehaviourManagement<GrassCore>(bufferName, Seed); //将种子和GrassCore脚本纳入管理
+        }
+
+        GameObject newSeed = controller.Get(bufferName,Seed);
         newSeed.transform.position = worldPos;
         return newSeed;
     }
     public static void RemoveSeed(GrassCore core)
     {
-        Pool.Put(Seed,core.gameObject);
+        GameController.Instance.EntitiesController.Put(bufferName,Seed,core.gameObject);
     }
 
     /// <summary>

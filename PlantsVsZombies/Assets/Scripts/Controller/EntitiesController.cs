@@ -170,6 +170,7 @@ public class EntitiesController
             {
                 objList.ForEach((obj) => GameObject.Destroy(obj));
             }
+            unite.ActiveLists.Clear();
         }
     }
 
