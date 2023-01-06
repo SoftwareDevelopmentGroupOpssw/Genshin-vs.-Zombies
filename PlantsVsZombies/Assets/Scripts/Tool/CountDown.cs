@@ -71,6 +71,7 @@ public class CountDown
         if (coroutine != null)
         {
             available = true;
+            coroutine = null;
         }
     }
 }

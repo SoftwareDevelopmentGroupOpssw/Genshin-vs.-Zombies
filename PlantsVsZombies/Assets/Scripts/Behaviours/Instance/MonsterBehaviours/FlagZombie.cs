@@ -151,12 +151,20 @@ public class FlagZombie : Monster, IDamageable
     /// <param name="element"></param>
     void OnDamage(IElementalDamage element)
     {
-        if(damageCoroutine == null)
+        void PlayEffect() => lastSource = AudioManager.Instance.PlayRandomEffectAudio("splat1", "splat2", "splat3");
+        if (damageCoroutine == null)
             damageCoroutine = StartCoroutine(DamageAnimate());
 
         float replayPercent = 0.2f;//当播放进度达到总时长的一定百分比就开始重新播放
-        if (lastSource == null || !lastSource.gameObject.activeSelf || lastSource.time > lastSource.clip.length * replayPercent)//被塞到池子里去了，播放停止了
-            lastSource = AudioManager.Instance.PlayRandomEffectAudio("splat1", "splat2","splat3");
+        if (lastSource == null || !lastSource.gameObject.activeSelf)//被塞到池子里去了，播放停止了
+        {
+            PlayEffect();
+        }
+        else if (lastSource.time > lastSource.clip.length * replayPercent)
+        {
+            AudioManager.Instance.StopEffectAudio(lastSource);
+            PlayEffect();
+        }
     }
 
     /// <summary>

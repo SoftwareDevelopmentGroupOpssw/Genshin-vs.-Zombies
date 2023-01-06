@@ -142,7 +142,7 @@ public class Level3 : GridLevel
                     AudioManager.Instance.PlayEffectAudio("finalwave");
                 }
                 AudioManager.Instance.PlayEffectAudio("siren");
-                nowGenerated -= generateAmount; // 大规模出现的不算在关卡出怪中
+                nowGenerated -= task.Result.Count; // 大规模出现的不算在关卡出怪中
                 yield return MonsterPrefabSerializer.Instance.GetMonsterData("FlagZombie");//生成摇旗僵尸
             }
             foreach (IMonsterData tried in task.Result)
@@ -151,8 +151,8 @@ public class Level3 : GridLevel
                     yield return 1;
                 yield return tried;
             }
-            nowGenerated += generateAmount;
-            yield return new WaitForSeconds(geneateSpaceTime * (1 + nowGenerated / monsterTotalCount));
+            nowGenerated += task.Result.Count;
+            yield return new WaitForSeconds(geneateSpaceTime * (1 + nowGenerated / monsterTotalCount / 2));
         }
     }
     /// <summary>

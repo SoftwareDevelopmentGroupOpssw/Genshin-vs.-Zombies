@@ -144,15 +144,24 @@ public class BucketHeadZombie : Monster, IDamageable
     /// <param name="element"></param>
     void OnDamage(IElementalDamage element)
     {
-        if (damageCoroutine == null)
-            damageCoroutine = StartCoroutine(DamageAnimate());
-        float replayPercent = 0.2f;//当播放进度达到总时长的一定百分比就开始重新播放
-        if (lastSource == null || !lastSource.gameObject.activeSelf || lastSource.time > lastSource.clip.length * replayPercent)//被塞到池子里去了，播放停止了
+        void PlayEffect()
         {
             if (Data is BucketHeadZombieData)
                 lastSource = AudioManager.Instance.PlayRandomEffectAudio("shieldhit1", "shieldhit2");
             else if (Data is CommonZombieData)
                 lastSource = AudioManager.Instance.PlayRandomEffectAudio("splat1", "splat2", "splat3");
+        }
+        if (damageCoroutine == null)
+            damageCoroutine = StartCoroutine(DamageAnimate());
+        float replayPercent = 0.2f;//当播放进度达到总时长的一定百分比就开始重新播放
+        if (lastSource == null || !lastSource.gameObject.activeSelf)//被塞到池子里去了，播放停止了
+        {
+            PlayEffect();
+        }
+        else if(lastSource.time > lastSource.clip.length * replayPercent)
+        {
+            AudioManager.Instance.StopEffectAudio(lastSource);
+            PlayEffect();
         }
     }
 

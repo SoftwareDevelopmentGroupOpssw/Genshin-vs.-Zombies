@@ -22,11 +22,11 @@ public class Bloom : ElementsReaction
     /// <summary>
     /// 超绽放触发的种子伤害
     /// </summary>
-    public const int HyperBloomDamage = 7;
+    public const int HyperBloomDamage = 10;
     /// <summary>
     /// 超绽放触发的追踪种子数量
     /// </summary>
-    public const int HyperBloomCount = 12;
+    public const int HyperBloomCount = 16;
     /// <summary>
     /// 烈绽放触发时的伤害
     /// </summary>

@@ -49,7 +49,7 @@ public class HyperSeed : MonoBehaviour, IElementalDamage
             Vector3 endPos;
             try
             {
-                endPos = monster.transform.position + new Vector3(Random.value * 0.5f,Random.value * 0.5f); //对目标位置进行扰动
+                endPos = monster.transform.position + new Vector3(Random.Range(-0.5f,0.5f) * 0.5f,Random.Range(-0.5f,0.5f) * 0.5f); //对目标位置进行扰动
             }
             catch (MissingReferenceException)
             {
