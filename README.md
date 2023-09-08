@@ -7,23 +7,23 @@
 
 ## 标题页面
 
-![首页](./ProjectZero/docs/md图片/首页.png)
+![首页](./docs/md图片/首页.png)
 
 ## 帮助菜单
 
-![帮助](./ProjectZero/docs/md图片/帮助.png)
+![帮助](./docs/md图片/帮助.png)
 
 ## 关卡选择
 
-![关卡选择](./ProjectZero/docs/md图片/关卡选择.png)
+![关卡选择](./docs/md图片/关卡选择.png)
 
 ## 游戏页面
 
-![游戏](./ProjectZero/docs/md图片/游戏.png)
+![游戏](./docs/md图片/游戏.png)
 
 ## 游戏胜利
 
-![游戏胜利](./ProjectZero/docs/md图片/游戏胜利.png)
+![游戏胜利](./docs/md图片/游戏胜利.png)
 
 
 (此游戏已经停止更新。)
